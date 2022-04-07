@@ -28,7 +28,7 @@ class EstimateRayPathEffects():
 
         # ======================================================
         # Generate Ray State
-        optimizer = RayPathOptimizer(freq_Hz, self.timeAndLocation, heights_m)
+        optimizer = RayPathOptimizer(freq_Hz, self.timeAndLocation, heights_m, self.dispersionModel)
 
         rayState = optimizer.optimize(satelliteInformation)
 

@@ -8,6 +8,8 @@ from datetime import datetime
 from raytracing.bindings.coordinates_class import LLA
 from raytracing.bindings.timeandlocation_class import TimeAndLocation
 from raytracing.bindings.satelliteinformation_class import SatelliteInformation
+from raytracing.indexofrefractiongenerator import IndexOfRefractionGenerator
+from raytracing.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from raytracing.satellitepositiongenerator import SatellitePositionGenerator
 from raytracing.raypathobjective import RayPathObjective
 
@@ -40,8 +42,10 @@ class TestRayPathObjective(unittest.TestCase):
         timeAndLocation = TimeAndLocation(
             eventTime_UTC=currentDateTime, eventLocation_LLA=event_LLA)
 
+        indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz = 10e6, dispersionModel=DispersionModel.X_MODEL)
+
         rayPathOpt = RayPathObjective(freq_hz=10e6,
-            heights_m=heights_m, timeAndLocation=timeAndLocation, satPosGen=satPosGenerator)
+            heights_m=heights_m, timeAndLocation=timeAndLocation, satPosGen=satPosGenerator, indexOfRefractionGenerator=indexOfRefractionGenerator)
 
         param = [80, 10]
         loss = rayPathOpt.objectiveFunction(param)

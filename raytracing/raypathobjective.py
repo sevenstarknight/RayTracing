@@ -17,7 +17,8 @@ lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 logger = logging.getLogger("mylogger")
 
 class RayPathObjective():
-    def __init__(self, freq_hz: float, heights_m: list[float], timeAndLocation: TimeAndLocation, satPosGen: SatellitePositionGenerator):
+    def __init__(self, freq_hz: float, heights_m: list[float], timeAndLocation: TimeAndLocation, 
+    satPosGen: SatellitePositionGenerator, indexOfRefractionGenerator: IndexOfRefractionGenerator):
         self.heights_m = heights_m
         self.satPosGen = satPosGen
         self.timeAndLocation = timeAndLocation
@@ -26,8 +27,6 @@ class RayPathObjective():
         # Initial Starting Point
         self.sat_ECEF = self.satPosGen.estimatePosition_ECEF(
             timeAndLocation.eventTime_UTC)
-
-        indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz=freq_hz)
 
         self.indexN = indexOfRefractionGenerator.estimateIndexN(
             startTimeAndLocation=timeAndLocation, heightStratification_m=heights_m, sat_ECEF=self.sat_ECEF)

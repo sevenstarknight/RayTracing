@@ -3,6 +3,7 @@ import unittest
 import pyproj
 from datetime import datetime
 from raytracing.indexofrefractiongenerator import IndexOfRefractionGenerator
+from raytracing.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 
 from raytracing.bindings import coordinates_class
 from raytracing.bindings.satelliteinformation_class import SatelliteInformation
@@ -32,7 +33,7 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
 
         event_LLA = coordinates_class.LLA(lat_deg, lon_deg, 0.0) 
         # construct the atmospheric model
-        indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz=10e6)
+        indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL)
         
         timeAndLocation = TimeAndLocation(eventLocation_LLA =  event_LLA, eventTime_UTC = currentDateTime)
 
@@ -63,7 +64,7 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
 
         event_LLA = coordinates_class.LLA(lat_deg, lon_deg, 0.0) 
         # construct the atmospheric model
-        indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz=10e6)
+        indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL)
         
         timeAndLocation = TimeAndLocation(eventLocation_LLA =  event_LLA, eventTime_UTC = currentDateTime)
 

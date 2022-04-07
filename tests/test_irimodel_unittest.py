@@ -10,6 +10,7 @@ from raytracing.bindings.coordinates_class import LLA
 from raytracing.bindings.ionospherestate_class import IonosphereState
 from raytracing.bindings.satelliteinformation_class import SatelliteInformation
 from raytracing.bindings.timeandlocation_class import TimeAndLocation
+from raytracing.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from raytracing.models.iri_model import IRI_Model
 from raytracing.raystate_class import RayState
 from raytracing.satellitepositiongenerator import SatellitePositionGenerator
@@ -48,7 +49,7 @@ class TestIRIModel(unittest.TestCase):
 
         event_LLA = coordinates_class.LLA(lat_deg, lon_deg, 0.0) 
         # construct the atmospheric model
-        indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz=10e6)
+        indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL)
         
         timeAndLocation = TimeAndLocation(eventLocation_LLA =  event_LLA, eventTime_UTC = currentDateTime)
 

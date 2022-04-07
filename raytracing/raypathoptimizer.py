@@ -11,17 +11,18 @@ from raystate_class import RayState
 from raytracer import RayTracer
 from raypathobjective import RayPathObjective
 
+from indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from indexofrefractiongenerator import IndexOfRefractionGenerator
 from satellitepositiongenerator import SatellitePositionGenerator
 
 
 class RayPathOptimizer():
 
-    def __init__(self, freq_hz: float,timeAndLocation: TimeAndLocation, heights_m: list[float]):
+    def __init__(self, freq_hz: float,timeAndLocation: TimeAndLocation, heights_m: list[float], dispersionModel : DispersionModel):
         self.freq_hz = freq_hz
         self.timeAndLocation = timeAndLocation
         self.heights_m = heights_m
-        self.indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz = freq_hz)
+        self.indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz = freq_hz, dispersionModel = dispersionModel)
 
     def optimize(self, satelliteInformation: SatelliteInformation) -> list[RayState]:
 
@@ -37,11 +38,13 @@ class RayPathOptimizer():
 
         # optimization
         initialGuess = [initialAz_deg, initialEle_deg]
+
         objectiveF = RayPathObjective(self.freq_hz,
-            self.heights_m, self.timeAndLocation, satPosGenerator)
+            self.heights_m, self.timeAndLocation, satPosGenerator, self.indexOfRefractionGenerator)
         result = optimize.minimize(objectiveF.objectiveFunction, initialGuess)
 
-        # based on the results, push code
+        # =============================================================================
+        # based on the results, generate optimal ray
         rayTracer = RayTracer(self.timeAndLocation)
 
         # construct the atmospheric model

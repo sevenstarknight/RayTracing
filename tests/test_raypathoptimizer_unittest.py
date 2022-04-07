@@ -8,6 +8,7 @@ from datetime import datetime
 from raytracing.bindings.coordinates_class import LLA
 from raytracing.bindings.timeandlocation_class import TimeAndLocation
 from raytracing.bindings.satelliteinformation_class import SatelliteInformation
+from raytracing.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 
 from raytracing.satellitepositiongenerator import SatellitePositionGenerator  
 from raytracing.raypathoptimizer import RayPathOptimizer
@@ -38,7 +39,7 @@ class TestRayPathOptimization(unittest.TestCase):
         # ======================================================
         heights_m = [0, 100, 1000, 10000, 100000, 1000000]
 
-        optimizer = RayPathOptimizer(10e6, timeAndLocation, heights_m)
+        optimizer = RayPathOptimizer(10e6, timeAndLocation, heights_m, dispersionModel=DispersionModel.X_MODEL)
         rayState = optimizer.optimize(satelliteInformation)
 
         self.assertTrue(rayState is not None)

@@ -10,6 +10,7 @@ from raytracing.bindings.coordinates_class import LLA
 from raytracing.bindings.ionospherestate_class import IonosphereState
 from raytracing.bindings.satelliteinformation_class import SatelliteInformation
 from raytracing.bindings.timeandlocation_class import TimeAndLocation
+from raytracing.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from raytracing.indexrefractionmodels.xmodel import XModel
 from raytracing.models.igrf_model import IGRF_Model
 from raytracing.models.iri_model import IRI_Model
@@ -55,7 +56,7 @@ class TestXModel(unittest.TestCase):
         heights_m = [0, 100, 1000, 10000, 100000, 1000000]
 
         # make LLAs
-        indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz=10e6)
+        indexOfRefractionGenerator = IndexOfRefractionGenerator(frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL)
         listOfSlant_RayState = indexOfRefractionGenerator.estimateSlantPath(timeAndLocation, sat_ECEF, heights_m)
 
         # make the model

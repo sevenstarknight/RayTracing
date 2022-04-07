@@ -8,20 +8,24 @@ from bindings.coordinates_class import LLA, ECEF
 from bindings.timeandlocation_class import TimeAndLocation
 from raytracer_computations import generatePositionAndVector, computeSlantIntersections
 from raystate_class import RayState
-from raytracing.bindings.ionospherestate_class import IonosphereState
-from raytracing.indexrefractionmodels.xmodel import XModel
-from raytracing.models.igrf_model import IGRF_Model
-from raytracing.models.iri_model import IRI_Model
-from raytracing.models.msise_model import MSISE_Model
-from raytracing.models.spacephysicsmodels import SpacePhysicsModels
+from bindings.ionospherestate_class import IonosphereState
+from indexrefractionmodels.xmodel import XModel
+from indexrefractionmodels.dispersionmodels_enum import DispersionModel
+
+from models.igrf_model import IGRF_Model
+from models.iri_model import IRI_Model
+from models.msise_model import MSISE_Model
+from models.spacephysicsmodels import SpacePhysicsModels
+
 
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 class IndexOfRefractionGenerator():
 
-    def __init__(self, frequency_hz : float):
+    def __init__(self, frequency_hz : float, dispersionModel : DispersionModel):
         self.frequency_hz = frequency_hz
+        self.dispersionModel = dispersionModel
 
     def estimateSlantPath(self, startTimeAndLocation : TimeAndLocation, sat_ECEF : ECEF, heightStratification_m : list[float]) -> list[RayState]:
         #expected height, assume minimal change in position with range projection, so assume slant path for ionosphere model
