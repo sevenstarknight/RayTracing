@@ -1,4 +1,4 @@
-class MSISE():
+class MSISEOuput():
 
     '''
     The output has the same order as the C reference code, in particular:

@@ -10,7 +10,7 @@ import pymap3d
 ## ====================================================
 # local imports
 from bindings.vector_class import VectorArray
-from raytracing.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
+from indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
 from raystate_class import RayState
 
 class XYModel(AbstractIndexRefraction):
@@ -19,26 +19,26 @@ class XYModel(AbstractIndexRefraction):
 
         # Ionosphere model
         iriOutput = self.spacePhysicsModels.iri.generatePointEstimate(rayPoint=currentState.lla)
-        n_e = iriOutput["ne"][0].item()
+        n_e = iriOutput.iono["ne"].iloc[0].item()
 
         if(n_e == -1.0):
             nSq = 1.0
         else:
             ## Magnetic Field Given Current State
-            bNED_T = self.spacePhysicsModels.igrf.generatePointEstimate(rayPoint=currentState.lla)
+            igrfOutput = self.spacePhysicsModels.igrf.generatePointEstimate(rayPoint=currentState.lla)
             east,north,up = pymap3d.aer2enu(currentState.exitAzimuth_deg, currentState.exitElevation_deg, 1.0, deg=True)
-
-            b_SEZ = VectorArray(-bNED_T.north.item(), bNED_T.east.item(), bNED_T.down.item())
+   
+            b_SEZ = VectorArray(-igrfOutput.igrf['north'].iloc[0], igrfOutput.igrf['east'].iloc[0], igrfOutput.igrf['down'].iloc[0])
             ray_SEZ = VectorArray(north, east, -up)
             dotAB = np.dot(b_SEZ.data, ray_SEZ.data)
-            cosTheta = dotAB/(np.linalg.norm(b_SEZ)*np.linalg.norm(ray_SEZ))
+            cosTheta = dotAB/(np.linalg.norm(b_SEZ.data)*np.linalg.norm(ray_SEZ.data))
 
             # Big X and Big Y
             angularFreq_sq = (2*math.pi*self.frequency_hz)**2
             angularFreq_p_sq = (constants.elementary_charge**2)*n_e/(constants.electron_mass)
 
             bigX = angularFreq_p_sq/angularFreq_sq
-            bigY = constants.elementary_charge*bNED_T.total.item()/(constants.electron_mass*math.sqrt(angularFreq_sq))
+            bigY = constants.elementary_charge*igrfOutput.igrf.total.item()/(constants.electron_mass*math.sqrt(angularFreq_sq))
 
             eta_perp = 1 - bigX/(1- bigY*bigY)
             eta_cross = bigX*bigY/(1- bigY*bigY)

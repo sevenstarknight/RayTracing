@@ -3,7 +3,7 @@ from scipy import constants
 
 ## ====================================================
 # local imports
-from raytracing.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
+from indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
 from raystate_class import RayState
 
 class XModel(AbstractIndexRefraction):
