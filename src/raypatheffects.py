@@ -50,4 +50,5 @@ class EstimateRayPathEffects():
 
         rayEffects = TransIonosphereEffects(
             rayState, totalIonoDelay_sec, totalIonoLoss_db)
+            
         return(rayEffects)

@@ -1,4 +1,5 @@
 import math
+from cmath import sqrt
 from scipy import constants
 
 # ====================================================
@@ -25,4 +26,4 @@ class XModel(AbstractIndexRefraction):
 
             nSq = 1 - bigX
 
-        return(nSq)
+        return(sqrt(nSq))

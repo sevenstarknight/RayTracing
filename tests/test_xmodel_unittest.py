@@ -70,7 +70,7 @@ class TestXModel(unittest.TestCase):
             timeAndLocation, sat_ECEF, heights_m)
 
         # make the model
-        ionosphereState = IonosphereState(10.0, 10.0, 3.0)
+        ionosphereState = IonosphereState(10.0, 10.0, [3.0, 3.0, 3.0])
         igrf = IGRF_Model(
             currentDateTime=timeAndLocation.eventTime_UTC, ionosphereState=ionosphereState)
         iri = IRI_Model(currentDateTime=timeAndLocation.eventTime_UTC,

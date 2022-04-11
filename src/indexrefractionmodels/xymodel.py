@@ -1,4 +1,5 @@
 import math
+from cmath import sqrt
 from scipy import constants
 import numpy as np
 
@@ -63,4 +64,4 @@ class XYModel(AbstractIndexRefraction):
 
             nSq = num/denom
 
-        return(nSq)
+        return(sqrt(nSq))

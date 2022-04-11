@@ -12,7 +12,7 @@ from src.bindings.coordinates_class import LLA
 from src.bindings.ionospherestate_class import IonosphereState
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.bindings.timeandlocation_class import TimeAndLocation
-from src.indexrefractionmodels.xymodel import XYModel
+from src.indexrefractionmodels.xyzmodel import XYZModel
 from src.models.igrf_model import IGRF_Model
 from src.models.iri_model import IRI_Model
 from src.models.msise_model import MSISE_Model
@@ -27,9 +27,9 @@ ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
-class TestXYModel(unittest.TestCase):
+class TestXYZModel(unittest.TestCase):
 
-    def test_xyModel(self):
+    def test_xyzModel(self):
 
         ap = [1, 2, 3, 4, 2, 2, 1]
         ionosphereState = IonosphereState(20.5, 20.6, ap)
@@ -80,11 +80,11 @@ class TestXYModel(unittest.TestCase):
         spm = SpacePhysicsModels(igrf=igrf, msise=msise, iri=iri)
 
         # model the index of refraction
-        xyModel = XYModel(spacePhysicsModels=spm, frequency_hz=10e6)
+        xyzModel = XYZModel(spacePhysicsModels=spm, frequency_hz=10e6)
 
         indexNs = []
         for rayState in listOfSlant_RayState:
-            indexN = xyModel.estimateIndexOfRefraction(currentState=rayState)
+            indexN = xyzModel.estimateIndexOfRefraction(currentState=rayState)
             indexNs.append(indexN)
 
         self.assertTrue(len(indexNs) == len(heights_m))

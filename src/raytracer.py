@@ -1,6 +1,6 @@
 import math
 import logging
-
+import cmath
 # ====================================================
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
@@ -43,6 +43,7 @@ class RayTracer():
         # Initialize the ray state for the start point
         res = next(x for x, val in enumerate(heights_m) if val >=
                    self.timeAndLocation.eventLocation_LLA.altitude_m)
+
         n_current = indexN[res]
 
         currentState = RayState(
@@ -175,11 +176,13 @@ class RayTracer():
 
         layerOutput = LayerOutput(
             n_1, n_2, entryAngle_deg, newAltitude_m, lla_p2, stateList)
+
         return(layerOutput)
 
     def onTheEdgeOperations(self, currentState: RayState, layerOutput: LayerOutput) -> RayState:
         n_1 = layerOutput.n_1
         n_2 = layerOutput.n_2
+
         entryAngle_deg = layerOutput.entryAngle_deg
         newAltitude_m = layerOutput.newAltitude_m
         lla_p2 = layerOutput.intersection_LLA
@@ -200,7 +203,7 @@ class RayTracer():
             # Snell's with ellipsoidal layers
             argument = n_1*f_1*math.sin(math.radians(entryAngle_deg))/(n_2*f_2)
 
-            if(argument > 1.0):
+            if(argument.real > 1.0):
                 # past critical angle -> reflection
                 exitAngle_deg = -entryAngle_deg
                 logger.debug("past critical angle -> reflection")
@@ -209,7 +212,11 @@ class RayTracer():
                                         currentState.exitAzimuth_deg, lla_p2, n_1)
             else:
                 # refraction
-                exitAngle_deg = math.degrees(math.asin(argument))
+                refracAngle_rad = cmath.asin(argument)
+                exitAngle_deg = math.degrees(refracAngle_rad.real)
+
+                if(refracAngle_rad.imag > 0):
+                    logger.info("complex angle present")
 
                 # store into a ray state
                 if(exitAngle_deg >= 0):

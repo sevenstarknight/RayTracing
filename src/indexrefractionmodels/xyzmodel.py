@@ -1,5 +1,5 @@
 import math
-from datetime import datetime
+from cmath import sqrt
 from scipy import constants
 import numpy as np
 
@@ -17,8 +17,7 @@ from models.collisionfrequency import ElectronIonCollisionFrequency, ElectronNeu
 
 class XYZModel(AbstractIndexRefraction):
 
-    # datetime(2009, 6, 21, 8, 3, 20)
-    def estimateIndexOfRefraction(self, currentDateTime: datetime, currentState: RayState) -> complex:
+    def estimateIndexOfRefraction(self, currentState: RayState) -> complex:
 
         iriOutput = self.spacePhysicsModels.iri.generatePointEstimate(
             rayPoint=currentState.lla)
@@ -38,7 +37,7 @@ class XYZModel(AbstractIndexRefraction):
             v_en = neutralCollisionFrequency.estimateCollisionFreq(
                 iriOutput=iriOutput, msiseOutput=msiseOuput)
             v_ei = electronIonCollisionFrequency.estimateCollisionFreq(
-                msiseOutput=msiseOuput)
+                iriOutput=iriOutput)
             v_e = v_en + v_ei
 
             # Magnetic Field Given Current State
@@ -79,10 +78,10 @@ class XYZModel(AbstractIndexRefraction):
             b = eta_perp*eta_perp - eta_cross*eta_cross - eta_par*eta_perp
 
             num = b*sinTheta_sq + 2*eta_perp*eta_par + \
-                math.sqrt(b*b*sinTheta_sq*sinTheta_sq + 4*eta_cross *
+                sqrt(b*b*sinTheta_sq*sinTheta_sq + 4*eta_cross *
                           eta_cross*eta_par*eta_par*cosTheta_sq)
             denom = 2*(eta_par*sinTheta_sq + eta_par*cosTheta_sq)
 
             nSq = num/denom
 
-        return(nSq)
+        return(sqrt(nSq))
