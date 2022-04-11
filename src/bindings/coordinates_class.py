@@ -7,6 +7,10 @@ class LLA:
         self.altitude_m = altitude_m
 
 
+    def setAltitude(self, newAlitude_m : float):
+        self.altitude_m = newAlitude_m
+
+
 class ECEF:
     def __init__(self, x_m: float, y_m: float, z_m: float):
         self.x_m = x_m
