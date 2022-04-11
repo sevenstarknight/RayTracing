@@ -1,6 +1,5 @@
 import math
 
-
 class LLA:
     def __init__(self, lat_deg: float, lon_deg: float, altitude_m: float):
         self.lat_deg = lat_deg

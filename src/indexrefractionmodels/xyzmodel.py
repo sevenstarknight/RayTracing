@@ -4,14 +4,12 @@ from scipy import constants
 import numpy as np
 
 # ====================================================
-# specialized imports
 # https://geospace-code.github.io/pymap3d/index.html
 import pymap3d
 
 # ====================================================
 # local imports
 from bindings.vector_class import VectorArray
-
 from indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
 from raystate_class import RayState
 from models.collisionfrequency import ElectronIonCollisionFrequency, ElectronNeutralCollisionFrequency

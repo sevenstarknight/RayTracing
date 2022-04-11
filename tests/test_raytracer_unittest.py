@@ -1,12 +1,13 @@
 import unittest
 from datetime import datetime
 
-from raytracing.raytracer import RayTracer
-from raytracing.raystate_class import RayState
-from raytracing.bindings.coordinates_class import LLA, ECEF
-from raytracing.bindings.timeandlocation_class import TimeAndLocation
-from raytracing import layeroutput_class
-
+# ====================================================
+# local imports
+from src import layeroutput_class
+from src.bindings.coordinates_class import LLA
+from src.bindings.timeandlocation_class import TimeAndLocation
+from src.raytracer import RayTracer
+from src.raystate_class import RayState
 
 class TestRayTracer(unittest.TestCase):
 

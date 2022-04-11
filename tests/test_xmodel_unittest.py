@@ -1,25 +1,29 @@
 import unittest
 from datetime import datetime
+
+# ====================================================
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
-from raytracing.indexofrefractiongenerator import IndexOfRefractionGenerator
-from raytracing.bindings import coordinates_class
+
 # ====================================================
 # local imports
-from raytracing.bindings.coordinates_class import LLA
-from raytracing.bindings.ionospherestate_class import IonosphereState
-from raytracing.bindings.satelliteinformation_class import SatelliteInformation
-from raytracing.bindings.timeandlocation_class import TimeAndLocation
-from raytracing.indexrefractionmodels.dispersionmodels_enum import DispersionModel
-from raytracing.indexrefractionmodels.xmodel import XModel
-from raytracing.models.igrf_model import IGRF_Model
-from raytracing.models.iri_model import IRI_Model
-from raytracing.models.msise_model import MSISE_Model
-from raytracing.models.spacephysicsmodels import SpacePhysicsModels
-from raytracing.raystate_class import RayState
-from raytracing.satellitepositiongenerator import SatellitePositionGenerator
-from raytracing.slantpathgenerator import SlantPathGenerator
+from src.bindings import coordinates_class
+from src.bindings.coordinates_class import LLA
+from src.bindings.ionospherestate_class import IonosphereState
+from src.bindings.satelliteinformation_class import SatelliteInformation
+from src.bindings.timeandlocation_class import TimeAndLocation
+from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.indexrefractionmodels.xmodel import XModel
+from src.models.igrf_model import IGRF_Model
+from src.models.iri_model import IRI_Model
+from src.models.msise_model import MSISE_Model
+from src.models.spacephysicsmodels import SpacePhysicsModels
+from src.raystate_class import RayState
+from src.positional.satellitepositiongenerator import SatellitePositionGenerator
+from src.positional.slantpathgenerator import SlantPathGenerator
 
+# ====================================================
+# constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 

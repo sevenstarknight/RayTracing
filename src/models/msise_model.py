@@ -1,13 +1,12 @@
 # ====================================================
-# specialized imports
 # https://pypi.org/project/nrlmsise00/
 from nrlmsise00 import msise_model
 
 # ====================================================
 # local imports
+from models.abstractspacephysics_model import AbstractSpacePhysicsModel
 from models.msiseoutput_class import MSISEOutput
 from bindings.coordinates_class import LLA
-from models.abstractspacephysics_model import AbstractSpacePhysicsModel
 from raystate_class import RayState
 
 

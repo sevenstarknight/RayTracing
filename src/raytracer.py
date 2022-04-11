@@ -1,6 +1,7 @@
 import math
 import logging
 
+# ====================================================
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
 
@@ -15,6 +16,8 @@ from bindings.exceptions_class import IntersectException
 from bindings.coordinates_class import LLA
 from bindings.timeandlocation_class import TimeAndLocation
 
+# ====================================================
+# constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 logger = logging.getLogger("mylogger")

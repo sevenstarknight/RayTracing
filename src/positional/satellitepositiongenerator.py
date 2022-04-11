@@ -1,3 +1,7 @@
+
+from datetime import datetime
+
+# ====================================================
 # https://rhodesmill.org/skyfield/
 from skyfield.api import EarthSatellite
 from skyfield.api import load
@@ -5,7 +9,6 @@ from skyfield.framelib import itrs
 
 # ====================================================
 # local imports
-from datetime import datetime
 from bindings.coordinates_class import ECEF
 from bindings.satelliteinformation_class import SatelliteInformation
 

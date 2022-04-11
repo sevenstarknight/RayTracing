@@ -1,13 +1,12 @@
 # ====================================================
-# specialized imports
 # https://github.com/space-physics/wmm2020
 import igrf
 
 # ====================================================
 # local imports
 from models.abstractspacephysics_model import AbstractSpacePhysicsModel
-from bindings.coordinates_class import LLA
 from models.igrfoutput_class import IGRFOutput
+from bindings.coordinates_class import LLA
 from raystate_class import RayState
 
 

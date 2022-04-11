@@ -11,7 +11,7 @@ from models.igrf_model import IGRF_Model
 from models.iri_model import IRI_Model
 from models.msise_model import MSISE_Model
 from models.spacephysicsmodels import SpacePhysicsModels
-from raytracing.slantpathgenerator import SlantPathGenerator
+from src.positional.slantpathgenerator import SlantPathGenerator
 
 
 class IndexOfRefractionGenerator():

@@ -1,10 +1,10 @@
 import unittest
 from datetime import datetime
 
-from raytracing.bindings.coordinates_class import ECEF
-from raytracing.bindings.satelliteinformation_class import SatelliteInformation
-
-from raytracing.satellitepositiongenerator import SatellitePositionGenerator
+# ====================================================
+# local imports
+from src.bindings.satelliteinformation_class import SatelliteInformation
+from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 
 
 class TestCoordinates(unittest.TestCase):

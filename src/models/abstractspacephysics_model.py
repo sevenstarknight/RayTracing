@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
+
 ## ====================================================
 # local imports
-
 from bindings.ionospherestate_class import IonosphereState
 from bindings.coordinates_class import LLA
 from raystate_class import RayState

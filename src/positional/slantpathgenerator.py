@@ -1,3 +1,4 @@
+# ====================================================
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
 # https://geospace-code.github.io/pymap3d/index.html
@@ -8,8 +9,8 @@ from bindings.coordinates_class import LLA, ECEF
 from bindings.timeandlocation_class import TimeAndLocation
 from raytracer_computations import generatePositionAndVector, computeSlantIntersections
 from raystate_class import RayState
-
-
+# ====================================================
+# constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 

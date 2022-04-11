@@ -1,15 +1,19 @@
 import unittest
 from datetime import datetime
+
+# ====================================================
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
 
-from supportTestStructures import generateSlantPath
-
 # ====================================================
 # local imports
-from raytracing.bindings.ionospherestate_class import IonosphereState
-from raytracing.models.igrf_model import IGRF_Model
+from supportTestStructures import generateSlantPath
 
+from src.bindings.ionospherestate_class import IonosphereState
+from src.models.igrf_model import IGRF_Model
+
+# ====================================================
+# constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 

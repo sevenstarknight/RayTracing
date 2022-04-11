@@ -1,7 +1,4 @@
-from datetime import datetime
-
 # ====================================================
-# specialized imports
 # https://github.com/space-physics/iri2016
 from iri2016 import IRI
 
@@ -11,7 +8,6 @@ from models.abstractspacephysics_model import AbstractSpacePhysicsModel
 from models.irioutput_class import IRIOutput
 from bindings.coordinates_class import LLA
 from raystate_class import RayState
-
 
 class IRI_Model(AbstractSpacePhysicsModel):
 

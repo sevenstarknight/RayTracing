@@ -1,4 +1,6 @@
 import scipy.optimize as optimize
+
+# ====================================================
 # https://geospace-code.github.io/pymap3d/index.html
 import pymap3d
 
@@ -12,8 +14,8 @@ from raytracer import RayTracer
 from raypathobjective import RayPathObjective
 
 from indexrefractionmodels.dispersionmodels_enum import DispersionModel
-from indexofrefractiongenerator import IndexOfRefractionGenerator
-from satellitepositiongenerator import SatellitePositionGenerator
+from indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
+from positional.satellitepositiongenerator import SatellitePositionGenerator
 
 
 class RayPathOptimizer():

@@ -1,7 +1,8 @@
+from scipy import constants
 
+# ====================================================
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
-from scipy import constants
 
 # ====================================================
 # local imports
@@ -11,6 +12,8 @@ from bindings.timeandlocation_class import TimeAndLocation
 from bindings.satelliteinformation_class import SatelliteInformation
 from raypathoptimizer import RayPathOptimizer
 
+# ====================================================
+# constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 

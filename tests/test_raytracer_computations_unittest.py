@@ -1,11 +1,18 @@
 import unittest
 import math
-import ahrs
+
+# ====================================================
+# https://pyproj4.github.io/pyproj/stable/
 import pyproj
+# https://ahrs.readthedocs.io/en/latest/
+import ahrs
+# ====================================================
+# local imports
+from src import raytracer
+from src.bindings import coordinates_class
 
-from raytracing import raytracer
-from raytracing.bindings import coordinates_class
-
+# ====================================================
+# constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 

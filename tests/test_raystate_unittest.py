@@ -2,9 +2,8 @@ import unittest
 
 # ====================================================
 # local imports
-from raytracing import raystate_class
-from raytracing.bindings import coordinates_class
-
+from src import raystate_class
+from src.bindings import coordinates_class
 
 class TestRayState(unittest.TestCase):
 

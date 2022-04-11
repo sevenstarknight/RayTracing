@@ -3,7 +3,6 @@ from scipy import constants
 import numpy as np
 
 # ====================================================
-# specialized imports
 # https://geospace-code.github.io/pymap3d/index.html
 import pymap3d
 

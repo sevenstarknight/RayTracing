@@ -1,15 +1,20 @@
 import unittest
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
 from datetime import datetime
 
-from raytracing.bindings import coordinates_class
-from raytracing.bindings.satelliteinformation_class import SatelliteInformation
-from raytracing.bindings.timeandlocation_class import TimeAndLocation
-from raytracing.satellitepositiongenerator import SatellitePositionGenerator
-from raytracing.slantpathgenerator import SlantPathGenerator
-from tests.supportTestStructures import satPosition
+# ====================================================
+# https://pyproj4.github.io/pyproj/stable/
+import pyproj
 
+# ====================================================
+# local imports
+from supportTestStructures import satPosition
+
+from src.bindings import coordinates_class
+from src.bindings.timeandlocation_class import TimeAndLocation
+from src.positional.slantpathgenerator import SlantPathGenerator
+
+# ====================================================
+# constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 

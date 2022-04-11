@@ -1,15 +1,7 @@
 from abc import ABC, abstractmethod
-from datetime import datetime
-
-# ====================================================
-# specialized imports
-# https://github.com/space-physics/iri2016
-import iri2016
-
 # ====================================================
 # local imports
 from raystate_class import RayState
-from bindings.ionospherestate_class import IonosphereState
 from models.spacephysicsmodels import SpacePhysicsModels
 
 

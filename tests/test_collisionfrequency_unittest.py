@@ -1,12 +1,14 @@
 import unittest
 from datetime import datetime
 
+# ====================================================
+# local imports
 from supportTestStructures import generateSlantPath
 
-from raytracing.bindings.ionospherestate_class import IonosphereState
-from raytracing.models.collisionfrequency import ElectronIonCollisionFrequency, ElectronNeutralCollisionFrequency
-from raytracing.models.iri_model import IRI_Model
-from raytracing.models.msise_model import MSISE_Model
+from src.bindings.ionospherestate_class import IonosphereState
+from src.models.collisionfrequency import ElectronIonCollisionFrequency, ElectronNeutralCollisionFrequency
+from src.models.iri_model import IRI_Model
+from src.models.msise_model import MSISE_Model
 
 
 class TestCollisionFrequency(unittest.TestCase):

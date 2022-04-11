@@ -1,17 +1,20 @@
 import math
+import logging
+
+# ====================================================
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
-import logging
 
 # ====================================================
 # local imports
 from raytracer import RayTracer
 from bindings.coordinates_class import ECEF
 from bindings.timeandlocation_class import TimeAndLocation
+from positional.satellitepositiongenerator import SatellitePositionGenerator
+from indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
 
-from satellitepositiongenerator import SatellitePositionGenerator
-from indexofrefractiongenerator import IndexOfRefractionGenerator
-
+# ====================================================
+# constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 logger = logging.getLogger("mylogger")

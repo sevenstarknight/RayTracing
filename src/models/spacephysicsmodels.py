@@ -1,3 +1,5 @@
+# ====================================================
+# local imports
 from models.igrf_model import IGRF_Model
 from models.iri_model import IRI_Model
 from models.msise_model import MSISE_Model

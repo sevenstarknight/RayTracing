@@ -1,7 +1,9 @@
 import unittest
 import ahrs
 
-from raytracing.bindings import coordinates_class
+# ====================================================
+# local imports
+from src.bindings import coordinates_class
 
 
 class TestCoordinates(unittest.TestCase):

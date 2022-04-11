@@ -1,13 +1,16 @@
 from scipy import constants
 import math
 
+# ====================================================
+# local imports
 from models.msiseoutput_class import MSISEOutput
 from models.irioutput_class import IRIOutput
 
+# ====================================================
+# constants
 eChargeSq = constants.elementary_charge*constants.elementary_charge
 k = constants.Boltzmann
 pi = constants.pi
-
 euler_mash = 0.5572
 
 

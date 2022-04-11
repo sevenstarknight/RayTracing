@@ -1,17 +1,21 @@
 from datetime import datetime
+
+# ====================================================
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
 
 # ====================================================
 # local imports
-from raytracing.bindings import coordinates_class
-from raytracing.bindings.coordinates_class import LLA, ECEF
-from raytracing.bindings.satelliteinformation_class import SatelliteInformation
-from raytracing.bindings.timeandlocation_class import TimeAndLocation
-from raytracing.raystate_class import RayState
-from raytracing.satellitepositiongenerator import SatellitePositionGenerator
-from raytracing.slantpathgenerator import SlantPathGenerator
+from src.bindings import coordinates_class
+from src.bindings.coordinates_class import LLA, ECEF
+from src.bindings.satelliteinformation_class import SatelliteInformation
+from src.bindings.timeandlocation_class import TimeAndLocation
+from src.raystate_class import RayState
+from src.positional.satellitepositiongenerator import SatellitePositionGenerator
+from src.positional.slantpathgenerator import SlantPathGenerator
 
+# ====================================================
+# constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 

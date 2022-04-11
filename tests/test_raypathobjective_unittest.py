@@ -1,18 +1,22 @@
 import unittest
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
 from datetime import datetime
 
 # ====================================================
-# local imports
-from raytracing.bindings.coordinates_class import LLA
-from raytracing.bindings.timeandlocation_class import TimeAndLocation
-from raytracing.bindings.satelliteinformation_class import SatelliteInformation
-from raytracing.indexofrefractiongenerator import IndexOfRefractionGenerator
-from raytracing.indexrefractionmodels.dispersionmodels_enum import DispersionModel
-from raytracing.satellitepositiongenerator import SatellitePositionGenerator
-from raytracing.raypathobjective import RayPathObjective
+# https://pyproj4.github.io/pyproj/stable/
+import pyproj
 
+# ====================================================
+# local imports
+from src.bindings.coordinates_class import LLA
+from src.bindings.timeandlocation_class import TimeAndLocation
+from src.bindings.satelliteinformation_class import SatelliteInformation
+from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
+from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.positional.satellitepositiongenerator import SatellitePositionGenerator
+from src.raypathobjective import RayPathObjective
+
+# ====================================================
+# constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 

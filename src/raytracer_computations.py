@@ -1,4 +1,3 @@
-# ====================================================
 import math
 
 # ====================================================
@@ -15,6 +14,8 @@ from bindings.exceptions_class import IntersectException
 from bindings.coordinates_class import LLA, ECEF
 from raystate_class import RayState
 
+# ====================================================
+# constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
