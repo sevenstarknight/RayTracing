@@ -23,5 +23,5 @@ class AbstractSpacePhysicsModel(ABC):
         pass
     
     @abstractmethod
-    def generateSetEstimateFromRayState(self,  rayPoints : list[RayState]):
+    def generateSetEstimateFromRayState(self,  rayStates : list[RayState]):
         pass

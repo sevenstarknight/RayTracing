@@ -2,13 +2,12 @@ import unittest
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
 from datetime import datetime
-from raytracing.indexofrefractiongenerator import IndexOfRefractionGenerator
-from raytracing.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 
 from raytracing.bindings import coordinates_class
 from raytracing.bindings.satelliteinformation_class import SatelliteInformation
 from raytracing.bindings.timeandlocation_class import TimeAndLocation
 from raytracing.satellitepositiongenerator import SatellitePositionGenerator
+from raytracing.slantpathgenerator import SlantPathGenerator
 from tests.supportTestStructures import satPosition
 
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
@@ -17,7 +16,7 @@ lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 class TestIndexOfRefractionGenerator(unittest.TestCase):
 
-    def test_IndexOfRefractionGenerator(self):
+    def test_EstimateSlantPath(self):
 
         # Initial Starting Point
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
@@ -29,8 +28,7 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
 
         event_LLA = coordinates_class.LLA(lat_deg, lon_deg, 0.0)
         # construct the atmospheric model
-        indexOfRefractionGenerator = IndexOfRefractionGenerator(
-            frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL)
+        slantPathGenerator = SlantPathGenerator()
 
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=event_LLA, eventTime_UTC=currentDateTime)
@@ -38,10 +36,10 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
         # ======================================================
         heights_m = [0, 100, 1000, 10000, 100000, 1000000]
 
-        indexNs = indexOfRefractionGenerator.estimateIndexN(startTimeAndLocation=timeAndLocation,
-                                                            heightStratification_m=heights_m, sat_ECEF=sat_ECEF)
+        rayPathPoints = slantPathGenerator.estimateSlantPath(startTimeAndLocation=timeAndLocation,
+                                                             heightStratification_m=heights_m, sat_ECEF=sat_ECEF)
 
-        self.assertEqual(len(indexNs), len(heights_m))
+        self.assertEqual(len(rayPathPoints), len(heights_m))
 
 
 if __name__ == '__main__':

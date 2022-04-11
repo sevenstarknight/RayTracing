@@ -1,18 +1,19 @@
-## ====================================================
+# ====================================================
 # local imports
 from bindings.coordinates_class import LLA
 
+
 class RayState:
     # Class that stores the current state (point) of the ray
-    
-    def __init__(self, exitElevation_deg : float, exitAzimuth_deg : float, lla : LLA, nIndex : complex):
+
+    def __init__(self, exitElevation_deg: float, exitAzimuth_deg: float, lla: LLA, nIndex: complex):
         self.exitElevation_deg = exitElevation_deg
         self.exitAzimuth_deg = exitAzimuth_deg
         self.lla = lla
         self.nIndex = nIndex
 
     def generateList(self):
-        return([self.exitElevation_deg,self.exitAzimuth_deg, self.lla.lat_deg, self.lla.lon_deg, self.lla.altitude_m, self.nIndex])
+        return([self.exitElevation_deg, self.exitAzimuth_deg, self.lla.lat_deg, self.lla.lon_deg, self.lla.altitude_m, self.nIndex])
 
     def generateColumnNames(self):
         return(["Exit Elevation", "Exit Azimuth", "Latitude", "Longitude", "Altitude", "n"])

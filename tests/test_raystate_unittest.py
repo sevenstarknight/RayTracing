@@ -1,9 +1,10 @@
 import unittest
 
-## ====================================================
+# ====================================================
 # local imports
 from raytracing import raystate_class
 from raytracing.bindings import coordinates_class
+
 
 class TestRayState(unittest.TestCase):
 
@@ -12,7 +13,8 @@ class TestRayState(unittest.TestCase):
         exitAzimuth_deg = 0.0
         lla = coordinates_class.LLA(0.0, 0.0, 0.0)
         nIndex = complex(1.0, 0.0)
-        rayState1 = raystate_class.RayState(exitElevation_deg, exitAzimuth_deg, lla, nIndex)
+        rayState1 = raystate_class.RayState(
+            exitElevation_deg, exitAzimuth_deg, lla, nIndex)
 
         self.assertEqual(rayState1.exitAzimuth_deg, exitAzimuth_deg)
 

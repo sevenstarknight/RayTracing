@@ -4,18 +4,20 @@ import pyproj
 
 from datetime import datetime
 
-## ====================================================
+# ====================================================
 # local imports
 from raytracing.bindings.coordinates_class import LLA
 from raytracing.bindings.satelliteinformation_class import SatelliteInformation
 from raytracing.bindings.timeandlocation_class import TimeAndLocation
 
 from raytracing.indexrefractionmodels.dispersionmodels_enum import DispersionModel
-from raytracing.satellitepositiongenerator import SatellitePositionGenerator  
+from raytracing.satellitepositiongenerator import SatellitePositionGenerator
 from raytracing.raypatheffects import EstimateRayPathEffects
 
+from supportTestStructures import generateSlantPath
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+
 
 class TestRayPathEffects(unittest.TestCase):
 
@@ -30,20 +32,25 @@ class TestRayPathEffects(unittest.TestCase):
         # Initial Starting Point
         satPosGenerator = SatellitePositionGenerator(satelliteInformation)
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
-        sateECEF = satPosGenerator.estimatePosition_ECEF(currentDateTime)
+        sat_ECEF = satPosGenerator.estimatePosition_ECEF(currentDateTime)
 
-        #expected height, assume minimal change in position with range projection
-        lon_deg, lat_deg, alt_m = pyproj.transform(ecef, lla, sateECEF.x_m, sateECEF.y_m, sateECEF.z_m, radians=False)
+        # expected height, assume minimal change in position with range projection
+        lon_deg, lat_deg, alt_m = pyproj.transform(
+            ecef, lla, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
 
-        event_LLA = LLA(lat_deg, lon_deg, 0.0) 
-        timeAndLocation = TimeAndLocation(eventLocation_LLA=event_LLA, eventTime_UTC=currentDateTime)
+        event_LLA = LLA(lat_deg, lon_deg, 0.0)
+        timeAndLocation = TimeAndLocation(
+            eventLocation_LLA=event_LLA, eventTime_UTC=currentDateTime)
         # ======================================================
-        optimizer = EstimateRayPathEffects(timeAndLocation=timeAndLocation, dispersionModel=DispersionModel.X_MODEL)
+        optimizer = EstimateRayPathEffects(
+            timeAndLocation=timeAndLocation, dispersionModel=DispersionModel.X_MODEL)
         freq_Hz = 10*6
 
-        transIonosphereEffects = optimizer.estimate(freq_Hz=freq_Hz, satelliteInformation=satelliteInformation)
+        transIonosphereEffects = optimizer.estimate(
+            freq_Hz=freq_Hz, satelliteInformation=satelliteInformation)
 
         self.assertTrue(transIonosphereEffects is not None)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,4 +1,4 @@
-class MSISEOuput():
+class MSISEOutput():
 
     '''
     The output has the same order as the C reference code, in particular:
@@ -15,7 +15,8 @@ class MSISEOuput():
     t[0] - exospheric temperature [K]
     t[1] - temperature at alt [K]
     '''
-    def __init__(self, d:list, t:list):
+
+    def __init__(self, d: list, t: list):
         self.heNumDensity = d[0]
         self.oNumDensity = d[1]
         self.n2NumDensity = d[2]

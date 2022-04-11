@@ -4,7 +4,7 @@ from datetime import datetime
 from raytracing.bindings.coordinates_class import ECEF
 from raytracing.bindings.satelliteinformation_class import SatelliteInformation
 
-from raytracing.satellitepositiongenerator import SatellitePositionGenerator  
+from raytracing.satellitepositiongenerator import SatellitePositionGenerator
 
 
 class TestCoordinates(unittest.TestCase):
@@ -20,10 +20,10 @@ class TestCoordinates(unittest.TestCase):
         satPosGenerator = SatellitePositionGenerator(satelliteInformation)
 
         dateTime = datetime(2012, 9, 15, 13, 14, 30)
+
         testECEF = satPosGenerator.estimatePosition_ECEF(dateTime)
 
         self.assertTrue(testECEF.magnitude() > 0.0)
-
 
 
 if __name__ == '__main__':

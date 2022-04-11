@@ -3,7 +3,7 @@ import math
 import pyproj
 import logging
 
-## ====================================================
+# ====================================================
 # local imports
 from raytracer import RayTracer
 from bindings.coordinates_class import ECEF
@@ -16,9 +16,10 @@ ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 logger = logging.getLogger("mylogger")
 
+
 class RayPathObjective():
-    def __init__(self, freq_hz: float, heights_m: list[float], timeAndLocation: TimeAndLocation, 
-    satPosGen: SatellitePositionGenerator, indexOfRefractionGenerator: IndexOfRefractionGenerator):
+    def __init__(self, freq_hz: float, heights_m: list[float], timeAndLocation: TimeAndLocation,
+                 satPosGen: SatellitePositionGenerator, indexOfRefractionGenerator: IndexOfRefractionGenerator):
         self.heights_m = heights_m
         self.satPosGen = satPosGen
         self.timeAndLocation = timeAndLocation
