@@ -7,6 +7,7 @@ This code is designed to demonstrate functionalities relating to trans-ionospher
 
 ## IRI2016
 pip install iri201
+
 You'll need to download a fortran compiler to your machine, I've used gfortran so far. 
 I've used here a virtual environment for python, inside of that enviroment open venv/Lib/site-packages/iri2016/src/CMakeLists.txt
 
@@ -19,14 +20,19 @@ target_compile_options(iri2016 PRIVATE ${OLD_FLAGS})
 where C:/msys64/usr/bin/gfortran is the location of my complier; mind the / being correct
 
 go to venv\Lib\site-pages\iri2016 
+
 run 
+
 ctest -S .\setup.cmake -VV 
 
 ## IGRF 
 pip install igrf
+
 You'll need to download a fortran compiler to your machine, I've used gfortran so far. 
 this package comes with a CMakeLists.txt that worked for me but I needed to add a setup.cmake (which I borrowed from the IRI2016 package)
 
 go to venv\Lib\site-pages\igrf 
+
 run 
+
 ctest -S .\setup.cmake -VV 
