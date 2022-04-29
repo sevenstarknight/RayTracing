@@ -10,9 +10,9 @@ import pymap3d
 
 # ====================================================
 # local imports
-from bindings.exceptions_class import IntersectException
-from bindings.coordinates_class import LLA, ECEF
-from raystate_class import RayState
+from src.bindings.exceptions_class import IntersectException
+from src.bindings.coordinates_class import LLA, ECEF
+from src.raystate_class import RayState
 
 # ====================================================
 # constants

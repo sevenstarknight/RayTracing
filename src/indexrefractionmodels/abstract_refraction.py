@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 # ====================================================
 # local imports
-from raystate_class import RayState
-from models.spacephysicsmodels import SpacePhysicsModels
+from src.raystate_class import RayState
+from src.models.spacephysicsmodels import SpacePhysicsModels
 
 
 class AbstractIndexRefraction(ABC):

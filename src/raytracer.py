@@ -7,14 +7,14 @@ import pyproj
 
 # ====================================================
 # local imports
-from raystate_class import RayState
-from raytracer_computations import computeGeocentricRadius, computeNewIntersection, computeEntryAngle, generatePositionAndVector
+from src.raystate_class import RayState
+from src.raytracer_computations import computeGeocentricRadius, computeNewIntersection, computeEntryAngle, generatePositionAndVector
 
-from layeroutput_class import LayerOutput
+from src.layeroutput_class import LayerOutput
 
-from bindings.exceptions_class import IntersectException
-from bindings.coordinates_class import LLA
-from bindings.timeandlocation_class import TimeAndLocation
+from src.bindings.exceptions_class import IntersectException
+from src.bindings.coordinates_class import LLA
+from src.bindings.timeandlocation_class import TimeAndLocation
 
 # ====================================================
 # constants

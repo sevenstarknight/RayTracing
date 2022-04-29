@@ -3,8 +3,8 @@ import math
 
 # ====================================================
 # local imports
-from models.msiseoutput_class import MSISEOutput
-from models.irioutput_class import IRIOutput
+from src.models.msiseoutput_class import MSISEOutput
+from src.models.irioutput_class import IRIOutput
 
 # ====================================================
 # constants

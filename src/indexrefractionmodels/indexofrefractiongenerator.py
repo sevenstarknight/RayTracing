@@ -1,16 +1,16 @@
 # ====================================================
 # local imports
-from bindings.coordinates_class import ECEF
-from bindings.timeandlocation_class import TimeAndLocation
-from raytracer_computations import generatePositionAndVector, computeSlantIntersections
-from bindings.ionospherestate_class import IonosphereState
-from indexrefractionmodels.xmodel import XModel
-from indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.bindings.coordinates_class import ECEF
+from src.bindings.timeandlocation_class import TimeAndLocation
+from src.raytracer_computations import generatePositionAndVector, computeSlantIntersections
+from src.bindings.ionospherestate_class import IonosphereState
+from src.indexrefractionmodels.xmodel import XModel
+from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 
-from models.igrf_model import IGRF_Model
-from models.iri_model import IRI_Model
-from models.msise_model import MSISE_Model
-from models.spacephysicsmodels import SpacePhysicsModels
+from src.models.igrf_model import IGRF_Model
+from src.models.iri_model import IRI_Model
+from src.models.msise_model import MSISE_Model
+from src.models.spacephysicsmodels import SpacePhysicsModels
 from src.positional.slantpathgenerator import SlantPathGenerator
 
 

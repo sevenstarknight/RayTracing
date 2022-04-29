@@ -1,6 +1,6 @@
 # ====================================================
 # local imports
-from raystate_class import RayState
+from src.raystate_class import RayState
 
 class TransIonosphereEffects():
     def __init__(self, rayState:list[RayState], totalIonoDelay_sec:float, totalIonoLoss_db:float):

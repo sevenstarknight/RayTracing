@@ -1,5 +1,5 @@
-import unittest
-from datetime import datetime
+
+import datetime
 
 # ====================================================
 # https://pyproj4.github.io/pyproj/stable/
@@ -19,11 +19,9 @@ from src.raypatheffects import EstimateRayPathEffects
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
+class EndToEndDemo():
 
-class TestRayPathEffects(unittest.TestCase):
-
-    def test_RayPathEffects(self):
-
+    def execute():
         s = '1 25544U 98067A   19343.69339541  .00001764  00000-0  38792-4 0  9991'
         t = '2 25544  51.6439 211.2001 0007417  17.6667  85.6398 15.50103472202482'
         name = "Test"
@@ -50,8 +48,4 @@ class TestRayPathEffects(unittest.TestCase):
         transIonosphereEffects = optimizer.estimate(
             freq_Hz=freq_Hz, satelliteInformation=satelliteInformation)
 
-        self.assertTrue(transIonosphereEffects is not None)
-
-
-if __name__ == '__main__':
-    unittest.main()
+        return(transIonosphereEffects)

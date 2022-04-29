@@ -6,11 +6,11 @@ import pyproj
 
 # ====================================================
 # local imports
-from indexrefractionmodels.dispersionmodels_enum import DispersionModel
-from bindings.transionosphereeffects_class import TransIonosphereEffects
-from bindings.timeandlocation_class import TimeAndLocation
-from bindings.satelliteinformation_class import SatelliteInformation
-from raypathoptimizer import RayPathOptimizer
+from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.bindings.transionosphereeffects_class import TransIonosphereEffects
+from src.bindings.timeandlocation_class import TimeAndLocation
+from src.bindings.satelliteinformation_class import SatelliteInformation
+from src.raypathoptimizer import RayPathOptimizer
 
 # ====================================================
 # constants

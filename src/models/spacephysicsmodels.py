@@ -1,8 +1,8 @@
 # ====================================================
 # local imports
-from models.igrf_model import IGRF_Model
-from models.iri_model import IRI_Model
-from models.msise_model import MSISE_Model
+from src.models.igrf_model import IGRF_Model
+from src.models.iri_model import IRI_Model
+from src.models.msise_model import MSISE_Model
 
 
 class SpacePhysicsModels():

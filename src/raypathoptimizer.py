@@ -6,16 +6,16 @@ import pymap3d
 
 # ====================================================
 # local imports
-from bindings.timeandlocation_class import TimeAndLocation
-from bindings.satelliteinformation_class import SatelliteInformation
+from src.bindings.timeandlocation_class import TimeAndLocation
+from src.bindings.satelliteinformation_class import SatelliteInformation
 
-from raystate_class import RayState
-from raytracer import RayTracer
-from raypathobjective import RayPathObjective
+from src.raystate_class import RayState
+from src.raytracer import RayTracer
+from src.raypathobjective import RayPathObjective
 
-from indexrefractionmodels.dispersionmodels_enum import DispersionModel
-from indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
-from positional.satellitepositiongenerator import SatellitePositionGenerator
+from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
+from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 
 
 class RayPathOptimizer():

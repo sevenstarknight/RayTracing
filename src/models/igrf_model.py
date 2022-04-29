@@ -4,10 +4,10 @@ import igrf
 
 # ====================================================
 # local imports
-from models.abstractspacephysics_model import AbstractSpacePhysicsModel
-from models.igrfoutput_class import IGRFOutput
-from bindings.coordinates_class import LLA
-from raystate_class import RayState
+from src.models.abstractspacephysics_model import AbstractSpacePhysicsModel
+from src.models.igrfoutput_class import IGRFOutput
+from src.bindings.coordinates_class import LLA
+from src.raystate_class import RayState
 
 
 class IGRF_Model(AbstractSpacePhysicsModel):

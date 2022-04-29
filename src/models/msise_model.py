@@ -4,10 +4,10 @@ from nrlmsise00 import msise_model
 
 # ====================================================
 # local imports
-from models.abstractspacephysics_model import AbstractSpacePhysicsModel
-from models.msiseoutput_class import MSISEOutput
-from bindings.coordinates_class import LLA
-from raystate_class import RayState
+from src.models.abstractspacephysics_model import AbstractSpacePhysicsModel
+from src.models.msiseoutput_class import MSISEOutput
+from src.bindings.coordinates_class import LLA
+from src.raystate_class import RayState
 
 
 class MSISE_Model(AbstractSpacePhysicsModel):

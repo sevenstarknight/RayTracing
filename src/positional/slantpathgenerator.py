@@ -5,10 +5,10 @@ import pyproj
 import pymap3d
 # ====================================================
 # local imports
-from bindings.coordinates_class import LLA, ECEF
-from bindings.timeandlocation_class import TimeAndLocation
-from raytracer_computations import generatePositionAndVector, computeSlantIntersections
-from raystate_class import RayState
+from src.bindings.coordinates_class import LLA, ECEF
+from src.bindings.timeandlocation_class import TimeAndLocation
+from src.raytracer_computations import generatePositionAndVector, computeSlantIntersections
+from src.raystate_class import RayState
 # ====================================================
 # constants
 ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')

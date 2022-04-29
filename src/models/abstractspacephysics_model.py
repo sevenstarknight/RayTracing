@@ -3,9 +3,9 @@ from datetime import datetime
 
 ## ====================================================
 # local imports
-from bindings.ionospherestate_class import IonosphereState
-from bindings.coordinates_class import LLA
-from raystate_class import RayState
+from src.bindings.ionospherestate_class import IonosphereState
+from src.bindings.coordinates_class import LLA
+from src.raystate_class import RayState
 
 class AbstractSpacePhysicsModel(ABC):
 

@@ -4,10 +4,10 @@ from iri2016 import IRI
 
 # ====================================================
 # local imports
-from models.abstractspacephysics_model import AbstractSpacePhysicsModel
-from models.irioutput_class import IRIOutput
-from bindings.coordinates_class import LLA
-from raystate_class import RayState
+from src.models.abstractspacephysics_model import AbstractSpacePhysicsModel
+from src.models.irioutput_class import IRIOutput
+from src.bindings.coordinates_class import LLA
+from src.raystate_class import RayState
 
 class IRI_Model(AbstractSpacePhysicsModel):
 

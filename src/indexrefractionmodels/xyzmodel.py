@@ -9,10 +9,10 @@ import pymap3d
 
 # ====================================================
 # local imports
-from bindings.vector_class import VectorArray
-from indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
-from raystate_class import RayState
-from models.collisionfrequency import ElectronIonCollisionFrequency, ElectronNeutralCollisionFrequency
+from src.bindings.vector_class import VectorArray
+from src.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
+from src.raystate_class import RayState
+from src.models.collisionfrequency import ElectronIonCollisionFrequency, ElectronNeutralCollisionFrequency
 
 
 class XYZModel(AbstractIndexRefraction):

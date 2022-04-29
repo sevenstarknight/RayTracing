@@ -4,8 +4,8 @@ from scipy import constants
 
 # ====================================================
 # local imports
-from indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
-from raystate_class import RayState
+from src.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
+from src.raystate_class import RayState
 
 
 class XModel(AbstractIndexRefraction):

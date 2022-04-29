@@ -1,6 +1,6 @@
 # ====================================================
 # local imports
-from bindings.coordinates_class import LLA
+from src.bindings.coordinates_class import LLA
 
 
 class RayState:
