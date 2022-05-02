@@ -10,7 +10,7 @@ from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.bindings.transionosphereeffects_class import TransIonosphereEffects
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.bindings.satelliteinformation_class import SatelliteInformation
-from src.raypathoptimizer import RayPathOptimizer
+from src.raytracer.raypathoptimizer import RayPathOptimizer
 
 # ====================================================
 # constants

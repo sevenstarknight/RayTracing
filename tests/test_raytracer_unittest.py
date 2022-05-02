@@ -3,10 +3,10 @@ from datetime import datetime
 
 # ====================================================
 # local imports
-from src import layeroutput_class
+from src.raytracer.raytracer import layeroutput_class
 from src.bindings.coordinates_class import LLA
 from src.bindings.timeandlocation_class import TimeAndLocation
-from src.raytracer import RayTracer
+from src.raytracer.raytracer import RayTracer
 from src.raystate_class import RayState
 
 class TestRayTracer(unittest.TestCase):

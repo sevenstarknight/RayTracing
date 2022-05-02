@@ -12,7 +12,7 @@ from src.bindings.timeandlocation_class import TimeAndLocation
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
-from src.raypathoptimizer import RayPathOptimizer
+from src.raytracer.raypathoptimizer import RayPathOptimizer
 
 # ====================================================
 # constants

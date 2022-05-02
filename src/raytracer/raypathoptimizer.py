@@ -10,8 +10,8 @@ from src.bindings.timeandlocation_class import TimeAndLocation
 from src.bindings.satelliteinformation_class import SatelliteInformation
 
 from src.raystate_class import RayState
-from src.raytracer import RayTracer
-from src.raypathobjective import RayPathObjective
+from src.raytracer.raytracer import RayTracer
+from src.raytracer.raypathobjective import RayPathObjective
 
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator

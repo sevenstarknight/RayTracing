@@ -8,7 +8,7 @@ import pyproj
 import ahrs
 # ====================================================
 # local imports
-from src import raytracer
+from src.raytracer import raytracer
 from src.bindings import coordinates_class
 
 # ====================================================

@@ -2,7 +2,7 @@
 # local imports
 from src.bindings.coordinates_class import ECEF
 from src.bindings.timeandlocation_class import TimeAndLocation
-from src.raytracer_computations import generatePositionAndVector, computeSlantIntersections
+from src.raytracer.raytracer_computations import generatePositionAndVector, computeSlantIntersections
 from src.bindings.ionospherestate_class import IonosphereState
 from src.indexrefractionmodels.xmodel import XModel
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel

@@ -7,7 +7,7 @@ import pyproj
 
 # ====================================================
 # local imports
-from src.raytracer import RayTracer
+from src.raytracer.raytracer import RayTracer
 from src.bindings.coordinates_class import ECEF
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator

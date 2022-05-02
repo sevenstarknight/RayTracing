@@ -7,6 +7,9 @@
         {
             "name": "Python: Current File",
             "type": "python",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",

@@ -7,7 +7,7 @@ import pymap3d
 # local imports
 from src.bindings.coordinates_class import LLA, ECEF
 from src.bindings.timeandlocation_class import TimeAndLocation
-from src.raytracer_computations import generatePositionAndVector, computeSlantIntersections
+from src.raytracer.raytracer_computations import generatePositionAndVector, computeSlantIntersections
 from src.raystate_class import RayState
 # ====================================================
 # constants

@@ -13,7 +13,7 @@ from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
-from src.raypathobjective import RayPathObjective
+from src.raytracer.raypathobjective import RayPathObjective
 
 # ====================================================
 # constants
