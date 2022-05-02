@@ -4,7 +4,6 @@ from datetime import datetime
 # ====================================================
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
-
 # ====================================================
 # local imports
 from src.bindings import coordinates_class
@@ -12,7 +11,7 @@ from src.bindings.coordinates_class import LLA
 from src.bindings.ionospherestate_class import IonosphereState
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.bindings.timeandlocation_class import TimeAndLocation
-from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.indexrefractionmodels.xmodel import XModel
 from src.models.igrf_model import IGRF_Model
 from src.models.iri_model import IRI_Model
@@ -81,7 +80,7 @@ class TestXModel(unittest.TestCase):
         spm = SpacePhysicsModels(igrf=igrf, msise=msise, iri=iri)
 
         # model the index of refraction
-        xModel = XModel(spacePhysicsModels=spm, frequency_hz=10e6)
+        xModel = XModel(spacePhysicsModels=spm, frequency_hz=10e6, transportMode=TransportMode.PLASMA_MODE)
 
         indexNs = []
         for rayState in listOfSlant_RayState:

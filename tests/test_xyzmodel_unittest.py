@@ -13,6 +13,7 @@ from src.bindings.ionospherestate_class import IonosphereState
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.indexrefractionmodels.xyzmodel import XYZModel
+from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.models.igrf_model import IGRF_Model
 from src.models.iri_model import IRI_Model
 from src.models.msise_model import MSISE_Model
@@ -80,7 +81,7 @@ class TestXYZModel(unittest.TestCase):
         spm = SpacePhysicsModels(igrf=igrf, msise=msise, iri=iri)
 
         # model the index of refraction
-        xyzModel = XYZModel(spacePhysicsModels=spm, frequency_hz=10e6)
+        xyzModel = XYZModel(spacePhysicsModels=spm, frequency_hz=10e6, transportMode=TransportMode.ORDINARY_MODE)
 
         indexNs = []
         for rayState in listOfSlant_RayState:

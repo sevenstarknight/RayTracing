@@ -11,6 +11,7 @@ from src.bindings.coordinates_class import LLA
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
+from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.raytracer.raypathobjective import RayPathObjective
@@ -47,7 +48,7 @@ class TestRayPathObjective(unittest.TestCase):
             eventTime_UTC=currentDateTime, eventLocation_LLA=event_LLA)
 
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
-            frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL)
+            frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
 
         rayPathOpt = RayPathObjective(freq_hz=10e6,
                                       heights_m=heights_m, timeAndLocation=timeAndLocation, satPosGen=satPosGenerator, indexOfRefractionGenerator=indexOfRefractionGenerator)

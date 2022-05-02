@@ -11,6 +11,7 @@ from supportTestStructures import satPosition
 
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.indexrefractionmodels.transportmodes_enum import TransportMode
 
 from src.bindings import coordinates_class
 from src.bindings.timeandlocation_class import TimeAndLocation
@@ -36,7 +37,7 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
         event_LLA = coordinates_class.LLA(lat_deg, lon_deg, 0.0)
         # construct the atmospheric model
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
-            frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL)
+            frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
 
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=event_LLA, eventTime_UTC=currentDateTime)

@@ -4,13 +4,13 @@ from datetime import datetime
 # ====================================================
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
-
 # ====================================================
 # local imports
 from src.bindings.coordinates_class import LLA
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.raytracer.raypathoptimizer import RayPathOptimizer
 
@@ -49,7 +49,7 @@ class TestRayPathOptimization(unittest.TestCase):
 
 
         optimizer = RayPathOptimizer(
-            10e6, self.timeAndLocation, self.heights_m, dispersionModel=DispersionModel.X_MODEL)
+            10e6, self.timeAndLocation, self.heights_m, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
         rayState = optimizer.optimize(self.satelliteInformation)
 
         self.assertTrue(rayState is not None)
@@ -58,7 +58,7 @@ class TestRayPathOptimization(unittest.TestCase):
     def test_RayPathOptimizationXY(self):
 
         optimizer = RayPathOptimizer(
-            10e6, self.timeAndLocation, self.heights_m, dispersionModel=DispersionModel.XY_MODEL)
+            10e6, self.timeAndLocation, self.heights_m, dispersionModel=DispersionModel.XY_MODEL, transportMode=TransportMode.ORDINARY_MODE)
         rayState = optimizer.optimize(self.satelliteInformation)
 
         self.assertTrue(rayState is not None)

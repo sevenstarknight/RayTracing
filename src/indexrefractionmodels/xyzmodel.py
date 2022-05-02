@@ -11,6 +11,7 @@ import pymap3d
 # local imports
 from src.bindings.vector_class import VectorArray
 from src.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
+from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.raystate_class import RayState
 from src.models.collisionfrequency import ElectronIonCollisionFrequency, ElectronNeutralCollisionFrequency
 
@@ -77,9 +78,17 @@ class XYZModel(AbstractIndexRefraction):
 
             b = eta_perp*eta_perp - eta_cross*eta_cross - eta_par*eta_perp
 
-            num = b*sinTheta_sq + 2*eta_perp*eta_par + \
-                sqrt(b*b*sinTheta_sq*sinTheta_sq + 4*eta_cross *
-                          eta_cross*eta_par*eta_par*cosTheta_sq)
+            if(self.transportMode is TransportMode.ORDINARY_MODE):
+                num = b*sinTheta_sq + 2*eta_perp*eta_par + \
+                    sqrt(b*b*sinTheta_sq*sinTheta_sq + 4*eta_cross *
+                            eta_cross*eta_par*eta_par*cosTheta_sq)
+            elif(self.transportMode is TransportMode.EXTRAORDINARY_MODE):
+                num = b*sinTheta_sq + 2*eta_perp*eta_par - \
+                    sqrt(b*b*sinTheta_sq*sinTheta_sq + 4*eta_cross *
+                            eta_cross*eta_par*eta_par*cosTheta_sq)
+            else:
+                raise Exception("TransportMode Model Not Understood")
+                                
             denom = 2*(eta_par*sinTheta_sq + eta_par*cosTheta_sq)
 
             nSq = num/denom

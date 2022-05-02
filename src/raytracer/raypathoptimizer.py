@@ -14,18 +14,19 @@ from src.raytracer.raytracer import RayTracer
 from src.raytracer.raypathobjective import RayPathObjective
 
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 
 
 class RayPathOptimizer():
 
-    def __init__(self, freq_hz: float, timeAndLocation: TimeAndLocation, heights_m: list[float], dispersionModel: DispersionModel):
+    def __init__(self, freq_hz: float, timeAndLocation: TimeAndLocation, heights_m: list[float], dispersionModel: DispersionModel, transportMode: TransportMode):
         self.freq_hz = freq_hz
         self.timeAndLocation = timeAndLocation
         self.heights_m = heights_m
         self.indexOfRefractionGenerator = IndexOfRefractionGenerator(
-            frequency_hz=freq_hz, dispersionModel=dispersionModel)
+            frequency_hz=freq_hz, dispersionModel=dispersionModel, transportMode=transportMode)
 
     def optimize(self, satelliteInformation: SatelliteInformation) -> list[RayState]:
 

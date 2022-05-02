@@ -7,6 +7,7 @@ import pyproj
 # ====================================================
 # local imports
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.bindings.transionosphereeffects_class import TransIonosphereEffects
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.bindings.satelliteinformation_class import SatelliteInformation
@@ -20,9 +21,10 @@ lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 class EstimateRayPathEffects():
 
-    def __init__(self, timeAndLocation: TimeAndLocation, dispersionModel: DispersionModel):
+    def __init__(self, timeAndLocation: TimeAndLocation, dispersionModel: DispersionModel, transportMode: TransportMode):
         self.timeAndLocation = timeAndLocation
         self.dispersionModel = dispersionModel
+        self.transportMode = transportMode
 
     def estimate(self, freq_Hz: float, satelliteInformation: SatelliteInformation) -> TransIonosphereEffects:
 
@@ -32,7 +34,7 @@ class EstimateRayPathEffects():
         # ======================================================
         # Generate Ray State
         optimizer = RayPathOptimizer(
-            freq_Hz, self.timeAndLocation, heights_m, self.dispersionModel)
+            freq_Hz, self.timeAndLocation, heights_m, self.dispersionModel, self.transportMode)
 
         rayState = optimizer.optimize(satelliteInformation)
 

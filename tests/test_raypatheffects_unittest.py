@@ -11,6 +11,7 @@ from src.bindings.coordinates_class import LLA
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.raypatheffects import EstimateRayPathEffects
 
@@ -44,7 +45,7 @@ class TestRayPathEffects(unittest.TestCase):
             eventLocation_LLA=event_LLA, eventTime_UTC=currentDateTime)
         # ======================================================
         optimizer = EstimateRayPathEffects(
-            timeAndLocation=timeAndLocation, dispersionModel=DispersionModel.X_MODEL)
+            timeAndLocation=timeAndLocation, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
         freq_Hz = 10*6
 
         transIonosphereEffects = optimizer.estimate(
