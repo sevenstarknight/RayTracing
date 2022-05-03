@@ -8,16 +8,16 @@ import pyproj
 # ====================================================
 # local imports
 from src.raytracer.raytracer import RayTracer
-from src.bindings.coordinates_class import ECEF
+from src.bindings.coordinates_class import ECEF_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
 
 # ====================================================
 # constants
-ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
-logger = logging.getLogger("mylogger")
+ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
+LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+LOGGER = logging.getLogger("mylogger")
 
 
 class RayPathObjective():
@@ -43,10 +43,10 @@ class RayPathObjective():
         hypoSat_LLA = stateList[-1].lla
 
         x_m, y_m, z_m = pyproj.transform(
-            lla, ecef, hypoSat_LLA.lon_deg, hypoSat_LLA.lat_deg, hypoSat_LLA.altitude_m, radians=False)
-        hypoSat_ECEF = ECEF(x_m, y_m, z_m)
+            LLA, ECEF, hypoSat_LLA.lon_deg, hypoSat_LLA.lat_deg, hypoSat_LLA.altitude_m, radians=False)
+        hypoSat_ECEF = ECEF_Coord(x_m, y_m, z_m)
 
-        delta = ECEF.subtract(self.sat_ECEF, hypoSat_ECEF).magnitude()
+        delta = ECEF_Coord.subtract(self.sat_ECEF, hypoSat_ECEF).magnitude()
         # =================================
         # Log Barrier (I think there is a better way to do this)
         az, el = params

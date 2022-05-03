@@ -3,23 +3,23 @@ import ahrs
 
 # ====================================================
 # local imports
-from src.bindings import coordinates_class
+from src.bindings.coordinates_class import LLA_Coord, ECEF_Coord
 
 
 class TestCoordinates(unittest.TestCase):
 
     def test_LLA(self):
-        testLLA = coordinates_class.LLA(0.0, 0.0, 0.0)
+        testLLA = LLA_Coord(0.0, 0.0, 0.0)
 
         self.assertEqual(testLLA.lat_deg, 0.0)
 
     def test_ECEF(self):
         wgs = ahrs.utils.WGS()
 
-        testECEF = coordinates_class.ECEF(wgs.a, 0.0, 0.0)
+        testECEF = ECEF_Coord(wgs.a, 0.0, 0.0)
         self.assertEqual(testECEF.x_m, wgs.a)
 
-        deltaECEF = coordinates_class.ECEF.subtract(testECEF, testECEF)
+        deltaECEF = ECEF_Coord.subtract(testECEF, testECEF)
         self.assertEqual(deltaECEF.x_m, 0.0)
 
         magECEF = testECEF.magnitude()

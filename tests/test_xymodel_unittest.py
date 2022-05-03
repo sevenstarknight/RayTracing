@@ -7,8 +7,7 @@ import pyproj
 
 # ====================================================
 # local imports
-from src.bindings import coordinates_class
-from src.bindings.coordinates_class import LLA
+from src.bindings.coordinates_class import LLA_Coord
 from src.bindings.ionospherestate_class import IonosphereState
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.bindings.timeandlocation_class import TimeAndLocation
@@ -24,8 +23,8 @@ from src.positional.slantpathgenerator import SlantPathGenerator
 
 # ====================================================
 # constants
-ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
+LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
 class TestXYModel(unittest.TestCase):
@@ -36,7 +35,7 @@ class TestXYModel(unittest.TestCase):
         ionosphereState = IonosphereState(20.5, 20.6, ap)
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
 
-        event_LLA = LLA(0.0, 0.0, 0.0)
+        event_LLA = LLA_Coord(0.0, 0.0, 0.0)
         rayState = RayState(exitAzimuth_deg=0.0,
                             exitElevation_deg=45.0, lla=event_LLA, nIndex=1.0)
 
@@ -53,9 +52,9 @@ class TestXYModel(unittest.TestCase):
 
         # expected height, assume minimal change in position with range projection
         lon_deg, lat_deg, alt_m = pyproj.transform(
-            ecef, lla, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
+            ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
 
-        event_LLA = coordinates_class.LLA(lat_deg, lon_deg, 0.0)
+        event_LLA = LLA_Coord(lat_deg, lon_deg, 0.0)
 
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=event_LLA, eventTime_UTC=currentDateTime)

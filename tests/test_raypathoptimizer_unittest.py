@@ -6,7 +6,7 @@ from datetime import datetime
 import pyproj
 # ====================================================
 # local imports
-from src.bindings.coordinates_class import LLA
+from src.bindings.coordinates_class import LLA_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
@@ -16,8 +16,8 @@ from src.raytracer.raypathoptimizer import RayPathOptimizer
 
 # ====================================================
 # constants
-ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
+LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
 class TestRayPathOptimization(unittest.TestCase):
@@ -36,9 +36,9 @@ class TestRayPathOptimization(unittest.TestCase):
 
         # expected height, assume minimal change in position with range projection
         lon_deg, lat_deg, alt_m = pyproj.transform(
-            ecef, lla, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
+            ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
 
-        event_LLA = LLA(lat_deg, lon_deg, 0.0)
+        event_LLA = LLA_Coord(lat_deg, lon_deg, 0.0)
         self.timeAndLocation = TimeAndLocation(
             eventTime_UTC=currentDateTime, eventLocation_LLA=event_LLA)
 

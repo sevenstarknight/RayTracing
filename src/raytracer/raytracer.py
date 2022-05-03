@@ -13,14 +13,14 @@ from src.raytracer.raytracer_computations import computeGeocentricRadius, comput
 from src.raytracer.layeroutput_class import LayerOutput
 
 from src.bindings.exceptions_class import IntersectException
-from src.bindings.coordinates_class import LLA
+from src.bindings.coordinates_class import LLA_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
 
 # ====================================================
 # constants
-ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
-logger = logging.getLogger("mylogger")
+ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
+LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+LOGGER = logging.getLogger("mylogger")
 
 
 class RayTracer():
@@ -36,7 +36,7 @@ class RayTracer():
         az, el = params
         mod = az % 360
         if(az < 0 or az > 360):
-            logger.warn("Round")
+            LOGGER.warn("Round")
             print(mod)
 
         # =======================================================
@@ -59,7 +59,7 @@ class RayTracer():
                 currentState, heights_m, indexN, states)
 
             if(layerOutput.n_1 == None):
-                logger.debug("Done with iterations, jump out of loop")
+                LOGGER.debug("Done with iterations, jump out of loop")
                 states = layerOutput.stateList
                 break
 
@@ -81,7 +81,7 @@ class RayTracer():
             # exiting the loop
             layerOutput = LayerOutput(
                 None, None, None, None, None, stateList=stateList)
-            logger.debug("Exiting the atmopshere")
+            LOGGER.debug("Exiting the atmopshere")
             return(layerOutput)
 
         # ==========================================================================
@@ -95,7 +95,7 @@ class RayTracer():
                 # exiting the loop
                 layerOutput = LayerOutput(
                     None, None, None, None, None, stateList=stateList)
-                logger.debug("Exiting the atmopshere")
+                LOGGER.debug("Exiting the atmopshere")
                 return(layerOutput)
             else:
                 # layer intersection
@@ -122,7 +122,7 @@ class RayTracer():
                 ecef_p2 = computeNewIntersection(
                     ecef_p1, sVector_m, newAltitude_m)
             except IntersectException as inst2:
-                logger.error(inst2.args)
+                LOGGER.error(inst2.args)
 
         # ===================================================================
         # determine index transition
@@ -134,41 +134,41 @@ class RayTracer():
                 # horizontal transitions
                 n_2 = indexN[indx]
                 n_1 = indexN[indx - 1]
-                logger.debug("horizontal transitions")
+                LOGGER.debug("horizontal transitions")
             elif(newAltitude_m < lla_p1.altitude_m):
                 if(newAltitude_m == min(heights_m)):
                     # to ground
                     n_2 = 3.0  # rough estimate
                     n_1 = indexN[indx]
-                    logger.debug("bounce off ground")
+                    LOGGER.debug("bounce off ground")
                 else:
                     n_2 = indexN[indx - 1]
                     n_1 = indexN[indx]
-                    logger.debug("down transitions")
+                    LOGGER.debug("down transitions")
             elif(newAltitude_m > lla_p1.altitude_m):
                 n_2 = indexN[indx]
                 n_1 = indexN[indx - 1]
-                logger.debug("up transitions")
+                LOGGER.debug("up transitions")
         else:
             if(newAltitude_m < lla_p1.altitude_m):
                 if(res == 0):
                     # to ground
                     n_2 = 3.0  # rough estimate
                     n_1 = currentState.nIndex
-                    logger.debug("bounce off ground")
+                    LOGGER.debug("bounce off ground")
                 else:
                     n_2 = indexN[indx - 1]
                     n_1 = currentState.nIndex
-                    logger.debug("down transitions")
+                    LOGGER.debug("down transitions")
             elif(newAltitude_m > lla_p1.altitude_m):
                 n_2 = indexN[indx]
                 n_1 = currentState.nIndex
-                logger.debug("up transitions")
+                LOGGER.debug("up transitions")
         # ===================================================================
         lon_deg, lat_deg, alt_m = pyproj.transform(
-            ecef, lla, ecef_p2.x_m, ecef_p2.y_m, ecef_p2.z_m, radians=False)
+            ECEF, LLA, ecef_p2.x_m, ecef_p2.y_m, ecef_p2.z_m, radians=False)
         # force to altitude, loss because of approx.
-        lla_p2 = LLA(lat_deg, lon_deg, newAltitude_m)
+        lla_p2 = LLA_Coord(lat_deg, lon_deg, newAltitude_m)
 
         # estimate entry angle onto the curved layers
         entryAngle_deg = computeEntryAngle(
@@ -194,7 +194,7 @@ class RayTracer():
             # convert to elevation pointing up
             currentState = RayState(
                 90.0 - exitAngle_deg, currentState.exitAzimuth_deg, lla_p2, n_1)
-            logger.debug("bounce off ground: flip direction of ray")
+            LOGGER.debug("bounce off ground: flip direction of ray")
         else:
             f_2 = computeGeocentricRadius(lla_p2) + lla_p2.altitude_m
             f_1 = computeGeocentricRadius(
@@ -206,7 +206,7 @@ class RayTracer():
             if(argument.real > 1.0):
                 # past critical angle -> reflection
                 exitAngle_deg = -entryAngle_deg
-                logger.debug("past critical angle -> reflection")
+                LOGGER.debug("past critical angle -> reflection")
                 # convert to elevation pointing down
                 currentState = RayState(-90.0 - exitAngle_deg,
                                         currentState.exitAzimuth_deg, lla_p2, n_1)
@@ -216,7 +216,7 @@ class RayTracer():
                 exitAngle_deg = math.degrees(refracAngle_rad.real)
 
                 if(refracAngle_rad.imag > 0):
-                    logger.info("complex angle present")
+                    LOGGER.info("complex angle present")
 
                 # store into a ray state
                 if(exitAngle_deg >= 0):

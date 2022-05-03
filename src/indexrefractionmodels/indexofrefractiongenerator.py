@@ -1,8 +1,7 @@
 # ====================================================
 # local imports
-from src.bindings.coordinates_class import ECEF
+from src.bindings.coordinates_class import ECEF_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
-from src.raytracer.raytracer_computations import generatePositionAndVector, computeSlantIntersections
 from src.bindings.ionospherestate_class import IonosphereState
 from src.indexrefractionmodels.xmodel import XModel
 from src.indexrefractionmodels.xymodel import XYModel
@@ -16,7 +15,6 @@ from src.models.msise_model import MSISE_Model
 from src.models.spacephysicsmodels import SpacePhysicsModels
 from src.positional.slantpathgenerator import SlantPathGenerator
 
-
 class IndexOfRefractionGenerator():
 
     def __init__(self, frequency_hz: float, dispersionModel: DispersionModel, transportMode: TransportMode):
@@ -24,7 +22,7 @@ class IndexOfRefractionGenerator():
         self.dispersionModel = dispersionModel
         self.transportMode = transportMode
 
-    def estimateIndexN(self, startTimeAndLocation: TimeAndLocation, sat_ECEF: ECEF, heightStratification_m: list[float]) -> list[complex]:
+    def estimateIndexN(self, startTimeAndLocation: TimeAndLocation, sat_ECEF: ECEF_Coord, heightStratification_m: list[float]) -> list[complex]:
 
         slantPathGenerator = SlantPathGenerator()
         # make LLAs

@@ -6,8 +6,7 @@ import pyproj
 
 # ====================================================
 # local imports
-from src.bindings import coordinates_class
-from src.bindings.coordinates_class import LLA, ECEF
+from src.bindings.coordinates_class import LLA_Coord, ECEF_Coord
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.raystate_class import RayState
@@ -16,11 +15,11 @@ from src.positional.slantpathgenerator import SlantPathGenerator
 
 # ====================================================
 # constants
-ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
+LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
-def satPosition() -> ECEF:
+def satPosition() -> ECEF_Coord:
     s = '1 25544U 98067A   19343.69339541  .00001764  00000-0  38792-4 0  9991'
     t = '2 25544  51.6439 211.2001 0007417  17.6667  85.6398 15.50103472202482'
     name = "Test"
@@ -36,7 +35,7 @@ def satPosition() -> ECEF:
 
 
 def generateSlantPath() -> list[RayState]:
-    event_LLA = LLA(0.0, 0.0, 0.0)
+    event_LLA = LLA_Coord(0.0, 0.0, 0.0)
 
     dateTime = datetime(2012, 9, 15, 13, 14, 30)
 
@@ -44,9 +43,9 @@ def generateSlantPath() -> list[RayState]:
 
     # expected height, assume minimal change in position with range projection
     lon_deg, lat_deg, alt_m = pyproj.transform(
-        ecef, lla, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
+        ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
 
-    event_LLA = coordinates_class.LLA(lat_deg, lon_deg, 0.0)
+    event_LLA = LLA_Coord(lat_deg, lon_deg, 0.0)
     # construct the atmospheric model
     # make LLAs
     slantPathGenerator = SlantPathGenerator()

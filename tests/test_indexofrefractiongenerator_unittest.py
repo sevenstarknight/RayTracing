@@ -13,13 +13,13 @@ from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefracti
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 
-from src.bindings import coordinates_class
+from src.bindings.coordinates_class import LLA_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
 
 # ====================================================
 # constants
-ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
+LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
 class TestIndexOfRefractionGenerator(unittest.TestCase):
@@ -32,9 +32,9 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
 
         # expected height, assume minimal change in position with range projection
         lon_deg, lat_deg, alt_m = pyproj.transform(
-            ecef, lla, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
+            ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
 
-        event_LLA = coordinates_class.LLA(lat_deg, lon_deg, 0.0)
+        event_LLA = LLA_Coord(lat_deg, lon_deg, 0.0)
         # construct the atmospheric model
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
             frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)

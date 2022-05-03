@@ -5,7 +5,6 @@ from scipy import constants
 # ====================================================
 # local imports
 from src.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
-from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.raystate_class import RayState
 
 

@@ -5,19 +5,19 @@ import pyproj
 import pymap3d
 # ====================================================
 # local imports
-from src.bindings.coordinates_class import LLA, ECEF
+from src.bindings.coordinates_class import LLA_Coord, ECEF_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.raytracer.raytracer_computations import generatePositionAndVector, computeSlantIntersections
 from src.raystate_class import RayState
 # ====================================================
 # constants
-ecef = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-lla = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
+LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
 class SlantPathGenerator():
 
-    def estimateSlantPath(self, startTimeAndLocation: TimeAndLocation, sat_ECEF: ECEF, heightStratification_m: list[float]) -> list[RayState]:
+    def estimateSlantPath(self, startTimeAndLocation: TimeAndLocation, sat_ECEF: ECEF_Coord, heightStratification_m: list[float]) -> list[RayState]:
         # expected height, assume minimal change in position with range projection, so assume slant path for ionosphere model
         initialAz_deg, initialEle_deg, initialRange_m = pymap3d.ecef2aer(sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m,
                                                                          startTimeAndLocation.eventLocation_LLA.lat_deg, startTimeAndLocation.eventLocation_LLA.lon_deg,
@@ -36,9 +36,9 @@ class SlantPathGenerator():
             height = heightStratification_m[indx]
 
             lon_deg, lat_deg, alt_m = pyproj.transform(
-                ecef, lla, intersect_ECEF.x_m, intersect_ECEF.y_m, intersect_ECEF.z_m, radians=False)
+                ECEF, LLA, intersect_ECEF.x_m, intersect_ECEF.y_m, intersect_ECEF.z_m, radians=False)
             # force to altitude, loss because of approx.
-            intersect_LLA = LLA(lat_deg, lon_deg, height)
+            intersect_LLA = LLA_Coord(lat_deg, lon_deg, height)
 
             rayState = RayState(exitAzimuth_deg=initialAz_deg,
                                 exitElevation_deg=initialEle_deg, lla=intersect_LLA, nIndex=1.0)

@@ -3,8 +3,8 @@ from datetime import datetime
 
 # ====================================================
 # local imports
-from src.raytracer import layeroutput_class
-from src.bindings.coordinates_class import LLA
+from src.raytracer.layeroutput_class import LayerOutput
+from src.bindings.coordinates_class import LLA_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.raytracer.raytracer import RayTracer
 from src.raystate_class import RayState
@@ -20,7 +20,7 @@ class TestRayTracer(unittest.TestCase):
 
         # initial structure
         initialElevationAngle_deg = 45.0
-        initialLLA = LLA(0.0, 0.0, 0.0)
+        initialLLA = LLA_Coord(0.0, 0.0, 0.0)
 
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
         timeAndLocation = TimeAndLocation(
@@ -36,7 +36,7 @@ class TestRayTracer(unittest.TestCase):
     def test_insideLayerOperations_out(self):
         # initial structure
         initialElevationAngle_deg = 45.0
-        initialLLA = LLA(0.0, 0.0, 1000000.0)
+        initialLLA = LLA_Coord(0.0, 0.0, 1000000.0)
         initialNIndex = 1.0
 
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
@@ -58,7 +58,7 @@ class TestRayTracer(unittest.TestCase):
 
         # initial structure
         initialElevationAngle_deg = 45.0
-        initialLLA = LLA(0.0, 0.0, 0.0)
+        initialLLA = LLA_Coord(0.0, 0.0, 0.0)
         initialNIndex = 1.0
 
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
@@ -80,7 +80,7 @@ class TestRayTracer(unittest.TestCase):
 
         # initial structure
         initialElevationAngle_deg = -45.0
-        initialLLA = LLA(0.0, 0.0, 9000.0)
+        initialLLA = LLA_Coord(0.0, 0.0, 9000.0)
         initialNIndex = 0.95
 
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
@@ -101,7 +101,7 @@ class TestRayTracer(unittest.TestCase):
     def test_insideLayerOperations_bounce(self):
         # initial structure
         initialElevationAngle_deg = -80.0
-        initialLLA = LLA(0.0, 0.0, 10.0)
+        initialLLA = LLA_Coord(0.0, 0.0, 10.0)
         initialNIndex = 1.0
 
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
@@ -121,7 +121,7 @@ class TestRayTracer(unittest.TestCase):
     def test_insideLayerOperations_across(self):
         # initial structure
         initialElevationAngle_deg = -2.0
-        initialLLA = LLA(0.0, 0.0, 9000.0)
+        initialLLA = LLA_Coord(0.0, 0.0, 9000.0)
         initialNIndex = 0.95
 
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
@@ -142,7 +142,7 @@ class TestRayTracer(unittest.TestCase):
 
         # initial structure
         initialElevationAngle_deg = -2.0
-        initialLLA = LLA(0.0, 0.0, 10000.0)
+        initialLLA = LLA_Coord(0.0, 0.0, 10000.0)
         initialNIndex = 0.95
 
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
@@ -163,14 +163,14 @@ class TestRayTracer(unittest.TestCase):
     def test_onTheEdgeOperations_up(self):
         # initial structure
         initialElevationAngle_deg = 89.0
-        initialLLA = LLA(0.0, 0.0, 0.0)
+        initialLLA = LLA_Coord(0.0, 0.0, 0.0)
         initialNIndex = 1.0
 
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
                                 initialLLA, initialNIndex)
 
-        layerOutput = layeroutput_class.LayerOutput(
-            1.0, 1.0, 0.0,  100, LLA(0.0, 0.0, 100.0), [])
+        layerOutput = LayerOutput(
+            1.0, 1.0, 0.0,  100, LLA_Coord(0.0, 0.0, 100.0), [])
 
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
         timeAndLocation = TimeAndLocation(
@@ -186,14 +186,14 @@ class TestRayTracer(unittest.TestCase):
     def test_onTheEdgeOperations_down(self):
         # initial structure
         initialElevationAngle_deg = -89.0
-        initialLLA = LLA(0.0, 0.0, 1000.0)
+        initialLLA = LLA_Coord(0.0, 0.0, 1000.0)
         initialNIndex = 1.0
 
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
                                 initialLLA, initialNIndex)
 
-        layerOutput = layeroutput_class.LayerOutput(
-            1.0, 1.0, -1.0,  100.0, LLA(0.0, 0.0, 100.0), [])
+        layerOutput = LayerOutput(
+            1.0, 1.0, -1.0,  100.0, LLA_Coord(0.0, 0.0, 100.0), [])
 
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
         timeAndLocation = TimeAndLocation(
@@ -209,14 +209,14 @@ class TestRayTracer(unittest.TestCase):
     def test_onTheEdgeOperations_bounce(self):
         # initial structure
         initialElevationAngle_deg = -89.0
-        initialLLA = LLA(0.0, 0.0, 100.0)
+        initialLLA = LLA_Coord(0.0, 0.0, 100.0)
         initialNIndex = 1.0
 
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
                                 initialLLA, initialNIndex)
 
-        layerOutput = layeroutput_class.LayerOutput(
-            1.0, 3.0, -1.0,  0.0, LLA(0.0, 0.0, 0.0), [])
+        layerOutput = LayerOutput(
+            1.0, 3.0, -1.0,  0.0, LLA_Coord(0.0, 0.0, 0.0), [])
 
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
         timeAndLocation = TimeAndLocation(
@@ -234,7 +234,7 @@ class TestRayTracer(unittest.TestCase):
 
         # initial structure
         initialElevationAngle_deg = 45.0
-        initialLLA = LLA(0.0, 0.0, 0.0)
+        initialLLA = LLA_Coord(0.0, 0.0, 0.0)
 
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
         timeAndLocation = TimeAndLocation(

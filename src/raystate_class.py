@@ -1,12 +1,12 @@
 # ====================================================
 # local imports
-from src.bindings.coordinates_class import LLA
+from src.bindings.coordinates_class import LLA_Coord
 
 
 class RayState:
     # Class that stores the current state (point) of the ray
 
-    def __init__(self, exitElevation_deg: float, exitAzimuth_deg: float, lla: LLA, nIndex: complex):
+    def __init__(self, exitElevation_deg: float, exitAzimuth_deg: float, lla: LLA_Coord, nIndex: complex):
         self.exitElevation_deg = exitElevation_deg
         self.exitAzimuth_deg = exitAzimuth_deg
         self.lla = lla
