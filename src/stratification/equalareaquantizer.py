@@ -21,8 +21,8 @@ class EqualAreaQuantizer(AbstractQuantizer):
         xQuantEdge = icdf(linearSpace)
         xQuantEdge[0] = self.inputSeries.x_inputSeries[0]
 
-        denArray = []
-        yNew = []
+        denArray = np.zeros(len(xQuantEdge) - 1)
+        yNew = np.zeros(len(xQuantEdge) - 1)
 
         for jdx in range(len(xQuantEdge) - 1):
 
@@ -35,7 +35,7 @@ class EqualAreaQuantizer(AbstractQuantizer):
             if(den[0] is np.NAN):
                 raise Exception("Denom is Nan, breaking loop")
 
-            denArray.append(den[0])
-            yNew.append(num[0]/den[0])
+            denArray[jdx] = den[0]
+            yNew[jdx] = num[0]/den[0]
 
-        return(Quantization(xQuantEdge, np.array(yNew), np.array(denArray)))
+        return(Quantization(xQuantEdge, yNew, denArray))

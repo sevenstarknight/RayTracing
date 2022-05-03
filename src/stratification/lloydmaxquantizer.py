@@ -3,35 +3,31 @@ import scipy.integrate as integrate
 from scipy import interpolate
 import logging
 
+# ====================================================
+# local
 from src.stratification.abstractquantizer import AbstractQuantizer
 from src.stratification.quantization_class import Quantization
-from src.stratification.twodseries_class import TwoDSeries
 
+# ====================================================
+# constants
 MAXITER = 100000
 LOGGER = logging.getLogger("mylogger")
 
 class LloydMaxQuantizer(AbstractQuantizer):
 
     def generateQuantization(self, nQuant : int) -> Quantization:
-        xMin = np.amin(self.inputSeries.x_inputSeries)
-        xMax = np.amax(self.inputSeries.x_inputSeries)
-
-        yInitialization = np.linspace(xMin, xMax, nQuant)
-
-
-    def generateQuantization(self, yInitialization: np.array):
-        qprior = yInitialization
-
         lowerBound = np.amin(self.inputSeries.x_inputSeries)
         upperBound = np.amax(self.inputSeries.x_inputSeries)
 
+        qprior = np.linspace(lowerBound, upperBound, nQuant)
+
         boundaryOld = self.generateBOld(qnow = qprior, lowerBound= lowerBound, upperBound = upperBound)
 
-        distoritionPrior = 0
-        denArray = []
+        distoritionPrior = 1e-6
+        denArray = np.zeros(len(boundaryOld) - 1)
         for idx in range(MAXITER):
-            qnow = []
-            denArray = []
+            qnow = np.zeros(len(boundaryOld) - 1)
+            denArray = np.zeros(len(boundaryOld) - 1)
 
             distoritionNow = 0
 
@@ -45,46 +41,48 @@ class LloydMaxQuantizer(AbstractQuantizer):
                 if(den[0] is np.NAN):
                     raise Exception("Denom is Nan, breaking loop")
 
-                denArray.append(den)
-                qnow.append(num/den)
+                denArray[jdx] = den[0]
+                qnow[jdx] = (num[0]/den[0])
 
                 mseEstimate = self.MseEstimate(self, qnow[jdx])
-                distoritionNow += integrate.quad(lambda x: mseEstimate.estimate(x), start, stop)
+                distoritionNow += integrate.quad(lambda x: mseEstimate.estimate(x), start, stop)[0]
 
             qprior = qnow
             boundaryOld = self.generateBOld(qnow, lowerBound, upperBound)
 
             delta = np.abs(distoritionNow - distoritionPrior)/distoritionPrior
 
-            if(delta < 1e-6):
-                LOGGER.info("Final Iteration #: " + idx)
-                LOGGER.info("Lloyd Max Converged: " + delta)
+            if(delta < 1e-4):
+                LOGGER.info("Final Iteration #: %s" , str(idx))
+                LOGGER.info("Lloyd Max Converged: %s" , str(delta))
                 break
 
             distoritionPrior = distoritionNow
 
-            if(idx % 500 == 0):
-                LOGGER.debug("Current Iteration #: " + idx)
+            if(idx % 20 == 0):
+                LOGGER.debug("Current Iteration #: %s" , str(idx))
+                LOGGER.debug("Current Delta Distort #: %s" , str(delta))
 
             if(idx == MAXITER - 2):
                 LOGGER.debug("Lloyd Max didn't converge" )
 
+        return(Quantization(boundaryOld, qprior, denArray))
 
-
-
-
-    def generateBOld(qnow: np.array, lowerBound: float, upperBound:float)->np.array:
+    def generateBOld(self, qnow: np.array, lowerBound: float, upperBound:float)->np.array:
         qi = qnow[1:-1]
-        qiminus1 = qnow[0,-2]
+        qiminus1 = qnow[0:-2]
 
         tmp = (qi + qiminus1)/2.0
+        
+        tmpList = []
+        tmpList.append(lowerBound)
 
-        bold =[]
-        bold.append(lowerBound)
-        bold.append(tmp)
-        bold.append(upperBound)
+        bold = np.array(tmpList)
 
-        return(np.array(bold))
+        bold = np.append(bold, tmp)
+        bold = np.append(bold, upperBound)
+
+        return(bold)
 
     class MseEstimate(object):
         def __init__(self, outer:'LloydMaxQuantizer', y_i: float,):
