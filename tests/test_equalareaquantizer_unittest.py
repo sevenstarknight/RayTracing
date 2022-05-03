@@ -1,7 +1,7 @@
 import unittest
 
 import numpy as np
-
+import scipy.io
 # ====================================================
 # local imports
 from src.stratification.equalareaquantizer import EqualAreaQuantizer
@@ -9,6 +9,20 @@ from src.stratification.twodseries_class import TwoDSeries
 
 
 class TestEqualAreaQuantizer(unittest.TestCase):
+    def setUp(self) -> None:
+        self.mat = scipy.io.loadmat('tests/data/QuantizerDataTest.mat')
+
+    def test_GenerateQuantization_EDP(self):
+        xAxis = np.transpose(np.array(self.mat['alt']))[0]
+        yAxis = np.transpose(np.array(self.mat['EDP']))[0]
+
+        testSeries = TwoDSeries(xAxis, yAxis)
+
+        quantizer = EqualAreaQuantizer(testSeries)
+
+        quantization = quantizer.generateQuantization(180)
+
+        self.assertIsNotNone(quantization)
 
     def test_GenerateQuantization(self):
 

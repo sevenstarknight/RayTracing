@@ -7,8 +7,6 @@ import scipy.io
 from src.stratification.lloydmaxquantizer import LloydMaxQuantizer
 from src.stratification.twodseries_class import TwoDSeries
 
-
-
 class TestLloydMaxQuantizer(unittest.TestCase):
     def setUp(self) -> None:
         self.mat = scipy.io.loadmat('tests/data/QuantizerDataTest.mat')
