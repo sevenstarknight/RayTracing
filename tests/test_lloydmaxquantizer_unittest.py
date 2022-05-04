@@ -6,6 +6,7 @@ import scipy.io
 # local imports
 from src.stratification.lloydmaxquantizer import LloydMaxQuantizer
 from src.stratification.twodseries_class import TwoDSeries
+from src.stratification.quantizationparameter_class import QuantizationParameter
 
 class TestLloydMaxQuantizer(unittest.TestCase):
     def setUp(self) -> None:
@@ -19,7 +20,9 @@ class TestLloydMaxQuantizer(unittest.TestCase):
 
         quantizer = LloydMaxQuantizer(testSeries)
 
-        quantization = quantizer.generateQuantization(180)
+        quantizationParameter = QuantizationParameter(nQuant=180)
+
+        quantization = quantizer.generateQuantization(quantizationParameter)
 
         self.assertIsNotNone(quantization)
 
@@ -36,8 +39,9 @@ class TestLloydMaxQuantizer(unittest.TestCase):
         testSeries = TwoDSeries(samples, my_wave)
 
         quantizer = LloydMaxQuantizer(testSeries)
+        quantizationParameter = QuantizationParameter(nQuant=100)
 
-        quantization = quantizer.generateQuantization(100)
+        quantization = quantizer.generateQuantization(quantizationParameter)
 
         self.assertIsNotNone(quantization)
 

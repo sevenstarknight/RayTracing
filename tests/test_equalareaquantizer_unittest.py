@@ -6,6 +6,7 @@ import scipy.io
 # local imports
 from src.stratification.equalareaquantizer import EqualAreaQuantizer
 from src.stratification.twodseries_class import TwoDSeries
+from src.stratification.quantizationparameter_class import QuantizationParameter
 
 
 class TestEqualAreaQuantizer(unittest.TestCase):
@@ -20,7 +21,9 @@ class TestEqualAreaQuantizer(unittest.TestCase):
 
         quantizer = EqualAreaQuantizer(testSeries)
 
-        quantization = quantizer.generateQuantization(180)
+        quantizationParameter = QuantizationParameter(nQuant=180)
+
+        quantization = quantizer.generateQuantization(quantizationParameter)
 
         self.assertIsNotNone(quantization)
 
@@ -38,7 +41,9 @@ class TestEqualAreaQuantizer(unittest.TestCase):
 
         quantizer = EqualAreaQuantizer(testSeries)
 
-        quantization = quantizer.generateQuantization(100)
+        quantizationParameter = QuantizationParameter(nQuant=100)
+
+        quantization = quantizer.generateQuantization(quantizationParameter)
 
         self.assertIsNotNone(quantization)
 

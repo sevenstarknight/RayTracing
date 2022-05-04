@@ -5,11 +5,17 @@ from scipy import interpolate
 from src.stratification.abstractquantizer import AbstractQuantizer
 from src.stratification.quantization_class import Quantization
 from src.stratification.twodseries_class import TwoDSeries
+from src.stratification.quantizationparameter_class import QuantizationParameter
 
 
 class EqualAreaQuantizer(AbstractQuantizer):
 
-    def generateQuantization(self, nQuant : int) -> Quantization:
+    def generateQuantization(self, quantizationParameter : QuantizationParameter) -> Quantization:
+        if(quantizationParameter.nQuant is None):
+            raise Exception("quantizationParameter.nQuant, can't be none")
+            
+        nQuant = quantizationParameter.nQuant
+        
         linearSpace = np.linspace(0.0, 1.0, nQuant)
 
         # generate CDF/ICDF
@@ -38,4 +44,4 @@ class EqualAreaQuantizer(AbstractQuantizer):
             denArray[jdx] = den[0]
             yNew[jdx] = num[0]/den[0]
 
-        return(Quantization(xQuantEdge, yNew, denArray))
+        return(Quantization(xQuantEdge, yNew))

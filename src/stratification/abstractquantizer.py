@@ -4,6 +4,7 @@ from scipy import interpolate
 import scipy.integrate as integrate
 
 from src.stratification.twodseries_class import TwoDSeries
+from src.stratification.quantizationparameter_class import QuantizationParameter
 
 class AbstractQuantizer(ABC):
 
@@ -30,5 +31,5 @@ class AbstractQuantizer(ABC):
         self.funcfx = interpolate.InterpolatedUnivariateSpline(xfSeries.x_inputSeries, xfSeries.y_inputSeries)
 
     @abstractmethod
-    def generateQuantization(self, nQuant : int):
+    def generateQuantization(self, quantizationParameter : QuantizationParameter):
         pass

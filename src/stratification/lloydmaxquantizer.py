@@ -1,12 +1,12 @@
 import numpy as np
 import scipy.integrate as integrate
-from scipy import interpolate
 import logging
 
 # ====================================================
 # local
 from src.stratification.abstractquantizer import AbstractQuantizer
 from src.stratification.quantization_class import Quantization
+from src.stratification.quantizationparameter_class import QuantizationParameter
 
 # ====================================================
 # constants
@@ -15,7 +15,12 @@ LOGGER = logging.getLogger("mylogger")
 
 class LloydMaxQuantizer(AbstractQuantizer):
 
-    def generateQuantization(self, nQuant : int) -> Quantization:
+    def generateQuantization(self, quantizationParameter : QuantizationParameter) -> Quantization:
+        if(quantizationParameter.nQuant is None):
+            raise Exception("quantizationParameter.nQuant, can't be none")
+            
+        nQuant = quantizationParameter.nQuant
+
         lowerBound = np.amin(self.inputSeries.x_inputSeries)
         upperBound = np.amax(self.inputSeries.x_inputSeries)
 
@@ -65,7 +70,7 @@ class LloydMaxQuantizer(AbstractQuantizer):
             if(idx == MAXITER - 2):
                 LOGGER.debug("Lloyd Max didn't converge" )
 
-        return(Quantization(boundaryOld, qprior, denArray))
+        return(Quantization(boundaryOld, qprior))
 
     def generateBOld(self, qnow: np.array, lowerBound: float, upperBound:float)->np.array:
         qi = qnow[1:]
@@ -81,7 +86,7 @@ class LloydMaxQuantizer(AbstractQuantizer):
         return(bold)
 
     class MseEstimate(object):
-        def __init__(self, outer:'LloydMaxQuantizer', y_i: float,):
+        def __init__(self, outer:'LloydMaxQuantizer', y_i: float):
             self.y_i = y_i
             self.outer = outer
         
