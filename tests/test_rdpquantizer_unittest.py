@@ -12,6 +12,18 @@ class TestRDPQuantizer(unittest.TestCase):
     def setUp(self) -> None:
         self.mat = scipy.io.loadmat('tests/data/QuantizerDataTest.mat')
 
+    def test_GenerateQuantization_EDP_Opt(self):
+        xAxis = np.log(np.transpose(np.array(self.mat['alt']))[0])
+        yAxis = np.log(np.transpose(np.array(self.mat['EDP']))[0])
+
+        testSeries = TwoDSeries(xAxis, yAxis)
+
+        quantizer = RDPQuantizer(testSeries)
+
+        quantization = quantizer.generateOptimalQuantization()
+
+        self.assertIsNotNone(quantization)
+
     def test_GenerateQuantization_EDP(self):
         xAxis = np.transpose(np.array(self.mat['alt']))[0]
         yAxis = np.transpose(np.array(self.mat['EDP']))[0]
