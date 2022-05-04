@@ -10,7 +10,7 @@ import logging
 from src.stratification.abstractquantizer import AbstractQuantizer
 from src.stratification.quantization_class import Quantization
 from src.stratification.quantizationparameter_class import QuantizationParameter
-from stratification.twodseries_class import TwoDSeries
+from src.stratification.twodseries_class import TwoDSeries
 
 # ====================================================
 # constants
@@ -35,7 +35,7 @@ class RDPQuantizer(AbstractQuantizer):
     def generateOptimalQuantization(self) -> Quantization:
         objectivefunction = self.ObjectiveFunction(self)
 
-        minimum = optimize.brent(lambda x: objectivefunction.estimate(x),brack=(-6,0,6))
+        minimum = optimize.brent(lambda x: objectivefunction.estimate(x),brack=(-6,0,1))
 
         twoDSeries = objectivefunction.generateTwoDSeries(minimum)
         return(Quantization(twoDSeries.x_inputSeries, twoDSeries.y_inputSeries))
@@ -47,7 +47,7 @@ class RDPQuantizer(AbstractQuantizer):
             self.inputSeries = outer.inputSeries
         
         def generateTwoDSeries(self, log_x:float) -> TwoDSeries:
-            mask = rdp(self.data, epsilon = 10^log_x, algo="iter", return_mask=True)
+            mask = rdp(self.data, epsilon = 10**log_x, algo="iter", return_mask=True)
             maskedData = self.data[mask]
             splitData = np.hsplit(maskedData, 2)
             xAxis = np.transpose(splitData[0])
@@ -58,9 +58,9 @@ class RDPQuantizer(AbstractQuantizer):
 
         def estimate(self, log_x:float) -> float:
 
-            twoDSeries = self.generateTwoDSeries(xAxis, yAxis)
+            twoDSeries = self.generateTwoDSeries(log_x)
 
-            fStar = interpolate.InterpolatedUnivariateSpline(xAxis, yAxis)
+            fStar = interpolate.InterpolatedUnivariateSpline(twoDSeries.x_inputSeries, twoDSeries.y_inputSeries)
 
             rss = 0
             for idx in range(len(self.inputSeries.x_inputSeries)):
@@ -71,7 +71,7 @@ class RDPQuantizer(AbstractQuantizer):
                 rss += (y - yStar)*(y - yStar)
 
             t = len(self.inputSeries.x_inputSeries)
-            k = len(xAxis)
+            k = len(twoDSeries.x_inputSeries)
             bic = t*np.log(rss/t) + k*np.log(t)
 
             return(bic)
