@@ -2,7 +2,15 @@
 # Install/Read Me File
 
 This code is designed to demonstrate functionalities relating to trans-ionospheric propagation, specifically *ray-tracing* at low RF frequencies. The rays here operate in three-dimensions, and in a ellipsiodal ionosphere (ellipsodial shells). High-level details
-1. Rays can start 
+
+## Prerequisites
+
+Fortran compiler--any modern Fortran compiler will do. Here's how to get Gfortran:
+Linux: apt install gfortran
+Mac: brew install gcc
+Windows: consider MSYS2
+
+and then install latest:
 
 
 ## IRI2016
