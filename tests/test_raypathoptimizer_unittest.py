@@ -7,6 +7,7 @@ import pyproj
 # ====================================================
 # local imports
 from src.bindings.coordinates_class import LLA_Coord
+from src.bindings.ionospherestate_class import IonosphereState
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
@@ -26,6 +27,8 @@ class TestRayPathOptimization(unittest.TestCase):
         s = '1 25544U 98067A   19343.69339541  .00001764  00000-0  38792-4 0  9991'
         t = '2 25544  51.6439 211.2001 0007417  17.6667  85.6398 15.50103472202482'
         name = "Test"
+
+        self.ionosphereState = IonosphereState(10.0, 10.0, 3.0)
 
         self.satelliteInformation = SatelliteInformation(name=name, s=s, t=t)
 
@@ -50,7 +53,7 @@ class TestRayPathOptimization(unittest.TestCase):
 
         optimizer = RayPathOptimizer(
             10e6, self.timeAndLocation, self.heights_m, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
-        rayState = optimizer.optimize(self.satelliteInformation)
+        rayState = optimizer.optimize(self.satelliteInformation, self.ionosphereState)
 
         self.assertTrue(rayState is not None)
 
@@ -59,7 +62,7 @@ class TestRayPathOptimization(unittest.TestCase):
 
         optimizer = RayPathOptimizer(
             10e6, self.timeAndLocation, self.heights_m, dispersionModel=DispersionModel.XY_MODEL, transportMode=TransportMode.ORDINARY_MODE)
-        rayState = optimizer.optimize(self.satelliteInformation)
+        rayState = optimizer.optimize(self.satelliteInformation, self.ionosphereState)
 
         self.assertTrue(rayState is not None)
 

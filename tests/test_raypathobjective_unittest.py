@@ -8,6 +8,7 @@ import pyproj
 # ====================================================
 # local imports
 from src.bindings.coordinates_class import LLA_Coord
+from src.bindings.ionospherestate_class import IonosphereState
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
@@ -36,6 +37,8 @@ class TestRayPathObjective(unittest.TestCase):
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
         sat_ECEF = satPosGenerator.estimatePosition_ECEF(currentDateTime)
 
+        ionosphereState = IonosphereState(10.0, 10.0, 3.0)
+
         # expected height, assume minimal change in position with range projection
         lon_deg, lat_deg, alt_m = pyproj.transform(
             ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
@@ -50,8 +53,9 @@ class TestRayPathObjective(unittest.TestCase):
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
             frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
 
-        rayPathOpt = RayPathObjective(freq_hz=10e6,
-                                      heights_m=heights_m, timeAndLocation=timeAndLocation, satPosGen=satPosGenerator, indexOfRefractionGenerator=indexOfRefractionGenerator)
+        rayPathOpt = RayPathObjective(heights_m=heights_m, 
+        timeAndLocation=timeAndLocation, satPosGen=satPosGenerator, 
+        indexOfRefractionGenerator=indexOfRefractionGenerator,ionosphereState=ionosphereState)
 
         param = [80, 10]
         loss = rayPathOpt.objectiveFunction(param)

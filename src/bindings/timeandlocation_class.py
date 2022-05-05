@@ -1,5 +1,4 @@
-import datetime
-
+from datetime import datetime
 # ====================================================
 # local imports
 from src.bindings.coordinates_class import LLA_Coord

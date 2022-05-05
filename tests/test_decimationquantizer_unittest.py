@@ -4,13 +4,12 @@ import numpy as np
 import scipy.io
 # ====================================================
 # local imports
-from src.stratification.equalareaquantizer import EqualAreaQuantizer
+from src.stratification.decimationquantizer import DecimationQuantizer
 from src.stratification.twodseries_class import TwoDSeries
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from stratification.stratificationmethod_enum import StratificationMethod
 
-
-class TestEqualAreaQuantizer(unittest.TestCase):
+class TestDecimationQuantizer(unittest.TestCase):
     def setUp(self) -> None:
         self.mat = scipy.io.loadmat('tests/data/QuantizerDataTest.mat')
 
@@ -20,9 +19,9 @@ class TestEqualAreaQuantizer(unittest.TestCase):
 
         testSeries = TwoDSeries(xAxis, yAxis)
 
-        quantizer = EqualAreaQuantizer(testSeries)
+        quantizer = DecimationQuantizer(testSeries)
 
-        quantizationParameter = QuantizationParameter(StratificationMethod.EQUALAREA_MODEL,nQuant=180)
+        quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=10)
 
         quantization = quantizer.generateQuantization(quantizationParameter)
 
@@ -40,9 +39,9 @@ class TestEqualAreaQuantizer(unittest.TestCase):
 
         testSeries = TwoDSeries(samples, my_wave)
 
-        quantizer = EqualAreaQuantizer(testSeries)
+        quantizer = DecimationQuantizer(testSeries)
 
-        quantizationParameter = QuantizationParameter(StratificationMethod.EQUALAREA_MODEL,nQuant=100)
+        quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=10)
 
         quantization = quantizer.generateQuantization(quantizationParameter)
 

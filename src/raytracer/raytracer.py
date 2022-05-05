@@ -50,24 +50,24 @@ class RayTracer():
             el, az, self.timeAndLocation.eventLocation_LLA, n_current)
 
         # =================================================================
-        states = []
-        states.append(currentState)
+        rayStates = []
+        rayStates.append(currentState)
 
         for idx in range(100):
 
             layerOutput = self.insideLayerOperations(
-                currentState, heights_m, indexN, states)
+                currentState, heights_m, indexN, rayStates)
 
             if(layerOutput.n_1 == None):
                 LOGGER.debug("Done with iterations, jump out of loop")
-                states = layerOutput.stateList
+                rayStates = layerOutput.stateList
                 break
 
             currentState = self.onTheEdgeOperations(currentState, layerOutput)
 
-            states.append(currentState)
+            rayStates.append(currentState)
 
-        return(states)
+        return(rayStates)
 
     def insideLayerOperations(self, currentState: RayState, heights_m: list[float], indexN: list[complex], stateList: list[RayState]) -> LayerOutput:
         # ==========================================================================

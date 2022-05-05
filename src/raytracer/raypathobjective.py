@@ -10,6 +10,7 @@ import pyproj
 from src.raytracer.raytracer import RayTracer
 from src.bindings.coordinates_class import ECEF_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
+from src.bindings.ionospherestate_class import IonosphereState
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
 
@@ -21,8 +22,10 @@ LOGGER = logging.getLogger("mylogger")
 
 
 class RayPathObjective():
-    def __init__(self, freq_hz: float, heights_m: list[float], timeAndLocation: TimeAndLocation,
-                 satPosGen: SatellitePositionGenerator, indexOfRefractionGenerator: IndexOfRefractionGenerator):
+    def __init__(self, heights_m: list[float], timeAndLocation: TimeAndLocation,
+                 satPosGen: SatellitePositionGenerator, 
+                 indexOfRefractionGenerator: IndexOfRefractionGenerator, 
+                 ionosphereState: IonosphereState):
         self.heights_m = heights_m
         self.satPosGen = satPosGen
         self.timeAndLocation = timeAndLocation
@@ -33,7 +36,8 @@ class RayPathObjective():
             timeAndLocation.eventTime_UTC)
 
         self.indexN = indexOfRefractionGenerator.estimateIndexN(
-            startTimeAndLocation=timeAndLocation, heightStratification_m=heights_m, sat_ECEF=self.sat_ECEF)
+            startTimeAndLocation=timeAndLocation, heightStratification_m=heights_m, 
+            sat_ECEF=self.sat_ECEF, ionosphereState = ionosphereState)
 
     def objectiveFunction(self, params: list[float]) -> float:
         # initial parameters

@@ -12,10 +12,10 @@ import pandas as pd
 
 ## ====================================================
 # local imports
-from raystate_class import RayState
-from raytracer import RayTracer
-from bindings.coordinates_class import LLA
-from bindings.timeandlocation_class import TimeAndLocation
+from src.raystate_class import RayState
+from src.raytracer.raytracer import RayTracer
+from src.bindings.coordinates_class import LLA
+from src.bindings.timeandlocation_class import TimeAndLocation
 ## ====================================================
 app = dash.Dash(__name__)
 
@@ -96,13 +96,13 @@ def on_click(n_clicks, input_elevation, input_azimuth, input_n, input_latitude, 
             print("Running Ray Tracer")
             eventTimeAndLocation = TimeAndLocation(eventLocation_LLA=initialLLA, eventTime_UTC=datetime.now)
             rayTracer = RayTracer(timeAndLocation=eventTimeAndLocation)
-            stateList = rayTracer.execute(heights_m = heights_m, indexN = indexN, params=[input_azimuth, input_elevation])
+            rayStates = rayTracer.execute(heights_m = heights_m, indexN = indexN, params=[input_azimuth, input_elevation])
             listTmp = []
             columnNames = []
-            for state in stateList:
-                tmpList = state.generateList()
+            for rayState in rayStates:
+                tmpList = rayState.generateList()
                 listTmp.append(tmpList)
-                columnNames = state.generateColumnNames()
+                columnNames = rayState.generateColumnNames()
 
             df = pd.DataFrame(listTmp, columns = columnNames, dtype = float)
             return df.to_dict()

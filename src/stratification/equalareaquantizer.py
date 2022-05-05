@@ -4,7 +4,6 @@ from scipy import interpolate
 
 from src.stratification.abstractquantizer import AbstractQuantizer
 from src.stratification.quantization_class import Quantization
-from src.stratification.twodseries_class import TwoDSeries
 from src.stratification.quantizationparameter_class import QuantizationParameter
 
 

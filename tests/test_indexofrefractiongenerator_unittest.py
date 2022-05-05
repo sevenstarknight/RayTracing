@@ -13,6 +13,7 @@ from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefracti
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 
+from src.bindings.ionospherestate_class import IonosphereState
 from src.bindings.coordinates_class import LLA_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
 
@@ -44,9 +45,11 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
 
         # ======================================================
         heights_m = [0, 100, 1000, 10000, 100000, 1000000]
+        ionosphereState = IonosphereState(10.0, 10.0, 3.0)
 
         indexNs = indexOfRefractionGenerator.estimateIndexN(startTimeAndLocation=timeAndLocation,
-                                                            heightStratification_m=heights_m, sat_ECEF=sat_ECEF)
+                                                            heightStratification_m=heights_m, 
+                                                            sat_ECEF=sat_ECEF, ionosphereState = ionosphereState)
 
         self.assertEqual(len(indexNs), len(heights_m))
 

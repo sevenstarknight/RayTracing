@@ -8,6 +8,7 @@ import pyproj
 # ====================================================
 # local imports
 from src.bindings.coordinates_class import LLA_Coord
+from src.bindings.ionospherestate_class import IonosphereState
 from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
@@ -29,6 +30,8 @@ class TestRayPathEffects(unittest.TestCase):
         t = '2 25544  51.6439 211.2001 0007417  17.6667  85.6398 15.50103472202482'
         name = "Test"
 
+        ionosphereState = IonosphereState(10.0, 10.0, 3.0)
+
         satelliteInformation = SatelliteInformation(name=name, s=s, t=t)
 
         # Initial Starting Point
@@ -49,7 +52,7 @@ class TestRayPathEffects(unittest.TestCase):
         freq_Hz = 10*6
 
         transIonosphereEffects = optimizer.estimate(
-            freq_Hz=freq_Hz, satelliteInformation=satelliteInformation)
+            freq_Hz=freq_Hz, satelliteInformation=satelliteInformation, ionosphereState=ionosphereState)
 
         self.assertTrue(transIonosphereEffects is not None)
 

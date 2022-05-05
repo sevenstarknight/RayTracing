@@ -22,7 +22,8 @@ class IndexOfRefractionGenerator():
         self.dispersionModel = dispersionModel
         self.transportMode = transportMode
 
-    def estimateIndexN(self, startTimeAndLocation: TimeAndLocation, sat_ECEF: ECEF_Coord, heightStratification_m: list[float]) -> list[complex]:
+    def estimateIndexN(self, startTimeAndLocation: TimeAndLocation, sat_ECEF: ECEF_Coord, 
+    heightStratification_m: list[float], ionosphereState: IonosphereState) -> list[complex]:
 
         slantPathGenerator = SlantPathGenerator()
         # make LLAs
@@ -30,11 +31,10 @@ class IndexOfRefractionGenerator():
             startTimeAndLocation, sat_ECEF, heightStratification_m)
 
         # make the model
-        ionosphereState = IonosphereState(10.0, 10.0, 3.0)
         igrf = IGRF_Model(
             currentDateTime=startTimeAndLocation.eventTime_UTC, ionosphereState=ionosphereState)
-        iri = IRI_Model(currentDateTime=startTimeAndLocation.eventTime_UTC,
-                        ionosphereState=ionosphereState)
+        iri = IRI_Model(
+            currentDateTime=startTimeAndLocation.eventTime_UTC, ionosphereState=ionosphereState)
         msise = MSISE_Model(
             currentDateTime=startTimeAndLocation.eventTime_UTC, ionosphereState=ionosphereState)
 

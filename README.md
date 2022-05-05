@@ -17,7 +17,7 @@ and then install latest:
 pip install iri201
 
 You'll need to download a fortran compiler to your machine, I've used gfortran so far. 
-I've used here a virtual environment for python, inside of that enviroment open venv/Lib/site-packages/iri2016/src/CMakeLists.txt
+If you are using a virtual environment for python, you might need to, inside of that enviroment, open venv/Lib/site-packages/iri2016/src/CMakeLists.txt
 
 - set(CMAKE_Fortran_COMPILER C:/msys64/usr/bin/gfortran)
 - set(CMAKE_C_COMPILER C:/msys64/usr/bin/gcc)
@@ -36,8 +36,7 @@ ctest -S .\setup.cmake -VV
 ## IGRF 
 pip install igrf
 
-You'll need to download a fortran compiler to your machine, I've used gfortran so far. 
-this package comes with a CMakeLists.txt that worked for me but I needed to add a setup.cmake (which I borrowed from the IRI2016 package)
+You'll need to download a fortran compiler to your machine, I've used gfortran so far. If you are using a virtual environment for python, you might need to update the folder and.... add a setup.cmake (which I borrowed from the IRI2016 package) (this package comes with a CMakeLists.txt that worked for me but I needed add)
 
 go to venv\Lib\site-pages\igrf 
 
