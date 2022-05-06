@@ -4,10 +4,10 @@ import numpy as np
 import scipy.io
 # ====================================================
 # local imports
-from src.stratification.rdpquantizer import RDPQuantizer
 from src.stratification.twodseries_class import TwoDSeries
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.stratificationmethod_enum import StratificationMethod
+from src.stratification.rdpquantizer import RDPQuantizer
 
 class TestRDPQuantizer(unittest.TestCase):
     def setUp(self) -> None:

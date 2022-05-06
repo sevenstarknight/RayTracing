@@ -7,7 +7,7 @@ import scipy.io
 from src.stratification.equalareaquantizer import EqualAreaQuantizer
 from src.stratification.twodseries_class import TwoDSeries
 from src.stratification.quantizationparameter_class import QuantizationParameter
-from stratification.stratificationmethod_enum import StratificationMethod
+from src.stratification.stratificationmethod_enum import StratificationMethod
 
 
 class TestEqualAreaQuantizer(unittest.TestCase):
