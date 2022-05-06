@@ -12,6 +12,7 @@ from src.raystate_class import RayState
 class IRI_Model(AbstractSpacePhysicsModel):
 
     def generatePointEstimate(self,  rayPoint: LLA_Coord) -> IRIOutput:
+
         altkmrange = (rayPoint.altitude_m/1000,
                       rayPoint.altitude_m/1000 + 1, 1.0)
         iri = IRI(self.currentDateTime, altkmrange,

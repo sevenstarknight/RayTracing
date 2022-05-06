@@ -20,7 +20,7 @@ from src.stratification.lloydmaxquantizer import LloydMaxQuantizer
 from src.stratification.rdpquantizer import RDPQuantizer
 from src.stratification.equalareaquantizer import EqualAreaQuantizer
 from src.stratification.quantizationparameter_class import QuantizationParameter
-from stratification.decimationquantizer import DecimationQuantizer
+from src.stratification.decimationquantizer import DecimationQuantizer
 
 # ====================================================
 # constants
@@ -35,7 +35,7 @@ class StratificationOptimizer():
         self.transportMode = transportMode
 
     def generateHeightModel(self, freq_Hz: float, quantizationParameter : QuantizationParameter,
-    satelliteInformation: SatelliteInformation, ionosphereState : IonosphereState) -> np.array:
+    satelliteInformation: SatelliteInformation, ionosphereState : IonosphereState) -> list[float]:
         satPosGenerator = SatellitePositionGenerator(satelliteInformation)
 
         # Initial Starting Point
@@ -45,7 +45,7 @@ class StratificationOptimizer():
         sat_lat, sat_lon, sat_alt = pyproj.transform(
             ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
 
-        initialHeights_m = np.linspace(self.timeAndLocation.eventLocation_LLA.altitude_m, sat_alt, 10)
+        initialHeights_m = np.linspace(self.timeAndLocation.eventLocation_LLA.altitude_m, sat_alt, 100)
 
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
             frequency_hz=freq_Hz, dispersionModel=self.dispersionModel, transportMode=self.transportMode)
@@ -53,7 +53,11 @@ class StratificationOptimizer():
         indexN = indexOfRefractionGenerator.estimateIndexN(startTimeAndLocation=self.timeAndLocation,
         heightStratification_m=initialHeights_m, sat_ECEF=sat_ECEF, ionosphereState=ionosphereState)
 
-        testSeries = TwoDSeries(initialHeights_m, indexN)
+        indexNReal = np.zeros(len(indexN))
+        for idx in range(len(indexN)):
+            indexNReal[idx] = indexN[idx].real
+
+        testSeries = TwoDSeries(initialHeights_m, indexNReal)
 
         if(quantizationParameter.stratificationMethod is StratificationMethod.EQUALAREA_MODEL):
             quantizer = EqualAreaQuantizer(testSeries)
@@ -67,5 +71,5 @@ class StratificationOptimizer():
             raise Exception("Stratification method provided unknown")
 
         quantization = quantizer.generateQuantization(quantizationParameter)
-
-        return(quantization.intervalEndPoints())
+        heights_m = quantization.representationPoints.tolist()
+        return(heights_m)

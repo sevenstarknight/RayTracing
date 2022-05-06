@@ -45,8 +45,8 @@ class RayPathOptimizer():
         # optimization
         initialGuess = [initialAz_deg, initialEle_deg]
 
-        objectiveF = RayPathObjective(self.heights_m, self.timeAndLocation, 
-        satPosGenerator, self.indexOfRefractionGenerator,ionosphereState=ionosphereState)
+        objectiveF = RayPathObjective(heights_m=self.heights_m, timeAndLocation=self.timeAndLocation, 
+        satPosGen=satPosGenerator, indexOfRefractionGenerator=self.indexOfRefractionGenerator,ionosphereState=ionosphereState)
         result = optimize.minimize(objectiveF.objectiveFunction, initialGuess)
 
         # =============================================================================

@@ -36,7 +36,7 @@ class EstimateRayPathEffects():
         stratificationOptimizer = StratificationOptimizer(dispersionModel=self.dispersionModel, 
         timeAndLocation=self.timeAndLocation, transportMode=self.transportMode)
 
-        quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=100)
+        quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=10)
 
         heights_m = stratificationOptimizer.generateHeightModel(freq_Hz=freq_Hz, quantizationParameter=quantizationParameter,
         ionosphereState=ionosphereState,satelliteInformation=satelliteInformation)
