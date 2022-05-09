@@ -42,7 +42,7 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
             eventLocation_LLA=event_LLA, eventTime_UTC=currentDateTime)
         # construct the atmospheric model
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
-            frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE,
+            frequency_hz=1000e6, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE,
             startTimeAndLocation=timeAndLocation,ionosphereState = ionosphereState)
 
 

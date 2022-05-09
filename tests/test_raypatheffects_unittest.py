@@ -51,7 +51,7 @@ class TestRayPathEffects(unittest.TestCase):
         # ======================================================
         optimizer = EstimateRayPathEffects(
             timeAndLocation=timeAndLocation, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
-        freq_Hz = 10*6
+        freq_Hz = 1000e6
         
         quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=10)
 
