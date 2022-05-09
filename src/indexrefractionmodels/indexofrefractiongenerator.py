@@ -17,18 +17,9 @@ from src.positional.slantpathgenerator import SlantPathGenerator
 
 class IndexOfRefractionGenerator():
 
-    def __init__(self, frequency_hz: float, dispersionModel: DispersionModel, transportMode: TransportMode):
-        self.frequency_hz = frequency_hz
-        self.dispersionModel = dispersionModel
-        self.transportMode = transportMode
-
-    def estimateIndexN(self, startTimeAndLocation: TimeAndLocation, sat_ECEF: ECEF_Coord, 
-    heightStratification_m: list[float], ionosphereState: IonosphereState) -> list[complex]:
-
-        slantPathGenerator = SlantPathGenerator()
-        # make LLAs
-        slantRayStates = slantPathGenerator.estimateSlantPath(
-            startTimeAndLocation, sat_ECEF, heightStratification_m)
+    def __init__(self, frequency_hz: float, dispersionModel: DispersionModel, transportMode: TransportMode, 
+    startTimeAndLocation: TimeAndLocation, ionosphereState: IonosphereState):
+        self.startTimeAndLocation = startTimeAndLocation
 
         # make the model
         igrf = IGRF_Model(
@@ -41,18 +32,28 @@ class IndexOfRefractionGenerator():
         spm = SpacePhysicsModels(igrf=igrf, msise=msise, iri=iri)
 
         # model the index of refraction
-        if(self.dispersionModel is DispersionModel.X_MODEL):
-            refractionModel = XModel(spacePhysicsModels=spm, frequency_hz=self.frequency_hz, transportMode=self.transportMode)
-        elif(self.dispersionModel is DispersionModel.XY_MODEL):
-            refractionModel = XYModel(spacePhysicsModels=spm, frequency_hz=self.frequency_hz, transportMode=self.transportMode)
-        elif(self.dispersionModel is DispersionModel.XYZ_MODEL):
-            refractionModel = XYZModel(spacePhysicsModels=spm, frequency_hz=self.frequency_hz, transportMode=self.transportMode)
+        if(dispersionModel is DispersionModel.X_MODEL):
+            self.refractionModel = XModel(spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
+        elif(dispersionModel is DispersionModel.XY_MODEL):
+            self.refractionModel = XYModel(spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
+        elif(dispersionModel is DispersionModel.XYZ_MODEL):
+            self.refractionModel = XYZModel(spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
         else:
             raise Exception("Dispersion Model Unknown")
 
+
+
+    def estimateIndexN(self, sat_ECEF: ECEF_Coord,  heightStratification_m: list[float]) -> list[complex]:
+
+        slantPathGenerator = SlantPathGenerator()
+        # make LLAs
+        slantRayStates = slantPathGenerator.estimateSlantPath(
+            self.startTimeAndLocation, sat_ECEF, heightStratification_m)
+
+        #
         indexNs = []
         for rayState in slantRayStates:
-            indexN = refractionModel.estimateIndexOfRefraction(currentState=rayState)
+            indexN = self.refractionModel.estimateIndexOfRefraction(currentState=rayState)
             indexNs.append(indexN)
 
         return(indexNs)

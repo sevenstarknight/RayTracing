@@ -36,8 +36,8 @@ class RayPathObjective():
             timeAndLocation.eventTime_UTC)
 
         self.indexN = indexOfRefractionGenerator.estimateIndexN(
-            startTimeAndLocation=timeAndLocation, heightStratification_m=heights_m, 
-            sat_ECEF=self.sat_ECEF, ionosphereState = ionosphereState)
+            heightStratification_m=heights_m, 
+            sat_ECEF=self.sat_ECEF)
 
     def objectiveFunction(self, params: list[float]) -> float:
         # initial parameters

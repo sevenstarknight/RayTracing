@@ -51,7 +51,8 @@ class TestRayPathObjective(unittest.TestCase):
             eventTime_UTC=currentDateTime, eventLocation_LLA=event_LLA)
 
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
-            frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
+            frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE,
+             startTimeAndLocation=timeAndLocation,ionosphereState = ionosphereState)
 
         rayPathOpt = RayPathObjective(heights_m=heights_m, 
         timeAndLocation=timeAndLocation, satPosGen=satPosGenerator, 

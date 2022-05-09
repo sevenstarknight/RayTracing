@@ -36,20 +36,22 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
             ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
 
         event_LLA = LLA_Coord(lat_deg, lon_deg, 0.0)
-        # construct the atmospheric model
-        indexOfRefractionGenerator = IndexOfRefractionGenerator(
-            frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
 
+        ionosphereState = IonosphereState(10.0, 10.0, 3.0)
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=event_LLA, eventTime_UTC=currentDateTime)
+        # construct the atmospheric model
+        indexOfRefractionGenerator = IndexOfRefractionGenerator(
+            frequency_hz=10e6, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE,
+            startTimeAndLocation=timeAndLocation,ionosphereState = ionosphereState)
+
 
         # ======================================================
         heights_m = [0, 100, 1000, 10000, 100000, 1000000]
-        ionosphereState = IonosphereState(10.0, 10.0, 3.0)
 
-        indexNs = indexOfRefractionGenerator.estimateIndexN(startTimeAndLocation=timeAndLocation,
+        indexNs = indexOfRefractionGenerator.estimateIndexN(
                                                             heightStratification_m=heights_m, 
-                                                            sat_ECEF=sat_ECEF, ionosphereState = ionosphereState)
+                                                            sat_ECEF=sat_ECEF)
 
         self.assertEqual(len(indexNs), len(heights_m))
 

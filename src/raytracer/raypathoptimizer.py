@@ -23,14 +23,17 @@ from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 class RayPathOptimizer():
 
     def __init__(self, freq_hz: float, timeAndLocation: TimeAndLocation, 
-    heights_m: list[float], dispersionModel: DispersionModel, transportMode: TransportMode):
+    heights_m: list[float], dispersionModel: DispersionModel, transportMode: TransportMode, ionosphereState: IonosphereState):
         self.freq_hz = freq_hz
         self.timeAndLocation = timeAndLocation
         self.heights_m = heights_m
-        self.indexOfRefractionGenerator = IndexOfRefractionGenerator(
-            frequency_hz=freq_hz, dispersionModel=dispersionModel, transportMode=transportMode)
+        self.ionosphereState = ionosphereState
 
-    def optimize(self, satelliteInformation: SatelliteInformation, ionosphereState: IonosphereState) -> list[RayState]:
+        self.indexOfRefractionGenerator = IndexOfRefractionGenerator(
+            frequency_hz=freq_hz, dispersionModel=dispersionModel, transportMode=transportMode, 
+            startTimeAndLocation=timeAndLocation, ionosphereState=ionosphereState)
+
+    def optimize(self, satelliteInformation: SatelliteInformation) -> list[RayState]:
 
         satPosGenerator = SatellitePositionGenerator(satelliteInformation)
 
@@ -45,8 +48,10 @@ class RayPathOptimizer():
         # optimization
         initialGuess = [initialAz_deg, initialEle_deg]
 
-        objectiveF = RayPathObjective(heights_m=self.heights_m, timeAndLocation=self.timeAndLocation, 
-        satPosGen=satPosGenerator, indexOfRefractionGenerator=self.indexOfRefractionGenerator,ionosphereState=ionosphereState)
+        objectiveF = RayPathObjective(heights_m=self.heights_m, satPosGen=satPosGenerator, 
+        indexOfRefractionGenerator=self.indexOfRefractionGenerator,
+        ionosphereState=self.ionosphereState, timeAndLocation=self.timeAndLocation)
+
         result = optimize.minimize(objectiveF.objectiveFunction, initialGuess)
 
         # =============================================================================
@@ -54,8 +59,7 @@ class RayPathOptimizer():
         rayTracer = RayTracer(self.timeAndLocation)
 
         # construct the atmospheric model
-        self.indexN = self.indexOfRefractionGenerator.estimateIndexN(startTimeAndLocation=self.timeAndLocation,
-        heightStratification_m=self.heights_m, sat_ECEF=sat_ECEF, ionosphereState=ionosphereState)
+        self.indexN = self.indexOfRefractionGenerator.estimateIndexN(heightStratification_m=self.heights_m, sat_ECEF=sat_ECEF)
 
         rayStates = rayTracer.execute(self.heights_m, self.indexN,
                                    [result.x[1], result.x[0]])

@@ -15,7 +15,6 @@ from src.bindings.satelliteinformation_class import SatelliteInformation
 from src.raytracer.raypathoptimizer import RayPathOptimizer
 from src.stratification.stratificationoptimizer import StratificationOptimizer
 from src.stratification.quantizationparameter_class import QuantizationParameter
-from src.stratification.stratificationmethod_enum import StratificationMethod
 
 # ====================================================
 # constants
@@ -30,30 +29,32 @@ class EstimateRayPathEffects():
         self.transportMode = transportMode
 
 
-    def estimate(self, freq_Hz: float, satelliteInformation: SatelliteInformation, ionosphereState : IonosphereState) -> TransIonosphereEffects:
+    def estimate(self, freq_Hz: float, quantizationParameter: QuantizationParameter, 
+    satelliteInformation: SatelliteInformation, ionosphereState : IonosphereState) -> TransIonosphereEffects:
 
         # ======================================================
         stratificationOptimizer = StratificationOptimizer(dispersionModel=self.dispersionModel, 
         timeAndLocation=self.timeAndLocation, transportMode=self.transportMode)
 
-        quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=10)
-
         heights_m = stratificationOptimizer.generateHeightModel(freq_Hz=freq_Hz, quantizationParameter=quantizationParameter,
         ionosphereState=ionosphereState,satelliteInformation=satelliteInformation)
-
-        #heights_m = [0, 100, 1000, 10000, 100000, 1000000]
 
         # ======================================================
         # Generate Ray State
         optimizer = RayPathOptimizer(
-            freq_Hz, self.timeAndLocation, heights_m, self.dispersionModel, self.transportMode)
+            freq_hz=freq_Hz, timeAndLocation=self.timeAndLocation, heights_m=heights_m, dispersionModel=self.dispersionModel, 
+            transportMode=self.transportMode, ionosphereState=ionosphereState)
 
-        rayStates = optimizer.optimize(satelliteInformation, ionosphereState)
+        rayStates = optimizer.optimize(satelliteInformation)
 
         totalIonoLoss_db = 0
         totalIonoDelay_sec = 0
+        totalGeoDistance_sec = 0
+
         for idx in range(len(rayStates) - 1):
             s12 =  rayStates[idx].lla.altitude_m - rayStates[idx-1].lla.altitude_m
+
+            totalGeoDistance_sec = totalIonoDelay_sec + s12
 
             totalIonoDelay_sec = totalIonoDelay_sec + \
                 (1 - rayStates[idx].nIndex.real)*s12
@@ -63,6 +64,6 @@ class EstimateRayPathEffects():
                 rayStates[idx].nIndex.imag*s12
 
         rayEffects = TransIonosphereEffects(
-            rayStates, totalIonoDelay_sec, totalIonoLoss_db)
+            rayStates, totalIonoDelay_sec, totalIonoLoss_db, totalGeoDistance_sec)
             
         return(rayEffects)

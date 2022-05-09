@@ -51,18 +51,19 @@ class TestRayPathOptimization(unittest.TestCase):
     def test_RayPathOptimizationX(self):
 
 
-        optimizer = RayPathOptimizer(
-            10e6, self.timeAndLocation, self.heights_m, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
-        rayState = optimizer.optimize(self.satelliteInformation, self.ionosphereState)
+        optimizer = RayPathOptimizer(freq_hz= 100e6,  timeAndLocation=self.timeAndLocation, 
+        heights_m=self.heights_m, dispersionModel=DispersionModel.X_MODEL, 
+            transportMode=TransportMode.PLASMA_MODE, ionosphereState= self.ionosphereState)
+        rayState = optimizer.optimize(self.satelliteInformation)
 
         self.assertTrue(rayState is not None)
 
 
     def test_RayPathOptimizationXY(self):
 
-        optimizer = RayPathOptimizer(
-            10e6, self.timeAndLocation, self.heights_m, dispersionModel=DispersionModel.XY_MODEL, transportMode=TransportMode.ORDINARY_MODE)
-        rayState = optimizer.optimize(self.satelliteInformation, self.ionosphereState)
+        optimizer = RayPathOptimizer(freq_hz= 100e6, timeAndLocation=self.timeAndLocation, heights_m=self.heights_m, dispersionModel=DispersionModel.XY_MODEL, 
+            transportMode=TransportMode.ORDINARY_MODE, ionosphereState= self.ionosphereState)
+        rayState = optimizer.optimize(self.satelliteInformation)
 
         self.assertTrue(rayState is not None)
 

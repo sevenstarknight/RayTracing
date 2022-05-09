@@ -15,6 +15,8 @@ from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.raypatheffects import EstimateRayPathEffects
+from src.stratification.quantizationparameter_class import QuantizationParameter
+from src.stratification.stratificationmethod_enum import StratificationMethod
 
 # ====================================================
 # constants
@@ -50,9 +52,12 @@ class TestRayPathEffects(unittest.TestCase):
         optimizer = EstimateRayPathEffects(
             timeAndLocation=timeAndLocation, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
         freq_Hz = 10*6
+        
+        quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=10)
 
         transIonosphereEffects = optimizer.estimate(
-            freq_Hz=freq_Hz, satelliteInformation=satelliteInformation, ionosphereState=ionosphereState)
+            freq_Hz=freq_Hz, satelliteInformation=satelliteInformation, ionosphereState=ionosphereState,
+             quantizationParameter = quantizationParameter)
 
         self.assertTrue(transIonosphereEffects is not None)
 

@@ -53,7 +53,7 @@ class TestStratificationOptimizer(unittest.TestCase):
         stratificationOptimizer = StratificationOptimizer(dispersionModel=DispersionModel.X_MODEL, 
         timeAndLocation=timeAndLocation, transportMode=TransportMode.PLASMA_MODE)
 
-        quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=100)
+        quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=10)
 
         heights_m = stratificationOptimizer.generateHeightModel(freq_Hz=10e6, quantizationParameter=quantizationParameter,
         ionosphereState=ionosphereState,satelliteInformation=satelliteInformation)

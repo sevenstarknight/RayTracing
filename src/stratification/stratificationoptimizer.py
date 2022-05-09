@@ -45,13 +45,22 @@ class StratificationOptimizer():
         sat_lat, sat_lon, sat_alt = pyproj.transform(
             ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
 
-        initialHeights_m = np.linspace(self.timeAndLocation.eventLocation_LLA.altitude_m, sat_alt, 100)
+        initialHeights_m = np.linspace(60e3, 1100e3, 1000)
+
+        exoAtmoHeights_m = np.array([0.467e4, 0.783e4, 1.100e4 , 1.416e4, 1.733e4, 
+        2.020e4 , 2.050e4 , 2.366e4 ,2.680e4 , 3.000e4])
+
+        initialHeights_m = np.append(initialHeights_m, self.timeAndLocation.eventLocation_LLA.altitude_m)
+        initialHeights_m = np.append(initialHeights_m, exoAtmoHeights_m)
+        initialHeights_m = np.append(initialHeights_m, sat_alt)
+        initialHeights_m.sort()
 
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
-            frequency_hz=freq_Hz, dispersionModel=self.dispersionModel, transportMode=self.transportMode)
+            frequency_hz=freq_Hz, dispersionModel=self.dispersionModel, transportMode=self.transportMode, 
+            ionosphereState=ionosphereState, startTimeAndLocation=self.timeAndLocation)
 
-        indexN = indexOfRefractionGenerator.estimateIndexN(startTimeAndLocation=self.timeAndLocation,
-        heightStratification_m=initialHeights_m, sat_ECEF=sat_ECEF, ionosphereState=ionosphereState)
+        indexN = indexOfRefractionGenerator.estimateIndexN(
+        heightStratification_m=initialHeights_m, sat_ECEF=sat_ECEF)
 
         indexNReal = np.zeros(len(indexN))
         for idx in range(len(indexN)):

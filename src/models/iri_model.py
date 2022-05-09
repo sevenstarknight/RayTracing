@@ -13,10 +13,20 @@ class IRI_Model(AbstractSpacePhysicsModel):
 
     def generatePointEstimate(self,  rayPoint: LLA_Coord) -> IRIOutput:
 
-        altkmrange = (rayPoint.altitude_m/1000,
-                      rayPoint.altitude_m/1000 + 1, 1.0)
-        iri = IRI(self.currentDateTime, altkmrange,
-                  rayPoint.lat_deg, rayPoint.lat_deg)
+        if(rayPoint.altitude_m > 120e3):
+            # TODO
+            altkmrange = [120e3/1000, 120e3/1000 + 1, 1.0]  
+        else:
+            altkmrange = [rayPoint.altitude_m/1000,
+                        rayPoint.altitude_m/1000 + 1, 1.0]
+        
+        try:
+            iri = IRI(time=self.currentDateTime, altkmrange=altkmrange,
+                glat=rayPoint.lat_deg, glon=rayPoint.lon_deg)
+        except Exception as e:
+            print(e)
+
+
         return(IRIOutput(iri))
 
     def generateSetEstimate(self,  rayPoints: list[LLA_Coord]) -> list[IRIOutput]:
