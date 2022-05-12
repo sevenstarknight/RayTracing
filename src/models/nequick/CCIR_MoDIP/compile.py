@@ -62,10 +62,4 @@ with open('modipNeQG_wrapped.txt') as f:
         modipout.writelines('[' + ','.join(row) + '],\n' for row in spine)
         modipout.writelines(']\n')
 
-        # modipout.writelines('\n\n')
-        #
-        # modipout.writelines('stModip_nowrap = [\n')
-        # modipout.writelines('[' + ','.join(row) + '],\n' for row in unwrappeddatalist)
-        # modipout.writelines(']\n')
-
 

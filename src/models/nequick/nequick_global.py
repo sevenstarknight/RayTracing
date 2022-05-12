@@ -1,7 +1,5 @@
 import csv
 import numpy as np
-from aux import *
-import time
 from NequickG import Position, GalileoBroadcast, NEQTime, NequickG, NequickG_parameters
 import spheretrig
 
