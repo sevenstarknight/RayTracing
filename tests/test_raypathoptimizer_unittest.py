@@ -51,7 +51,7 @@ class TestRayPathOptimization(unittest.TestCase):
     def test_RayPathOptimizationX(self):
 
 
-        optimizer = RayPathOptimizer(freq_hz= 100e6,  timeAndLocation=self.timeAndLocation, 
+        optimizer = RayPathOptimizer(freq_hz= 1000e6,  timeAndLocation=self.timeAndLocation, 
         heights_m=self.heights_m, dispersionModel=DispersionModel.X_MODEL, 
             transportMode=TransportMode.PLASMA_MODE, ionosphereState= self.ionosphereState)
         rayState = optimizer.optimize(self.satelliteInformation)
