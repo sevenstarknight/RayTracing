@@ -55,7 +55,7 @@ class TestStratificationIntegration(unittest.TestCase):
 
         freq_Hz = 1000*6
 
-        quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=10)
+        quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=20)
 
         transIonosphereEffects = estimateRayPathEffects.estimate(freq_Hz=freq_Hz, quantizationParameter=quantizationParameter, 
         ionosphereState=ionosphereState, satelliteInformation=satelliteInformation)
