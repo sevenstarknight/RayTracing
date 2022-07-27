@@ -16,7 +16,7 @@ class XModel(AbstractIndexRefraction):
         try:
             iriOutput = self.spacePhysicsModels.iri.generatePointEstimate(
                 rayPoint=currentState.lla)
-        except Exception me:
+        except Exception as me:
             LOGGER.error(str(me))
 
         n_e = iriOutput.n_e

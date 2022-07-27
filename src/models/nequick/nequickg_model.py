@@ -455,7 +455,7 @@ class NequickG_parameters:
         assert ( self.M3000F2 > 0 )
 
         self.NmF2 = NeqCriticalFreqToNe(self.foF2)
-        
+
         return self.foF2, self.M3000F2, self.NmF2
 
     def F1Layer(self):
@@ -630,21 +630,20 @@ class NequickG_parameters:
             return self.A2, self.A3
         else:
             A3a = 4.0 * self.NmE
-            # print 'A3a: ', A3a
             for i in range(5):
                 A2a = 4.0 * (self.NmF1 -
                              epstein(self.A1, self.hmF2, self.B2bot, self.hmF1) -
                              epstein(A3a, self.hmE, self.BEtop, self.hmF1))
-                # print 'A2a: ', A2a
+ 
                 A2a = NeqJoin(A2a, 0.8 * self.NmF1, 1, A2a - 0.8 * self.NmF1)
-                # print 'A2a', A2a
+          
                 A3a = 4.0 * (self.NmE -
                              epstein(A2a, self.hmF1, self.B1bot, self.hmE) -
                              epstein(self.A1, self.hmF2, self.B2bot, self.hmE))
 
             self.A2 = A2a
             self.A3 = NeqJoin(A3a, 0.05, 60.0, A3a - 0.005)
-            # print 'A3: ', self.A3
+
         return self.A2, self.A3
 
     def shape_parameter(self):

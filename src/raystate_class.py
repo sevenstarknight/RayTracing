@@ -19,8 +19,6 @@ class RayState:
         return(["Exit Elevation", "Exit Azimuth", "Latitude", "Longitude", "Altitude", "n"])
 
     def isNone(self):
-        #attrs = vars(self)
-        #print(', '.join("%s: %s" % item for item in attrs.items()))
 
         filledUp = self.exitElevation_deg is None
         filledUp = filledUp & self.exitAzimuth_deg is None
