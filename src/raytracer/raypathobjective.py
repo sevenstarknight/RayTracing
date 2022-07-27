@@ -1,5 +1,4 @@
 import math
-import logging
 
 # ====================================================
 # https://pyproj4.github.io/pyproj/stable/
@@ -14,11 +13,13 @@ from src.bindings.ionospherestate_class import IonosphereState
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
 
+from src.logger.simlogger import get_logger
+LOGGER = get_logger(__name__)
 # ====================================================
 # constants
 ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
-LOGGER = logging.getLogger("mylogger")
+
 
 
 class RayPathObjective():

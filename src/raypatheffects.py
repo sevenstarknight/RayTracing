@@ -49,12 +49,12 @@ class EstimateRayPathEffects():
 
         totalIonoLoss_db = 0
         totalIonoDelay_sec = 0
-        totalGeoDistance_sec = 0
+        totalGeoDistance_m = 0
 
         for idx in range(len(rayStates) - 1):
-            s12 =  rayStates[idx].lla.altitude_m - rayStates[idx-1].lla.altitude_m
+            s12 =  rayStates[idx+1].lla.altitude_m - rayStates[idx].lla.altitude_m
 
-            totalGeoDistance_sec = totalIonoDelay_sec + s12
+            totalGeoDistance_m = totalGeoDistance_m + s12
 
             totalIonoDelay_sec = totalIonoDelay_sec + \
                 (1 - rayStates[idx].nIndex.real)*s12
@@ -64,6 +64,6 @@ class EstimateRayPathEffects():
                 rayStates[idx].nIndex.imag*s12
 
         rayEffects = TransIonosphereEffects(
-            rayStates, totalIonoDelay_sec, totalIonoLoss_db, totalGeoDistance_sec)
+            rayStates, totalIonoDelay_sec, totalIonoLoss_db, totalGeoDistance_m)
             
         return(rayEffects)

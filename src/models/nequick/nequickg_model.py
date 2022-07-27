@@ -5,6 +5,8 @@ import numpy as np
 
 from src.models.nequick.aux import NeqClipExp, NeqCriticalFreqToNe, NeqJoin, epstein
 
+from src.logger.simlogger import get_logger
+LOGGER = get_logger(__name__)
 
 class NequickG_parameters:
     def __init__(self, pos, broadcast, time):
@@ -325,9 +327,9 @@ class NequickG_parameters:
         # fa = sfac * NeqClipExp(np.log(np.cos(chin*np.pi/180)) * 0.3)
         # foE = np.sqrt(fa * fa + 0.49)
         #
-        # print foE - self.foE
+
         if (self.foE < 0):
-            print(self.foE)
+            LOGGER.info(self.foE)
         assert(self.foE >= 0)
         return self.foE, self.NmE
 
@@ -453,11 +455,7 @@ class NequickG_parameters:
         assert ( self.M3000F2 > 0 )
 
         self.NmF2 = NeqCriticalFreqToNe(self.foF2)
-
-        # if foF2 < 0:
-        #     print foF2, self.Azr, self.Az, self.NmF2, self.Position.latitude, self.Position.longitude
-        # assert (foF2 > 0) # this will fail
-
+        
         return self.foF2, self.M3000F2, self.NmF2
 
     def F1Layer(self):
@@ -475,13 +473,13 @@ class NequickG_parameters:
         # gradient factor of 1000 is arbitrary and large so that neqjoin can approx a step function
         # why is foE = 2 a threshold for day -night boundary?
 
-        # print '1.4 * foE', 1.4 * foE
+
         foF1 = NeqJoin(1.4 * foE, 0, 1000.0, foE - 2)
-        # print 'foF1: ', foF1
+
         foF1 = NeqJoin(0, foF1, 1000.0, foE - foF1)
-        # print 'foF1: ', foF1
+
         foF1 = NeqJoin(foF1, 0.85 * foF1, 60.0, 0.85 * foF2 - foF1)
-        # print 'foF1: ', foF1
+
 
         if foF1 < 10 ** -6:
             foF1 = 0

@@ -2,6 +2,9 @@ import numpy as np
 
 from src.models.nequick.nequickg_model import NequickG_bottomside, NequickG_parameters, NequickG_topside
 
+from src.logger.simlogger import get_logger
+LOGGER = get_logger(__name__)
+
 class NequickG:
     def __init__(self, parameters: NequickG_parameters):
         # self.Para = parameters
@@ -65,7 +68,7 @@ class NequickG:
             count += 1
 
         if count == 20:
-            print("vTEC integration did not converge")
+            LOGGER.info("vTEC integration did not converge")
 
         return (GN2 + (GN2 - GN1) / 15.0)
 

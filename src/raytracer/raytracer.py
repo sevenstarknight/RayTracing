@@ -1,5 +1,4 @@
 import math
-import logging
 import cmath
 # ====================================================
 # https://pyproj4.github.io/pyproj/stable/
@@ -16,11 +15,13 @@ from src.bindings.exceptions_class import IntersectException
 from src.bindings.coordinates_class import LLA_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
 
+from src.logger.simlogger import get_logger
+LOGGER = get_logger(__name__)
 # ====================================================
 # constants
 ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
-LOGGER = logging.getLogger("mylogger")
+
 
 
 class RayTracer():
@@ -37,7 +38,6 @@ class RayTracer():
         mod = az % 360
         if(az < 0 or az > 360):
             LOGGER.warn("Round")
-            print(mod)
 
         # =======================================================
         # Initialize the ray state for the start point

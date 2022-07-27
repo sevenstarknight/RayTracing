@@ -14,8 +14,8 @@ class MSISE_Model(AbstractSpacePhysicsModel):
 
     def generatePointEstimate(self,  rayPoint: LLA_Coord) -> MSISEOutput:
         # Atmosphere Model
-        ds, ts = msise_model(self.currentDateTime, rayPoint.altitude_m/1000, rayPoint.lat_deg, rayPoint.lon_deg,
-                             self.ionosphereState.f107a, self.ionosphereState.f107, self.ionosphereState.ap[0])
+        ds, ts = msise_model(time=self.currentDateTime, alt=rayPoint.altitude_m/1000, lat=rayPoint.lat_deg, lon=rayPoint.lon_deg,
+                             f107a=self.ionosphereState.f107a, f107=self.ionosphereState.f107, ap=self.ionosphereState.ap[0], ap_a=self.ionosphereState.ap)
         return(MSISEOutput(ds, ts))
 
     def generateSetEstimate(self,  rayPoints: list[LLA_Coord]) -> list[MSISEOutput]:

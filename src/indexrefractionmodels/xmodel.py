@@ -7,13 +7,17 @@ from scipy import constants
 from src.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
 from src.raystate_class import RayState
 
+from src.logger.simlogger import get_logger
+LOGGER = get_logger(__name__)
 
 class XModel(AbstractIndexRefraction):
 
     def estimateIndexOfRefraction(self, currentState: RayState) -> complex:
-
-        iriOutput = self.spacePhysicsModels.iri.generatePointEstimate(
-            rayPoint=currentState.lla)
+        try:
+            iriOutput = self.spacePhysicsModels.iri.generatePointEstimate(
+                rayPoint=currentState.lla)
+        except Exception me:
+            LOGGER.error(str(me))
 
         n_e = iriOutput.n_e
         if(n_e == -1):
@@ -21,7 +25,7 @@ class XModel(AbstractIndexRefraction):
         else:
             angularFreq_sq = (2*math.pi*self.frequency_hz)**2
             angularFreq_p_sq = (constants.elementary_charge **
-                                2)*n_e/(constants.electron_mass)
+                                2)*n_e/(constants.epsilon_0*constants.electron_mass)
             bigX = angularFreq_p_sq/angularFreq_sq
 
             nSq = 1 - bigX

@@ -4,8 +4,6 @@ import numpy as np
 from scipy import interpolate
 from scipy import optimize
 
-import logging
-
 # ====================================================
 # local
 from src.stratification.abstractquantizer import AbstractQuantizer
@@ -13,10 +11,12 @@ from src.stratification.quantization_class import Quantization
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.twodseries_class import TwoDSeries
 
+from src.logger.simlogger import get_logger, setup_applevel_logger
+LOGGER = get_logger(__name__)
 # ====================================================
 # constants
 MAXITER = 100000
-LOGGER = logging.getLogger("mylogger")
+
 
 class RDPQuantizer(AbstractQuantizer):
 

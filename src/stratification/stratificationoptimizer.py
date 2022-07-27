@@ -45,7 +45,7 @@ class StratificationOptimizer():
         sat_lat, sat_lon, sat_alt = pyproj.transform(
             ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
 
-        initialHeights_m = np.linspace(60e3, 1100e3, 1000)
+        initialHeights_m = np.linspace(60e3, 1100e3, 50)
 
         exoAtmoHeights_m = np.array([0.467e4, 0.783e4, 1.100e4 , 1.416e4, 1.733e4, 
         2.020e4 , 2.050e4 , 2.366e4 ,2.680e4 , 3.000e4])

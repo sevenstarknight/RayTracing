@@ -3,6 +3,8 @@ import numpy as np
 from NequickG import Position, GalileoBroadcast, NEQTime, NequickG, NequickG_parameters
 import spheretrig
 
+from src.logger.simlogger import get_logger
+LOGGER = get_logger(__name__)
 
 class NequickG_global:
     def __init__(self, time, broadcast:GalileoBroadcast):
@@ -100,7 +102,7 @@ class NequickG_global:
                 tolerance = 0.01
 
         if ray.p_radius < 0.1:
-            print("calulcating vTEC instead")
+            LOGGER.info("calulcating vTEC instead")
             pos = Position(ray.ob_lat, ray.ob_lon)
             neq, para = self.get_Nequick_local(pos)
             return neq.vTEC(ray.ob_h, ray.sat_h)
@@ -126,7 +128,7 @@ class NequickG_global:
             count += 1
 
         if count == 20:
-            print("Warning: Integration2 did not converge")
+            LOGGER.warning("Warning: Integration2 did not converge")
 
         return (GN2 + (GN2 - GN1) / 15.0) * 1000
 
@@ -234,9 +236,9 @@ class Ray:
             r = self.ob_radius
 
         if r < 6371.2:
-            print(r)
-            print(self.p_radius)
-            print(self.ob_radius)
+            LOGGER.info(r)
+            LOGGER.info(self.p_radius)
+            LOGGER.info(self.ob_radius)
             return False
         else:
             return True

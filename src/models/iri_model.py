@@ -9,6 +9,9 @@ from src.models.irioutput_class import IRIOutput
 from src.bindings.coordinates_class import LLA_Coord
 from src.raystate_class import RayState
 
+from src.logger.simlogger import get_logger
+LOGGER = get_logger(__name__)
+
 class IRI_Model(AbstractSpacePhysicsModel):
 
     def generatePointEstimate(self,  rayPoint: LLA_Coord) -> IRIOutput:
@@ -24,8 +27,7 @@ class IRI_Model(AbstractSpacePhysicsModel):
             iri = IRI(time=self.currentDateTime, altkmrange=altkmrange,
                 glat=rayPoint.lat_deg, glon=rayPoint.lon_deg)
         except Exception as e:
-            print(e)
-
+            LOGGER.error(str(e))
 
         return(IRIOutput(iri))
 
