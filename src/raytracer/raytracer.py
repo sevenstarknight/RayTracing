@@ -1,109 +1,80 @@
 import math
 import cmath
-# ====================================================
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
 
 # ====================================================
 # local imports
 from src.raystate_class import RayState
 from src.raytracer.raytracer_computations import computeGeocentricRadius, computeNewIntersection, computeEntryAngle, generatePositionAndVector
 
-from src.raytracer.layeroutput_class import LayerOutput
+from src.bindings.layeroutput_class import LayerOutput
 
 from src.bindings.exceptions_class import IntersectException
-from src.bindings.coordinates_class import LLA_Coord
+from src.bindings.coordinates_class import ECEF_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
 
-from src.logger.simlogger import get_logger
-LOGGER = get_logger(__name__)
-# ====================================================
-# constants
-ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+from src.positional.locationconverter import convertFromECEFtoLLA
 
+from src.logger.simlogger import get_logger
+from src.rayvector_class import RayVector
+LOGGER = get_logger(__name__)
 
 
 class RayTracer():
-    def __init__(self, timeAndLocation: TimeAndLocation):
+    def __init__(self, timeAndLocation: TimeAndLocation, heights_m: list[float], indexN: list[complex]):
         self.timeAndLocation = timeAndLocation
+        self.heights_m = heights_m
+        self.indexN = indexN
 
-    def execute(self, heights_m: list[float], indexN: list[complex], params: list[float]) -> list[RayState]:
+    def execute(self, params: list[float]) -> list[RayVector]:
         '''
         The ray tracer logic, handles the loop that iterates the ray through layers, 
         inputs are the heights of the layers, the associated index of refraction, and 
         the initial exit state of the ray
         '''
         az, el = params
-        mod = az % 360
         if(az < 0 or az > 360):
-            LOGGER.warn("Round")
+            LOGGER.warn("Exceeding 0/360 bounds for azimuth")
 
         # =======================================================
         # Initialize the ray state for the start point
-        res = next(x for x, val in enumerate(heights_m) if val >=
-                   self.timeAndLocation.eventLocation_LLA.altitude_m)
-
-        n_current = indexN[res]
-
         currentState = RayState(
-            el, az, self.timeAndLocation.eventLocation_LLA, n_current)
+            exitElevation_deg=el, exitAzimuth_deg=az, lla=self.timeAndLocation.eventLocation_LLA)
 
         # =================================================================
-        rayStates = []
-        rayStates.append(currentState)
+        rayVectors = []
 
         for idx in range(100):
 
-            layerOutput = self.insideLayerOperations(
-                currentState, heights_m, indexN, rayStates)
+            layerOutput: LayerOutput = self.insideLayerOperations(
+                currentState, rayVectors)
 
             if(layerOutput.n_1 == None):
                 LOGGER.debug("Done with iterations, jump out of loop")
-                rayStates = layerOutput.stateList
                 break
 
-            currentState = self.onTheEdgeOperations(currentState, layerOutput)
+            currentState: RayState = self.onTheEdgeOperations(
+                currentState, layerOutput)
 
-            rayStates.append(currentState)
+        return(rayVectors)
 
-        return(rayStates)
-
-    def insideLayerOperations(self, currentState: RayState, heights_m: list[float], indexN: list[complex], stateList: list[RayState]) -> LayerOutput:
-        # ==========================================================================
-        # Inside the Layer
-        # ==========================================================================
+    def _findNextIntersectPoint(self, currentState: RayState, ecef_p1: ECEF_Coord, sVector_m: ECEF_Coord) -> tuple[ECEF_Coord, float, int]:
         lla_p1 = currentState.lla
 
-        ecef_p1, sVector_m = generatePositionAndVector(currentState)
-
-        if(max(heights_m) <= lla_p1.altitude_m):
-            # exiting the loop
-            layerOutput = LayerOutput(
-                None, None, None, None, None, stateList=stateList)
-            LOGGER.debug("Exiting the atmopshere")
-            return(layerOutput)
-
-        # ==========================================================================
-        # find next layer
         if(currentState.exitElevation_deg > 0):
             # going up
-            res = next(x for x, val in enumerate(
-                heights_m) if val > lla_p1.altitude_m)
-
-            if(len(heights_m) <= res):
-                # exiting the loop
-                layerOutput = LayerOutput(
-                    None, None, None, None, None, stateList=stateList)
-                LOGGER.debug("Exiting the atmopshere")
-                return(layerOutput)
-            else:
-                # layer intersection
-                newAltitude_m = heights_m[res]
+            indx = next(x for x, val in enumerate(
+                self.heights_m) if val > currentState.lla.altitude_m)
         else:
             # going down
-            res = len([x for x in heights_m if x < lla_p1.altitude_m]) - 1
-            newAltitude_m = heights_m[res]
+            indx = len([x for x in self.heights_m if x <
+                       currentState.lla.altitude_m]) - 1
+
+        if(len(self.heights_m) <= indx):
+            LOGGER.debug("Outside ionosphere")
+            return None, None
+        else:
+            # layer intersection
+            newAltitude_m = self.heights_m[indx]
 
         # ==========================================================================
         # use quadratic equation to determine intersection in ECEF of the next layer based prior intersection and vector
@@ -111,71 +82,109 @@ class RayTracer():
             ecef_p2 = computeNewIntersection(ecef_p1, sVector_m, newAltitude_m)
         except IntersectException as inst1:
             # no intersection, which means (a) angle is down and (b) it is skipping over the lower layer; intersect with self
-            if(lla_p1.altitude_m in heights_m):
+            if(lla_p1.altitude_m in self.heights_m):
                 newAltitude_m = lla_p1.altitude_m
             else:
-                res = next(x for x, val in enumerate(
-                    heights_m) if val > lla_p1.altitude_m)
-                newAltitude_m = heights_m[res]
+                indx = next(x for x, val in enumerate(
+                    self.heights_m) if val > lla_p1.altitude_m)
+                newAltitude_m = self.heights_m[indx]
 
             try:
                 ecef_p2 = computeNewIntersection(
                     ecef_p1, sVector_m, newAltitude_m)
             except IntersectException as inst2:
                 LOGGER.error(inst2.args)
+                raise IntersectException("how did we get here?")
 
-        # ===================================================================
-        # determine index transition
-        indx = heights_m.index(newAltitude_m)
+        return ecef_p2, newAltitude_m, indx
 
-        if(lla_p1.altitude_m in heights_m):
+    def _estimateIndexesAtTransition(self, indx: int, newAltitude_m: float, currentState: RayState) -> tuple[complex, complex]:
+
+        lla_p1 = currentState.lla
+
+        if(lla_p1.altitude_m in self.heights_m):
             # standard heights
             if(newAltitude_m == lla_p1.altitude_m):
                 # horizontal transitions
-                n_2 = indexN[indx]
-                n_1 = indexN[indx - 1]
+                n_2 = self.indexN[indx]
+                n_1 = self.indexN[indx - 1]
                 LOGGER.debug("horizontal transitions")
             elif(newAltitude_m < lla_p1.altitude_m):
-                if(newAltitude_m == min(heights_m)):
+                if(newAltitude_m == min(self.heights_m)):
                     # to ground
                     n_2 = 3.0  # rough estimate
-                    n_1 = indexN[indx]
+                    n_1 = self.indexN[indx]
                     LOGGER.debug("bounce off ground")
                 else:
-                    n_2 = indexN[indx - 1]
-                    n_1 = indexN[indx]
+                    n_2 = self.indexN[indx - 1]
+                    n_1 = self.indexN[indx]
                     LOGGER.debug("down transitions")
             elif(newAltitude_m > lla_p1.altitude_m):
-                n_2 = indexN[indx]
-                n_1 = indexN[indx - 1]
+                n_2 = self.indexN[indx]
+                n_1 = self.indexN[indx - 1]
                 LOGGER.debug("up transitions")
         else:
             if(newAltitude_m < lla_p1.altitude_m):
-                if(res == 0):
+                if(indx == 0):
                     # to ground
                     n_2 = 3.0  # rough estimate
-                    n_1 = currentState.nIndex
+                    n_1 = self.indexN[indx]
                     LOGGER.debug("bounce off ground")
                 else:
-                    n_2 = indexN[indx - 1]
-                    n_1 = currentState.nIndex
+                    n_2 = self.indexN[indx - 1]
+                    n_1 = self.indexN[indx]
                     LOGGER.debug("down transitions")
             elif(newAltitude_m > lla_p1.altitude_m):
-                n_2 = indexN[indx]
-                n_1 = currentState.nIndex
+                n_2 = self.indexN[indx]
+                n_1 = self.indexN[indx - 1]
                 LOGGER.debug("up transitions")
+
+        return (n_1, n_2)
+
+    def insideLayerOperations(self, currentState: RayState, rayVectors: list[RayVector]) -> LayerOutput:
+        # ==========================================================================
+        # Inside the Layer
+        # ==========================================================================
+        lla_p1 = currentState.lla
+
+        if(max(self.heights_m) <= lla_p1.altitude_m):
+            # exiting the loop
+            layerOutput = LayerOutput.from_Empty()
+            LOGGER.debug("Exiting the atmosphere")
+            return(layerOutput)
+
+        ecef_p1, sVector_m = generatePositionAndVector(currentState)
+
+        # ==========================================================================
+        # use quadratic equation to determine intersection in ECEF of the next layer based prior intersection and vector
+        ecef_p2, newAltitude_m, indx = self._findNextIntersectPoint(currentState=currentState,
+                                                                    ecef_p1=ecef_p1, sVector_m=sVector_m)
+
+        if ecef_p2 == None:
+            # exiting the loop
+            layerOutput = LayerOutput.from_Empty()
+            LOGGER.debug("Exiting the atmosphere")
+            return(layerOutput)
+
+        rayVector = RayVector(rayState=currentState, sVector_m=sVector_m, ecef_p1=ecef_p1,
+                              ecef_p2=ecef_p2, newAltitude_m=newAltitude_m, n_1=n_1)
+
+        rayVectors.append(rayVector)
         # ===================================================================
-        lon_deg, lat_deg, alt_m = pyproj.transform(
-            ECEF, LLA, ecef_p2.x_m, ecef_p2.y_m, ecef_p2.z_m, radians=False)
-        # force to altitude, loss because of approx.
-        lla_p2 = LLA_Coord(lat_deg, lon_deg, newAltitude_m)
+        # determine index transition
+        n_1, n_2 = self._estimateIndexesAtTransition(indx=indx, currentState=currentState)
+
+        # ===================================================================
+        lla_p2 = convertFromECEFtoLLA(ecef=ecef_p2)
+        lla_p2.setAltitude(newAlitude_m=newAltitude_m)
 
         # estimate entry angle onto the curved layers
-        entryAngle_deg = computeEntryAngle(
-            currentState.exitElevation_deg, ecef_p1, ecef_p2, lla_p1, lla_p2)
+        entryAngle_deg = computeEntryAngle(exitElevation=currentState.exitElevation_deg,
+                                           ecef_p1=ecef_p1, ecef_p2=ecef_p2, lla_p1=lla_p1, lla_p2=lla_p2)
 
         layerOutput = LayerOutput(
-            n_1, n_2, entryAngle_deg, newAltitude_m, lla_p2, stateList)
+            n_1=n_1, n_2=n_2, entryAngle_deg=entryAngle_deg, newAltitude_m=newAltitude_m,
+            intersection_LLA=lla_p2)
 
         return(layerOutput)
 

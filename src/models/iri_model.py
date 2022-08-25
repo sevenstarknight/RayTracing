@@ -26,10 +26,15 @@ class IRI_Model(AbstractSpacePhysicsModel):
         try:
             iri = IRI(time=self.currentDateTime, altkmrange=altkmrange,
                 glat=rayPoint.lat_deg, glon=rayPoint.lon_deg)
-        except Exception as e:
-            LOGGER.error(str(e))
+            output = IRIOutput().from_xarray(iono=iri, altkmrange = altkmrange)
 
-        return(IRIOutput(iri))
+        except Exception as e:
+            LOGGER.warning(str(e))
+            LOGGER.warning(str(self.currentDateTime) + str(altkmrange) + str(rayPoint.lat_deg) + str(rayPoint.lon_deg))
+            output = IRIOutput.from_empty()
+
+
+        return output
 
     def generateSetEstimate(self,  rayPoints: list[LLA_Coord]) -> list[IRIOutput]:
         iriOutputs = []

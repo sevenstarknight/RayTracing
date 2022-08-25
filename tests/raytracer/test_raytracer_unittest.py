@@ -3,7 +3,7 @@ from datetime import datetime
 
 # ====================================================
 # local imports
-from src.raytracer.layeroutput_class import LayerOutput
+from src.bindings.layeroutput_class import LayerOutput
 from src.bindings.coordinates_class import LLA_Coord
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.raytracer.raytracer import RayTracer

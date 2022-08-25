@@ -15,10 +15,11 @@ from src.models.msise_model import MSISE_Model
 from src.models.spacephysicsmodels import SpacePhysicsModels
 from src.positional.slantpathgenerator import SlantPathGenerator
 
+
 class IndexOfRefractionGenerator():
 
-    def __init__(self, frequency_hz: float, dispersionModel: DispersionModel, transportMode: TransportMode, 
-    startTimeAndLocation: TimeAndLocation, ionosphereState: IonosphereState):
+    def __init__(self, frequency_hz: float, dispersionModel: DispersionModel, transportMode: TransportMode,
+                 startTimeAndLocation: TimeAndLocation, ionosphereState: IonosphereState):
         self.startTimeAndLocation = startTimeAndLocation
 
         # make the model
@@ -33,15 +34,16 @@ class IndexOfRefractionGenerator():
 
         # model the index of refraction
         if(dispersionModel is DispersionModel.X_MODEL):
-            self.refractionModel = XModel(spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
+            self.refractionModel = XModel(
+                spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
         elif(dispersionModel is DispersionModel.XY_MODEL):
-            self.refractionModel = XYModel(spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
+            self.refractionModel = XYModel(
+                spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
         elif(dispersionModel is DispersionModel.XYZ_MODEL):
-            self.refractionModel = XYZModel(spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
+            self.refractionModel = XYZModel(
+                spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
         else:
             raise Exception("Dispersion Model Unknown")
-
-
 
     def estimateIndexN(self, sat_ECEF: ECEF_Coord,  heightStratification_m: list[float]) -> list[complex]:
 
@@ -53,7 +55,8 @@ class IndexOfRefractionGenerator():
         #
         indexNs = []
         for rayState in slantRayStates:
-            indexN = self.refractionModel.estimateIndexOfRefraction(currentState=rayState)
+            indexN = self.refractionModel.estimateIndexOfRefraction(
+                currentState=rayState)
             indexNs.append(indexN)
 
         return(indexNs)

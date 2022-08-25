@@ -1,13 +1,20 @@
 import math
 
+
+class AER_Coord:
+    def __init__(self, az_deg: float, ele_deg: float, range_m: float) -> None:
+        self.az_deg = az_deg
+        self.ele_deg = ele_deg
+        self.range_m = range_m
+
+
 class LLA_Coord:
     def __init__(self, lat_deg: float, lon_deg: float, altitude_m: float):
         self.lat_deg = lat_deg
         self.lon_deg = lon_deg
         self.altitude_m = altitude_m
 
-
-    def setAltitude(self, newAlitude_m : float):
+    def setAltitude(self, newAlitude_m: float):
         self.altitude_m = newAlitude_m
 
 
