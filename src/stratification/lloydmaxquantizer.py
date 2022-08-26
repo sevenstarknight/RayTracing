@@ -7,7 +7,7 @@ from src.stratification.abstractquantizer import AbstractQuantizer
 from src.stratification.quantization_class import Quantization
 from src.stratification.quantizationparameter_class import QuantizationParameter
 
-from src.logger.simlogger import get_logger, setup_applevel_logger
+from src.logger.simlogger import get_logger
 LOGGER = get_logger(__name__)
 # ====================================================
 # constants

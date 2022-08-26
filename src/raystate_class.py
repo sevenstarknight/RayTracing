@@ -12,8 +12,8 @@ class RayState:
         self.lla = lla
 
     def generateList(self):
-        return([self.exitElevation_deg, self.exitAzimuth_deg, self.lla.lat_deg, self.lla.lon_deg, 
-        self.lla.altitude_m])
+        return([self.exitElevation_deg, self.exitAzimuth_deg, self.lla.lat_deg, self.lla.lon_deg,
+                self.lla.altitude_m])
 
     def generateColumnNames(self):
         return(["Exit Elevation", "Exit Azimuth", "Latitude", "Longitude", "Altitude"])

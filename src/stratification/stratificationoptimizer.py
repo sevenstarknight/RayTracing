@@ -1,8 +1,4 @@
-from scipy import constants
 import numpy as np
-# ====================================================
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
 
 # ====================================================
 # local imports
@@ -12,6 +8,7 @@ from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefracti
 from src.bindings.timeandlocation_class import TimeAndLocation
 from src.bindings.ionospherestate_class import IonosphereState
 from src.bindings.satelliteinformation_class import SatelliteInformation
+from src.positional.locationconverter import convertFromECEFtoLLA
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.stratification.twodseries_class import TwoDSeries
 from src.stratification.stratificationmethod_enum import StratificationMethod
@@ -22,12 +19,11 @@ from src.stratification.equalareaquantizer import EqualAreaQuantizer
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.decimationquantizer import DecimationQuantizer
 
-# ====================================================
-# constants
-ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 class StratificationOptimizer():
+
+    _exoAtmoHeights_m = np.array([0.467e4, 0.783e4, 1.100e4 , 1.416e4, 1.733e4, 
+        2.020e4 , 2.050e4 , 2.366e4 ,2.680e4 , 3.000e4])
 
     def __init__(self, timeAndLocation: TimeAndLocation, dispersionModel: DispersionModel, transportMode: TransportMode):
         self.timeAndLocation = timeAndLocation
@@ -42,17 +38,13 @@ class StratificationOptimizer():
         sat_ECEF = satPosGenerator.estimatePosition_ECEF(
             self.timeAndLocation.eventTime_UTC)
 
-        sat_lat, sat_lon, sat_alt = pyproj.transform(
-            ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
+        sat_LLA = convertFromECEFtoLLA(ecef=sat_ECEF)
 
         initialHeights_m = np.linspace(60e3, 1100e3, 50)
 
-        exoAtmoHeights_m = np.array([0.467e4, 0.783e4, 1.100e4 , 1.416e4, 1.733e4, 
-        2.020e4 , 2.050e4 , 2.366e4 ,2.680e4 , 3.000e4])
-
         initialHeights_m = np.append(initialHeights_m, self.timeAndLocation.eventLocation_LLA.altitude_m)
-        initialHeights_m = np.append(initialHeights_m, exoAtmoHeights_m)
-        initialHeights_m = np.append(initialHeights_m, sat_alt)
+        initialHeights_m = np.append(initialHeights_m, self._exoAtmoHeights_m)
+        initialHeights_m = np.append(initialHeights_m, sat_LLA.altitude_m)
         initialHeights_m.sort()
 
         indexOfRefractionGenerator = IndexOfRefractionGenerator(

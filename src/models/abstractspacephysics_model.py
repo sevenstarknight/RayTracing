@@ -4,8 +4,7 @@ from datetime import datetime
 ## ====================================================
 # local imports
 from src.bindings.ionospherestate_class import IonosphereState
-from src.bindings.coordinates_class import LLA_Coord
-from src.raystate_class import RayState
+from src.rayvector_class import RayVector
 
 class AbstractSpacePhysicsModel(ABC):
 
@@ -15,13 +14,9 @@ class AbstractSpacePhysicsModel(ABC):
         super().__init__()
 
     @abstractmethod
-    def generatePointEstimate(self, rayPoint : LLA_Coord):
+    def generatePointEstimate(self, rayVector : RayVector):
         pass
 
     @abstractmethod
-    def generateSetEstimate(self, rayPoints : list[LLA_Coord]):
-        pass
-    
-    @abstractmethod
-    def generateSetEstimateFromRayState(self,  rayStates : list[RayState]):
+    def generateSetEstimate(self, rayVector : list[RayVector]):
         pass

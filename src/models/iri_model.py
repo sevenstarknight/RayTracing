@@ -6,46 +6,42 @@ from iri2016 import IRI
 # local imports
 from src.models.abstractspacephysics_model import AbstractSpacePhysicsModel
 from src.models.irioutput_class import IRIOutput
-from src.bindings.coordinates_class import LLA_Coord
-from src.raystate_class import RayState
 
 from src.logger.simlogger import get_logger
+from src.rayvector_class import RayVector
 LOGGER = get_logger(__name__)
 
 class IRI_Model(AbstractSpacePhysicsModel):
 
-    def generatePointEstimate(self,  rayPoint: LLA_Coord) -> IRIOutput:
+    def generatePointEstimate(self,  rayVector: RayVector) -> IRIOutput:
+        lla = rayVector._rayState.lla
+        altitude_m = rayVector._rayState.lla.altitude_m
+        newAltitude_m = rayVector._newAltitude_m
 
-        if(rayPoint.altitude_m > 120e3):
+        if(altitude_m > 120e3):
             # TODO
             altkmrange = [120e3/1000, 120e3/1000 + 1, 1.0]  
         else:
-            altkmrange = [rayPoint.altitude_m/1000,
-                        rayPoint.altitude_m/1000 + 1, 1.0]
+            altkmrange = [altitude_m/1000,
+                        newAltitude_m/1000, 1.0]
         
         try:
             iri = IRI(time=self.currentDateTime, altkmrange=altkmrange,
-                glat=rayPoint.lat_deg, glon=rayPoint.lon_deg)
+                glat=lla.lat_deg, glon=lla.lon_deg)
             output = IRIOutput().from_xarray(iono=iri, altkmrange = altkmrange)
 
         except Exception as e:
             LOGGER.warning(str(e))
-            LOGGER.warning(str(self.currentDateTime) + str(altkmrange) + str(rayPoint.lat_deg) + str(rayPoint.lon_deg))
+            LOGGER.warning(str(self.currentDateTime) + str(altkmrange) + str(lla.lat_deg) + str(lla.lon_deg))
             output = IRIOutput.from_empty()
 
 
         return output
 
-    def generateSetEstimate(self,  rayPoints: list[LLA_Coord]) -> list[IRIOutput]:
+    def generateSetEstimate(self,  rayVectors: list[RayVector]) -> list[IRIOutput]:
         iriOutputs = []
-        for rayPoint in rayPoints:
-            iriOutputs.append(self.generatePointEstimate(rayPoint))
+        for rayVector in rayVectors:
+            iriOutputs.append(self.generatePointEstimate(rayVector=rayVector))
 
         return(iriOutputs)
 
-    def generateSetEstimateFromRayState(self,  rayPoints: list[RayState]) -> list[IRIOutput]:
-        iriOutputs = []
-        for rayPoint in rayPoints:
-            iriOutputs.append(self.generatePointEstimate(rayPoint.lla))
-
-        return(iriOutputs)

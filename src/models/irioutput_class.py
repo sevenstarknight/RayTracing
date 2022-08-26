@@ -20,7 +20,7 @@ class IRIOutput():
         pass
 
     @classmethod
-    def from_xarray(cls, iono: xarray.Dataset, altkmrange: list[float]):
+    def from_xarray(cls, iono: xarray.Dataset):
         df = iono.to_dataframe()
         classIri = cls()
 
