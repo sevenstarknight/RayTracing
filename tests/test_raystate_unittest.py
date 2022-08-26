@@ -2,7 +2,7 @@ import unittest
 
 # ====================================================
 # local imports
-from src.raystate_class import RayState
+from src.bindings.raytracer.raystate_class import RayState
 from src.bindings.positional.coordinates_class import LLA_Coord
 
 class TestRayState(unittest.TestCase):

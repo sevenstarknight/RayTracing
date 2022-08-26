@@ -16,7 +16,7 @@ from src.models.igrf_model import IGRF_Model
 from src.models.iri_model import IRI_Model
 from src.models.msise_model import MSISE_Model
 from src.models.spacephysicsmodels import SpacePhysicsModels
-from src.raystate_class import RayState
+from src.bindings.raytracer.raystate_class import RayState
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.positional.slantpathgenerator import SlantPathGenerator
 

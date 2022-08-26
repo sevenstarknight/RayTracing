@@ -7,7 +7,7 @@ from src.bindings.raytracer.interface_class import Interface
 from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.raytracer.raytracer import RayTracer
-from src.raystate_class import RayState
+from src.bindings.raytracer.raystate_class import RayState
 
 class TestRayTracer(unittest.TestCase):
 

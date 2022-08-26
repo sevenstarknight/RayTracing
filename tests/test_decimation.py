@@ -4,8 +4,6 @@ import math
 from tqdm import trange, tqdm
 import unittest
 
-import sys
-sys.path.append("../")
 # ======================================================================================
 # Local imports
 from src.endtoenddemonstration import EndToEndDemo
