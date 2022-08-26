@@ -1,7 +1,7 @@
 from datetime import datetime
 # ====================================================
 # local imports
-from src.bindings.coordinates_class import LLA_Coord
+from src.bindings.positional.coordinates_class import LLA_Coord
 
 class TimeAndLocation():
     def __init__(self, eventTime_UTC:datetime, eventLocation_LLA:LLA_Coord):

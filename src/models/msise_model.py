@@ -6,31 +6,23 @@ from nrlmsise00 import msise_model
 # local imports
 from src.models.abstractspacephysics_model import AbstractSpacePhysicsModel
 from src.models.msiseoutput_class import MSISEOutput
-from src.bindings.coordinates_class import LLA_Coord
-from src.raystate_class import RayState
-from src.rayvector_class import RayVector
-
+from src.bindings.positional.coordinates_class import LLA_Coord
+from src.bindings.positional.layer_class import Layer
 
 class MSISE_Model(AbstractSpacePhysicsModel):
 
-    def generatePointEstimate(self,  rayPoint: RayVector) -> MSISEOutput:
+    def generatePointEstimate(self,  layer: Layer) -> MSISEOutput:
         # Atmosphere Model
-        ds, ts = msise_model(time=self.currentDateTime, alt=rayPoint.altitude_m/1000, lat=rayPoint.lat_deg, lon=rayPoint.lon_deg,
-                             f107a=self.ionosphereState.f107a, f107=self.ionosphereState.f107, ap=self.ionosphereState.ap[0], ap_a=self.ionosphereState.ap)
+        lla: LLA_Coord = layer._lla
+        ds, ts = msise_model(time=self.currentDateTime, alt=lla.altitude_m/1000, lat=lla.lat_deg, lon=lla.lon_deg,
+                             f107a=self.ionosphereState.f107a, f107=self.ionosphereState.f107,
+                             ap=self.ionosphereState.ap[0], ap_a=self.ionosphereState.ap)
         return(MSISEOutput(ds, ts))
 
-    def generateSetEstimate(self,  rayPoints: list[LLA_Coord]) -> list[MSISEOutput]:
+    def generateSetEstimate(self,  layers: list[Layer]) -> list[MSISEOutput]:
 
-        msiseOutputs = []
-        for rayPoint in rayPoints:
-            msiseOutputs.append(self.generatePointEstimate(rayPoint))
-
-        return(msiseOutputs)
-
-    def generateSetEstimateFromRayState(self,  rayPoints: list[RayState]) -> list[MSISEOutput]:
-
-        msiseOutputs = []
-        for rayPoint in rayPoints:
-            msiseOutputs.append(self.generatePointEstimate(rayPoint.lla))
+        msiseOutputs: list[MSISEOutput] = []
+        for layer in layers:
+            msiseOutputs.append(self.generatePointEstimate(layer=layer))
 
         return(msiseOutputs)

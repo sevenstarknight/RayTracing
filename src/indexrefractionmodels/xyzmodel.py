@@ -4,24 +4,23 @@ from scipy import constants
 import numpy as np
 
 # ====================================================
-# https://geospace-code.github.io/pymap3d/index.html
-import pymap3d
+from src.bindings.positional.coordinates_class import AER_Coord, ENU_Coord
 
 # ====================================================
 # local imports
 from src.bindings.vector_class import VectorArray
 from src.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
-from src.raystate_class import RayState
+from src.bindings.positional.layer_class import Layer
+from src.positional.locationconverter_computations import convertFromAER2ENU
 from src.models.collisionfrequency import ElectronIonCollisionFrequency, ElectronNeutralCollisionFrequency
-
 
 class XYZModel(AbstractIndexRefraction):
 
-    def estimateIndexOfRefraction(self, currentState: RayState) -> complex:
+    def estimateIndexOfRefraction(self, layer: Layer) -> complex:
 
         iriOutput = self.spacePhysicsModels.iri.generatePointEstimate(
-            rayPoint=currentState.lla)
+            layer=layer)
 
         n_e = iriOutput.n_e
 
@@ -30,7 +29,7 @@ class XYZModel(AbstractIndexRefraction):
         else:
             # Atmosphere Model
             msiseOuput = self.spacePhysicsModels.msise.generatePointEstimate(
-                rayPoint=currentState.lla)
+                layer=layer)
 
             neutralCollisionFrequency = ElectronNeutralCollisionFrequency()
             electronIonCollisionFrequency = ElectronIonCollisionFrequency()
@@ -43,13 +42,17 @@ class XYZModel(AbstractIndexRefraction):
 
             # Magnetic Field Given Current State
             igrfOutput = self.spacePhysicsModels.igrf.generatePointEstimate(
-                rayPoint=currentState.lla)
-            east, north, up = pymap3d.aer2enu(
-                currentState.exitAzimuth_deg, currentState.exitElevation_deg, 1.0, deg=True)
+                layer=layer)
+
+            aer = AER_Coord(ele_deg= layer._aer.ele_deg, 
+            az_deg=layer._aer.az_deg, range_m=1.0)
+            enu: ENU_Coord = convertFromAER2ENU(aer=aer)
 
             b_SEZ = VectorArray(-igrfOutput.igrf['north'].iloc[0],
-                                igrfOutput.igrf['east'].iloc[0], igrfOutput.igrf['down'].iloc[0])
-            ray_SEZ = VectorArray(north, east, -up)
+                                igrfOutput.igrf['east'].iloc[0], -igrfOutput.igrf['down'].iloc[0])
+
+            ray_SEZ = VectorArray(-enu.n_m, enu.e_m, enu.u_m)
+
             dotAB = np.dot(b_SEZ.data, ray_SEZ.data)
             cosTheta = dotAB/(np.linalg.norm(b_SEZ.data) *
                               np.linalg.norm(ray_SEZ.data))

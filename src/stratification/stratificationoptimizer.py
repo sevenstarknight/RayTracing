@@ -5,10 +5,10 @@ import numpy as np
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
-from src.bindings.timeandlocation_class import TimeAndLocation
-from src.bindings.ionospherestate_class import IonosphereState
-from src.bindings.satelliteinformation_class import SatelliteInformation
-from src.positional.locationconverter import convertFromECEFtoLLA
+from src.bindings.positional.timeandlocation_class import TimeAndLocation
+from src.bindings.models.ionospherestate_class import IonosphereState
+from src.bindings.positional.satelliteinformation_class import SatelliteInformation
+from src.positional.locationconverter_computations import convertFromECEFtoLLA
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.stratification.twodseries_class import TwoDSeries
 from src.stratification.stratificationmethod_enum import StratificationMethod

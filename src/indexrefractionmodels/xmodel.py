@@ -5,17 +5,16 @@ from scipy import constants
 # ====================================================
 # local imports
 from src.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
-from src.raystate_class import RayState
+from src.bindings.positional.layer_class import Layer
 
 from src.logger.simlogger import get_logger
 LOGGER = get_logger(__name__)
 
 class XModel(AbstractIndexRefraction):
 
-    def estimateIndexOfRefraction(self, currentState: RayState) -> complex:
+    def estimateIndexOfRefraction(self, layer: Layer) -> complex:
         try:
-            iriOutput = self.spacePhysicsModels.iri.generatePointEstimate(
-                rayPoint=currentState.lla)
+            iriOutput = self.spacePhysicsModels.iri.generatePointEstimate(layer=layer)
         except Exception as me:
             LOGGER.error(str(me))
 

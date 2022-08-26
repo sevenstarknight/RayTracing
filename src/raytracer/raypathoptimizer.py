@@ -1,12 +1,13 @@
 import scipy.optimize as optimize
 
-
 # ====================================================
 # local imports
-from src.bindings.timeandlocation_class import TimeAndLocation
-from src.bindings.ionospherestate_class import IonosphereState
-from src.bindings.satelliteinformation_class import SatelliteInformation
-from src.positional.locationconverter import convertToAER
+from src.bindings.positional.timeandlocation_class import TimeAndLocation
+from src.bindings.models.ionospherestate_class import IonosphereState
+from src.bindings.positional.satelliteinformation_class import SatelliteInformation
+from src.bindings.raytracer.rayvector_class import RayVector
+from src.positional.locationconverter_computations import convertToAER
+from src.bindings.positional.coordinates_class import AER_Coord, ECEF_Coord
 
 from src.raytracer.raytracer import RayTracer
 from src.raytracer.raypathobjective import RayPathObjective
@@ -15,7 +16,6 @@ from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
-from src.rayvector_class import RayVector
 
 
 class RayPathOptimizer():
@@ -37,10 +37,10 @@ class RayPathOptimizer():
         satPosGenerator = SatellitePositionGenerator(satelliteInformation)
 
         # Initial Starting Point
-        sat_ECEF = satPosGenerator.estimatePosition_ECEF(
+        sat_ECEF :ECEF_Coord = satPosGenerator.estimatePosition_ECEF(
             self.timeAndLocation.eventTime_UTC)
 
-        aer = convertToAER(ecef=sat_ECEF,lla=self.timeAndLocation.eventLocation_LLA)
+        aer: AER_Coord = convertToAER(ecef=sat_ECEF,lla=self.timeAndLocation.eventLocation_LLA)
        
         # optimization
         initialGuess = [aer.az_deg, aer.ele_deg]
@@ -52,12 +52,12 @@ class RayPathOptimizer():
 
         # =============================================================================
         # construct the atmospheric model
-        indexN = self.indexOfRefractionGenerator.estimateIndexN(
+        indexNs :list[complex] = self.indexOfRefractionGenerator.estimateIndexN(
             heightStratification_m=self.heights_m, sat_ECEF=sat_ECEF)
 
         # based on the results, generate optimal ray
         rayTracer = RayTracer(
-            timeAndLocation=self.timeAndLocation, heights_m=self.heights_m, indexN=indexN)
+            timeAndLocation=self.timeAndLocation, heights_m=self.heights_m, indexNs=indexNs)
 
         rayVectors = rayTracer.execute(params=[result.x[1], result.x[0]])
 

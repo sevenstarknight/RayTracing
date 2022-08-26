@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 
 # ====================================================
 # local imports
-from src.raystate_class import RayState
 from src.models.spacephysicsmodels import SpacePhysicsModels
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
+from src.bindings.positional.layer_class import Layer
 
 class AbstractIndexRefraction(ABC):
 
@@ -12,8 +12,7 @@ class AbstractIndexRefraction(ABC):
         self.frequency_hz = frequency_hz
         self.spacePhysicsModels = spacePhysicsModels
         self.transportMode = transportMode
-        super().__init__()
 
     @abstractmethod
-    def estimateIndexOfRefraction(self, currentState: RayState) -> complex:
+    def estimateIndexOfRefraction(self, layer: Layer) -> complex:
         pass

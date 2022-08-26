@@ -1,6 +1,13 @@
 import math
 
 
+class ENU_Coord:
+    def __init__(self, e_m: float, n_m: float, u_m: float) -> None:
+        self.e_m = e_m
+        self.n_m = n_m
+        self.u_m = u_m
+
+
 class AER_Coord:
     def __init__(self, az_deg: float, ele_deg: float, range_m: float) -> None:
         self.az_deg = az_deg

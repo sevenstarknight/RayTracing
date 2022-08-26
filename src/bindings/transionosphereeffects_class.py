@@ -1,7 +1,6 @@
 # ====================================================
 # local imports
-
-from src.rayvector_class import RayVector
+from src.bindings.raytracer.rayvector_class import RayVector
 
 class TransIonosphereEffects():
     def __init__(self, rayVectors:list[RayVector], totalIonoDelay_sec:float, 

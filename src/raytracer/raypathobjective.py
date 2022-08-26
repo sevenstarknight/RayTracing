@@ -1,15 +1,15 @@
 import math
-
 # ====================================================
 # local imports
 from src.raytracer.raytracer import RayTracer
-from src.bindings.coordinates_class import ECEF_Coord
-from src.bindings.timeandlocation_class import TimeAndLocation
+from src.bindings.positional.coordinates_class import ECEF_Coord
+from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
+from src.bindings.raytracer.rayvector_class import RayVector
+
 
 from src.logger.simlogger import get_logger
-from src.rayvector_class import RayVector
 LOGGER = get_logger(__name__)
 
 

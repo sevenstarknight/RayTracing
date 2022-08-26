@@ -1,9 +1,9 @@
 # ====================================================
 # local imports
-from src.bindings.coordinates_class import LLA_Coord
+from src.bindings.positional.coordinates_class import LLA_Coord
 
 
-class LayerOutput:
+class Interface:
     def __init__(self, n_1: complex, n_2: complex, entryAngle_deg: float, newAltitude_m: float,
      intersection_LLA: LLA_Coord):
         self.n_1 = n_1

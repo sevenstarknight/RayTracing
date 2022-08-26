@@ -3,9 +3,9 @@ from datetime import datetime
 
 # ====================================================
 # local imports
-from src.bindings.layeroutput_class import LayerOutput
-from src.bindings.coordinates_class import LLA_Coord
-from src.bindings.timeandlocation_class import TimeAndLocation
+from src.bindings.raytracer.interface_class import Interface
+from src.bindings.positional.coordinates_class import LLA_Coord
+from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.raytracer.raytracer import RayTracer
 from src.raystate_class import RayState
 
@@ -169,7 +169,7 @@ class TestRayTracer(unittest.TestCase):
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
                                 initialLLA, initialNIndex)
 
-        layerOutput = LayerOutput(
+        layerOutput = Interface(
             1.0, 1.0, 0.0,  100, LLA_Coord(0.0, 0.0, 100.0), [])
 
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
@@ -192,7 +192,7 @@ class TestRayTracer(unittest.TestCase):
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
                                 initialLLA, initialNIndex)
 
-        layerOutput = LayerOutput(
+        layerOutput = Interface(
             1.0, 1.0, -1.0,  100.0, LLA_Coord(0.0, 0.0, 100.0), [])
 
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
@@ -215,7 +215,7 @@ class TestRayTracer(unittest.TestCase):
         initialState = RayState(initialElevationAngle_deg, self.initialAzimuth_deg,
                                 initialLLA, initialNIndex)
 
-        layerOutput = LayerOutput(
+        layerOutput = Interface(
             1.0, 3.0, -1.0,  0.0, LLA_Coord(0.0, 0.0, 0.0), [])
 
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)

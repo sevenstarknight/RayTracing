@@ -1,23 +1,19 @@
 import xarray
-import pandas as pd
 
 
 class IRIOutput():
 
-    n_e: float = 0
-
-    T_n: float = 0
-    T_i: float = 0
-    T_e: float = 0
-
-    nO_Ion: float = 0
-    nH_Ion: float = 0
-    nHe_Ion: float = 0
-    nCI_Ion: float = 0
-    nN_Ion: float = 0
-
     def __init__(self):
-        pass
+        self.n_e: float = 0
+        self.T_n: float = 0
+        self.T_i: float = 0
+        self.T_e: float = 0
+
+        self.nO_Ion: float = 0
+        self.nH_Ion: float = 0
+        self.nHe_Ion: float = 0
+        self.nCI_Ion: float = 0
+        self.nN_Ion: float = 0
 
     @classmethod
     def from_xarray(cls, iono: xarray.Dataset):

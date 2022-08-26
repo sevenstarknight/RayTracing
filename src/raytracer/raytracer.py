@@ -3,27 +3,25 @@ import cmath
 
 # ====================================================
 # local imports
-from src.raystate_class import RayState
 from src.raytracer.raytracer_computations import computeGeocentricRadius, computeNewIntersection, computeEntryAngle, generatePositionAndVector
 
-from src.bindings.layeroutput_class import LayerOutput
-
+from src.bindings.raytracer.interface_class import Interface
+from src.bindings.raytracer.rayvector_class import RayVector
+from src.bindings.raytracer.raystate_class import RayState
 from src.bindings.exceptions_class import IntersectException
-from src.bindings.coordinates_class import ECEF_Coord
-from src.bindings.timeandlocation_class import TimeAndLocation
+from src.bindings.positional.coordinates_class import ECEF_Coord
+from src.bindings.positional.timeandlocation_class import TimeAndLocation
 
-from src.positional.locationconverter import convertFromECEFtoLLA
+from src.positional.locationconverter_computations import convertFromECEFtoLLA
 
 from src.logger.simlogger import get_logger
-from src.rayvector_class import RayVector
 LOGGER = get_logger(__name__)
 
-
 class RayTracer():
-    def __init__(self, timeAndLocation: TimeAndLocation, heights_m: list[float], indexN: list[complex]):
+    def __init__(self, timeAndLocation: TimeAndLocation, heights_m: list[float], indexNs: list[complex]):
         self.timeAndLocation = timeAndLocation
         self.heights_m = heights_m
-        self.indexN = indexN
+        self.indexNs = indexNs
 
     def execute(self, params: list[float]) -> list[RayVector]:
         '''
@@ -45,7 +43,7 @@ class RayTracer():
 
         for idx in range(100):
 
-            layerOutput: LayerOutput = self.insideLayerOperations(
+            layerOutput: Interface = self.insideLayerOperations(
                 currentState, rayVectors)
 
             if(layerOutput.n_1 == None):
@@ -106,42 +104,42 @@ class RayTracer():
             # standard heights
             if(newAltitude_m == lla_p1.altitude_m):
                 # horizontal transitions
-                n_2 = self.indexN[indx]
-                n_1 = self.indexN[indx - 1]
+                n_2 = self.indexNs[indx]
+                n_1 = self.indexNs[indx - 1]
                 LOGGER.debug("horizontal transitions")
             elif(newAltitude_m < lla_p1.altitude_m):
                 if(newAltitude_m == min(self.heights_m)):
                     # to ground
                     n_2 = 3.0  # rough estimate
-                    n_1 = self.indexN[indx]
+                    n_1 = self.indexNs[indx]
                     LOGGER.debug("bounce off ground")
                 else:
-                    n_2 = self.indexN[indx - 1]
-                    n_1 = self.indexN[indx]
+                    n_2 = self.indexNs[indx - 1]
+                    n_1 = self.indexNs[indx]
                     LOGGER.debug("down transitions")
             elif(newAltitude_m > lla_p1.altitude_m):
-                n_2 = self.indexN[indx]
-                n_1 = self.indexN[indx - 1]
+                n_2 = self.indexNs[indx]
+                n_1 = self.indexNs[indx - 1]
                 LOGGER.debug("up transitions")
         else:
             if(newAltitude_m < lla_p1.altitude_m):
                 if(indx == 0):
                     # to ground
                     n_2 = 3.0  # rough estimate
-                    n_1 = self.indexN[indx]
+                    n_1 = self.indexNs[indx]
                     LOGGER.debug("bounce off ground")
                 else:
-                    n_2 = self.indexN[indx - 1]
-                    n_1 = self.indexN[indx]
+                    n_2 = self.indexNs[indx - 1]
+                    n_1 = self.indexNs[indx]
                     LOGGER.debug("down transitions")
             elif(newAltitude_m > lla_p1.altitude_m):
-                n_2 = self.indexN[indx]
-                n_1 = self.indexN[indx - 1]
+                n_2 = self.indexNs[indx]
+                n_1 = self.indexNs[indx - 1]
                 LOGGER.debug("up transitions")
 
         return (n_1, n_2)
 
-    def insideLayerOperations(self, currentState: RayState, rayVectors: list[RayVector]) -> LayerOutput:
+    def insideLayerOperations(self, currentState: RayState, rayVectors: list[RayVector]) -> Interface:
         # ==========================================================================
         # Inside the Layer
         # ==========================================================================
@@ -149,7 +147,7 @@ class RayTracer():
 
         if(max(self.heights_m) <= lla_p1.altitude_m):
             # exiting the loop
-            layerOutput = LayerOutput.from_Empty()
+            layerOutput = Interface.from_Empty()
             LOGGER.debug("Exiting the atmosphere")
             return(layerOutput)
 
@@ -162,7 +160,7 @@ class RayTracer():
 
         if ecef_p2 == None:
             # exiting the loop
-            layerOutput = LayerOutput.from_Empty()
+            layerOutput = Interface.from_Empty()
             LOGGER.debug("Exiting the atmosphere")
             return(layerOutput)
 
@@ -182,13 +180,13 @@ class RayTracer():
         entryAngle_deg = computeEntryAngle(exitElevation=currentState.exitElevation_deg,
                                            ecef_p1=ecef_p1, ecef_p2=ecef_p2, lla_p1=lla_p1, lla_p2=lla_p2)
 
-        layerOutput = LayerOutput(
+        layerOutput = Interface(
             n_1=n_1, n_2=n_2, entryAngle_deg=entryAngle_deg, newAltitude_m=newAltitude_m,
             intersection_LLA=lla_p2)
 
         return(layerOutput)
 
-    def onTheEdgeOperations(self, currentState: RayState, layerOutput: LayerOutput) -> RayState:
+    def onTheEdgeOperations(self, currentState: RayState, layerOutput: Interface) -> RayState:
         n_1 = layerOutput.n_1
         n_2 = layerOutput.n_2
 

@@ -9,8 +9,8 @@ import pyproj
 # local imports
 from supportTestStructures import satPosition
 
-from src.bindings.coordinates_class import LLA_Coord
-from src.bindings.timeandlocation_class import TimeAndLocation
+from src.bindings.positional.coordinates_class import LLA_Coord
+from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.positional.slantpathgenerator import SlantPathGenerator
 
 # ====================================================

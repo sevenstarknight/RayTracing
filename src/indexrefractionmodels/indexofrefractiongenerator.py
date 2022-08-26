@@ -1,8 +1,8 @@
 # ====================================================
 # local imports
-from src.bindings.coordinates_class import ECEF_Coord
-from src.bindings.timeandlocation_class import TimeAndLocation
-from src.bindings.ionospherestate_class import IonosphereState
+from src.bindings.positional.coordinates_class import ECEF_Coord
+from src.bindings.positional.timeandlocation_class import TimeAndLocation
+from src.bindings.models.ionospherestate_class import IonosphereState
 from src.indexrefractionmodels.xmodel import XModel
 from src.indexrefractionmodels.xymodel import XYModel
 from src.indexrefractionmodels.xyzmodel import XYZModel
@@ -48,15 +48,15 @@ class IndexOfRefractionGenerator():
     def estimateIndexN(self, sat_ECEF: ECEF_Coord,  heightStratification_m: list[float]) -> list[complex]:
 
         slantPathGenerator = SlantPathGenerator()
-        # make LLAs
-        slantRayStates = slantPathGenerator.estimateSlantPath(
+        # make layers
+        layers = slantPathGenerator.estimateSlantPath(
             self.startTimeAndLocation, sat_ECEF, heightStratification_m)
 
-        #
+        # Loop over layers
         indexNs = []
-        for rayState in slantRayStates:
+        for layer in layers:
             indexN = self.refractionModel.estimateIndexOfRefraction(
-                currentState=rayState)
+                layer=layer)
             indexNs.append(indexN)
 
         return(indexNs)

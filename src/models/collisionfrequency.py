@@ -17,7 +17,7 @@ euler_mash = 0.5572
 class ElectronIonCollisionFrequency():
 
     def estimateCollisionFreqs(self, iriOutputs: list[IRIOutput]) -> list[float]:
-        collisionFreqs = []
+        collisionFreqs: list[float] = []
         for iriOutput in iriOutputs:
             collisionFreqs.append(self.estimateCollisionFreq(iriOutput))
 

@@ -6,7 +6,7 @@ import pymap3d
 # https://pyproj4.github.io/pyproj/stable/
 import pyproj
 
-from src.bindings.coordinates_class import AER_Coord, ECEF_Coord, LLA_Coord
+from src.bindings.positional.coordinates_class import AER_Coord, ECEF_Coord, ENU_Coord, LLA_Coord
 # ====================================================
 # constants
 ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
@@ -19,11 +19,20 @@ def convertFromLLAtoECEF(lla: LLA_Coord) -> ECEF_Coord:
         LLA, ECEF, lla.lon_deg, lla.lat_deg, lla.altitude_m, radians=False)
     return ECEF_Coord(x_m, y_m, z_m)
 
-def convertFromAER(aer :AER_Coord, lla: LLA_Coord) -> ECEF_Coord:
+
+def convertFromAER(aer: AER_Coord, lla: LLA_Coord) -> ECEF_Coord:
     ecef = pymap3d.aer2ecef(aer.az_deg, aer.ele_deg, aer.range_m,
-                                       lla.lat_deg, lla.lon_deg, lla.altitude_m, ell=None, deg=True)
+                            lla.lat_deg, lla.lon_deg, lla.altitude_m, ell=None, deg=True)
 
     return ecef
+
+
+def convertFromAER2ENU(aer: AER_Coord) -> ENU_Coord:
+    east, north, up = pymap3d.aer2enu(
+        aer.az_deg, aer.ele_deg, aer.range_m, deg=True)
+
+    return ENU_Coord(east, north, up)
+
 
 def convertToAER(ecef: ECEF_Coord, lla: LLA_Coord) -> AER_Coord:
     az_deg, ele_deg, range_m = pymap3d.ecef2aer(ecef.x_m, ecef.y_m, ecef.z_m,

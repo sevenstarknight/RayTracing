@@ -9,8 +9,8 @@ from skyfield.framelib import itrs
 
 # ====================================================
 # local imports
-from src.bindings.coordinates_class import ECEF_Coord
-from src.bindings.satelliteinformation_class import SatelliteInformation
+from src.bindings.positional.coordinates_class import ECEF_Coord
+from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 
 
 class SatellitePositionGenerator():

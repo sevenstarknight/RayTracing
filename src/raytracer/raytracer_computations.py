@@ -7,9 +7,9 @@ import ahrs
 # ====================================================
 # local imports
 from src.bindings.exceptions_class import IntersectException
-from src.bindings.coordinates_class import AER_Coord, LLA_Coord, ECEF_Coord
-from src.raystate_class import RayState
-from src.positional.locationconverter import convertFromAER, convertFromLLAtoECEF
+from src.bindings.positional.coordinates_class import AER_Coord, LLA_Coord, ECEF_Coord
+from src.bindings.raytracer.raystate_class import RayState
+from src.positional.locationconverter_computations import convertFromAER, convertFromLLAtoECEF
 
 @staticmethod
 def computeGeocentricRadius(lla: LLA_Coord) -> float:

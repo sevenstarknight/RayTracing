@@ -3,7 +3,7 @@ from datetime import datetime
 
 # ====================================================
 # local imports
-from src.bindings.satelliteinformation_class import SatelliteInformation
+from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 
 

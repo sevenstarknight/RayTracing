@@ -7,10 +7,10 @@ import pyproj
 
 # ====================================================
 # local imports
-from src.bindings.coordinates_class import LLA_Coord
-from src.bindings.ionospherestate_class import IonosphereState
-from src.bindings.timeandlocation_class import TimeAndLocation
-from src.bindings.satelliteinformation_class import SatelliteInformation
+from src.bindings.positional.coordinates_class import LLA_Coord
+from src.bindings.models.ionospherestate_class import IonosphereState
+from src.bindings.positional.timeandlocation_class import TimeAndLocation
+from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel

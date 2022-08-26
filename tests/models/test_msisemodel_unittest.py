@@ -5,7 +5,7 @@ from datetime import datetime
 # local imports
 from supportTestStructures import generateSlantPath
 
-from src.bindings.ionospherestate_class import IonosphereState
+from src.bindings.models.ionospherestate_class import IonosphereState
 from src.models.msise_model import MSISE_Model
 
 class TestMSISE_Model(unittest.TestCase):

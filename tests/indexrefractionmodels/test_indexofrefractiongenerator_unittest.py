@@ -13,9 +13,9 @@ from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefracti
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 
-from src.bindings.ionospherestate_class import IonosphereState
-from src.bindings.coordinates_class import LLA_Coord
-from src.bindings.timeandlocation_class import TimeAndLocation
+from src.bindings.models.ionospherestate_class import IonosphereState
+from src.bindings.positional.coordinates_class import LLA_Coord
+from src.bindings.positional.timeandlocation_class import TimeAndLocation
 
 # ====================================================
 # constants

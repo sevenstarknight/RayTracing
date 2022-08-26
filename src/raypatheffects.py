@@ -1,15 +1,16 @@
 from scipy import constants
 
+
 # ====================================================
 # local imports
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.bindings.transionosphereeffects_class import TransIonosphereEffects
-from src.bindings.timeandlocation_class import TimeAndLocation
-from src.bindings.ionospherestate_class import IonosphereState
-from src.bindings.satelliteinformation_class import SatelliteInformation
+from src.bindings.positional.timeandlocation_class import TimeAndLocation
+from src.bindings.models.ionospherestate_class import IonosphereState
+from src.bindings.raytracer.rayvector_class import RayVector
+from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.raytracer.raypathoptimizer import RayPathOptimizer
-from src.rayvector_class import RayVector
 from src.stratification.stratificationoptimizer import StratificationOptimizer
 from src.stratification.quantizationparameter_class import QuantizationParameter
 

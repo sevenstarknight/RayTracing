@@ -3,7 +3,7 @@ import ahrs
 
 # ====================================================
 # local imports
-from src.bindings.coordinates_class import LLA_Coord, ECEF_Coord
+from src.bindings.positional.coordinates_class import LLA_Coord, ECEF_Coord
 
 
 class TestCoordinates(unittest.TestCase):

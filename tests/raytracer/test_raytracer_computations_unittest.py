@@ -9,7 +9,7 @@ import ahrs
 # ====================================================
 # local imports
 from src.raytracer.raytracer import computeGeocentricRadius, computeNewIntersection, computeEntryAngle
-from src.bindings.coordinates_class import ECEF_Coord, LLA_Coord
+from src.bindings.positional.coordinates_class import ECEF_Coord, LLA_Coord
 
 # ====================================================
 # constants

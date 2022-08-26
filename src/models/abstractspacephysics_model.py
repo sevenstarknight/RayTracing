@@ -3,8 +3,8 @@ from datetime import datetime
 
 ## ====================================================
 # local imports
-from src.bindings.ionospherestate_class import IonosphereState
-from src.rayvector_class import RayVector
+from src.bindings.models.ionospherestate_class import IonosphereState
+from src.bindings.positional.layer_class import Layer
 
 class AbstractSpacePhysicsModel(ABC):
 
@@ -14,9 +14,9 @@ class AbstractSpacePhysicsModel(ABC):
         super().__init__()
 
     @abstractmethod
-    def generatePointEstimate(self, rayVector : RayVector):
+    def generatePointEstimate(self, layer : Layer):
         pass
 
     @abstractmethod
-    def generateSetEstimate(self, rayVector : list[RayVector]):
+    def generateSetEstimate(self, layer : list[Layer]):
         pass
