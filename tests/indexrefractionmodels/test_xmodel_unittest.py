@@ -8,6 +8,7 @@ import pyproj
 # local imports
 from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.models.ionospherestate_class import IonosphereState
+from src.bindings.positional.layer_class import Layer
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
@@ -35,8 +36,6 @@ class TestXModel(unittest.TestCase):
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
 
         event_LLA = LLA_Coord(0.0, 0.0, 0.0)
-        rayState = RayState(exitAzimuth_deg=0.0,
-                            exitElevation_deg=45.0, lla=event_LLA, nIndex=1.0)
 
         s = '1 25544U 98067A   19343.69339541  .00001764  00000-0  38792-4 0  9991'
         t = '2 25544  51.6439 211.2001 0007417  17.6667  85.6398 15.50103472202482'
@@ -64,8 +63,8 @@ class TestXModel(unittest.TestCase):
         # make LLAs
         slantPathGenerator = SlantPathGenerator()
         # make LLAs
-        listOfSlant_RayState = slantPathGenerator.estimateSlantPath(
-            timeAndLocation, sat_ECEF, heights_m)
+        slantLayers : list[Layer] = slantPathGenerator.estimateSlantPath(
+            startTimeAndLocation=timeAndLocation, sat_ECEF=sat_ECEF, heightStratification_m=heights_m)
 
         # make the model
         ionosphereState = IonosphereState(10.0, 10.0, [3.0, 3.0, 3.0])
@@ -82,8 +81,8 @@ class TestXModel(unittest.TestCase):
         xModel = XModel(spacePhysicsModels=spm, frequency_hz=10e6, transportMode=TransportMode.PLASMA_MODE)
 
         indexNs = []
-        for rayState in listOfSlant_RayState:
-            indexN = xModel.estimateIndexOfRefraction(currentState=rayState)
+        for layer in slantLayers:
+            indexN = xModel.estimateIndexOfRefraction(layer=layer)
             indexNs.append(indexN)
 
         self.assertTrue(len(indexNs) == len(heights_m))

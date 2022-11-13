@@ -7,9 +7,10 @@ import pyproj
 # ====================================================
 # local imports
 from src.bindings.positional.coordinates_class import LLA_Coord, ECEF_Coord
+from src.bindings.positional.layer_class import Layer
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
-from src.raystate_class import RayState
+from src.bindings.raytracer.raystate_class import RayState
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.positional.slantpathgenerator import SlantPathGenerator
 
@@ -34,7 +35,7 @@ def satPosition() -> ECEF_Coord:
     return(testECEF)
 
 
-def generateSlantPath() -> list[RayState]:
+def generateSlantPath() -> list[Layer]:
     event_LLA = LLA_Coord(0.0, 0.0, 0.0)
 
     dateTime = datetime(2012, 9, 15, 13, 14, 30)
@@ -56,7 +57,7 @@ def generateSlantPath() -> list[RayState]:
     # ======================================================
     heights_m = [0, 100, 1000, 10000, 100000, 1000000]
 
-    slantPath = slantPathGenerator.estimateSlantPath(startTimeAndLocation=timeAndLocation,
+    slantLayers : list[Layer] = slantPathGenerator.estimateSlantPath(startTimeAndLocation=timeAndLocation,
                                                      heightStratification_m=heights_m, sat_ECEF=sat_ECEF)
 
-    return(slantPath)
+    return(slantLayers)

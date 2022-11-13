@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+from src.bindings.positional.layer_class import Layer
 # ====================================================
 # local imports
 from supportTestStructures import generateSlantPath
@@ -19,10 +20,9 @@ class TestIGRFModel(unittest.TestCase):
         igrfModel = IGRF_Model(
             ionosphereState=ionosphereState, currentDateTime=currentDateTime)
 
-        slantPath = generateSlantPath()
+        slantLayers : list[Layer] =  generateSlantPath()
 
-        igrfOutputs = igrfModel.generateSetEstimateFromRayState(
-            rayPoints=slantPath)
+        igrfOutputs = igrfModel.generateSetEstimate(layers=slantLayers)
 
         self.assertTrue(len(igrfOutputs) > 0)
 

@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+from src.bindings.positional.layer_class import Layer
 
 # ====================================================
 # local imports
@@ -19,10 +20,9 @@ class TestMSISE_Model(unittest.TestCase):
         msiseModel = MSISE_Model(
             ionosphereState=ionosphereState, currentDateTime=currentDateTime)
 
-        slantPath = generateSlantPath()
+        slantLayers : list[Layer] =  generateSlantPath()
 
-        msiseOutputs = msiseModel.generateSetEstimateFromRayState(
-            rayPoints=slantPath)
+        msiseOutputs = msiseModel.generateSetEstimate(layers=slantLayers)
 
         self.assertTrue(len(msiseOutputs) > 0)
 

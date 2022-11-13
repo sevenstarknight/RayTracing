@@ -16,9 +16,9 @@ LOGGER = get_logger(__name__)
 class IRI_Model(AbstractSpacePhysicsModel):
 
     def generatePointEstimate(self,  layer: Layer) -> IRIOutput:
-        lla: LLA_Coord = layer._lla
-        altitude_m: float = layer._lla.altitude_m
-        newAltitude_m: float = layer._newAltitude_m
+        lla: LLA_Coord = layer.lla
+        altitude_m: float = layer.lla.altitude_m
+        newAltitude_m: float = layer.newAltitude_m
 
         if(altitude_m > 120e3):
             # TODO

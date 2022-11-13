@@ -11,9 +11,9 @@ class TestRayState(unittest.TestCase):
         exitElevation_deg = 0.0
         exitAzimuth_deg = 0.0
         lla = LLA_Coord(0.0, 0.0, 0.0)
-        nIndex = complex(1.0, 0.0)
+
         rayState1 = RayState(
-            exitElevation_deg, exitAzimuth_deg, lla, nIndex)
+            exitElevation_deg=exitElevation_deg, exitAzimuth_deg=exitAzimuth_deg, lla=lla)
 
         self.assertEqual(rayState1.exitAzimuth_deg, exitAzimuth_deg)
 

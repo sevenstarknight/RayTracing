@@ -20,6 +20,7 @@ class TestRayPathEffects(unittest.TestCase):
         satelliteInformation = standardSatelliteInformation()
 
         timeAndLocation = standardStartingPoint(satelliteInformation)
+        
         # ======================================================
         optimizer = EstimateRayPathEffects(
             timeAndLocation=timeAndLocation, dispersionModel=DispersionModel.X_MODEL, 

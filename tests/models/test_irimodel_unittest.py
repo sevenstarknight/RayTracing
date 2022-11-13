@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+from src.bindings.positional.layer_class import Layer
 
 # ====================================================
 # local imports
@@ -20,10 +21,9 @@ class TestIRIModel(unittest.TestCase):
         iriModel = IRI_Model(ionosphereState=ionosphereState,
                              currentDateTime=currentDateTime)
 
-        slantPath = generateSlantPath()
+        slantLayers : list[Layer] =  generateSlantPath()
 
-        iriOutputs = iriModel.generateSetEstimateFromRayState(
-            rayPoints=slantPath)
+        iriOutputs = iriModel.generateSetEstimate(layers=slantLayers)
 
         self.assertTrue(len(iriOutputs) > 0)
 

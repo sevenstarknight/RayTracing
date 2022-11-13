@@ -13,7 +13,7 @@ class MSISE_Model(AbstractSpacePhysicsModel):
 
     def generatePointEstimate(self,  layer: Layer) -> MSISEOutput:
         # Atmosphere Model
-        lla: LLA_Coord = layer._lla
+        lla: LLA_Coord = layer.lla
         ds, ts = msise_model(time=self.currentDateTime, alt=lla.altitude_m/1000, lat=lla.lat_deg, lon=lla.lon_deg,
                              f107a=self.ionosphereState.f107a, f107=self.ionosphereState.f107,
                              ap=self.ionosphereState.ap[0], ap_a=self.ionosphereState.ap)

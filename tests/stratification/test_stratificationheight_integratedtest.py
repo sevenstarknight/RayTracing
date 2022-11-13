@@ -24,6 +24,7 @@ from tests.unittest_computations import standardSatelliteInformation, standardSt
 ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
 LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
+
 class TestStratificationIntegration(unittest.TestCase):
 
     def test_StratificationOptimizer(self):
@@ -36,14 +37,17 @@ class TestStratificationIntegration(unittest.TestCase):
 
         # ======================================================
         estimateRayPathEffects = EstimateRayPathEffects(
-            timeAndLocation=timeAndLocation, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE)
+            timeAndLocation=timeAndLocation, dispersionModel=DispersionModel.X_MODEL,
+            transportMode=TransportMode.PLASMA_MODE)
 
         freq_Hz = 1000*6
 
-        quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=20)
+        quantizationParameter = QuantizationParameter(
+            StratificationMethod.DECIMATION_MODEL, nQuant=20)
 
-        transIonosphereEffects = estimateRayPathEffects.estimate(freq_Hz=freq_Hz, quantizationParameter=quantizationParameter, 
-        ionosphereState=ionosphereState, satelliteInformation=satelliteInformation)
+        transIonosphereEffects = estimateRayPathEffects.estimate(freq_Hz=freq_Hz,
+                                                                 quantizationParameter=quantizationParameter,
+                                                                 ionosphereState=ionosphereState, satelliteInformation=satelliteInformation)
 
         print(transIonosphereEffects.totalIonoDelay_sec)
         print(transIonosphereEffects.totalIonoLoss_db)
@@ -56,4 +60,4 @@ class TestStratificationIntegration(unittest.TestCase):
             listTmp.append(tmpList)
             columnNames = rayState.generateColumnNames()
 
-        df = pd.DataFrame(listTmp, columns = columnNames, dtype = float)
+        df = pd.DataFrame(listTmp, columns=columnNames, dtype=float)

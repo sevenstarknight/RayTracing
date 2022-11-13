@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+from src.bindings.positional.layer_class import Layer
 
 # ====================================================
 # local imports
@@ -23,10 +24,9 @@ class TestCollisionFrequency(unittest.TestCase):
 
         collisionFrequency = ElectronIonCollisionFrequency()
 
-        slantPath = generateSlantPath()
+        slantLayers : list[Layer] = generateSlantPath()
 
-        iriOutputs = iriModel.generateSetEstimateFromRayState(
-            rayPoints=slantPath)
+        iriOutputs = iriModel.generateSetEstimate(layers=slantLayers)
 
         vei = collisionFrequency.estimateCollisionFreq(iriOutput=iriOutputs[4])
 
@@ -44,12 +44,10 @@ class TestCollisionFrequency(unittest.TestCase):
 
         collisionFrequency = ElectronNeutralCollisionFrequency()
 
-        slantPath = generateSlantPath()
+        slantLayers : list[Layer] =  generateSlantPath()
 
-        iriOutputs = iriModel.generateSetEstimateFromRayState(
-            rayPoints=slantPath)
-        msiseOutputs = msiseModel.generateSetEstimateFromRayState(
-            rayPoints=slantPath)
+        iriOutputs = iriModel.generateSetEstimate(layers=slantLayers)
+        msiseOutputs = msiseModel.generateSetEstimate(layers=slantLayers)
 
         ven = collisionFrequency.estimateCollisionFreq(
             iriOutput=iriOutputs[4], msiseOutput=msiseOutputs[4])

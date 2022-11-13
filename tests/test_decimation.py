@@ -27,7 +27,7 @@ class TestDecimation(unittest.TestCase):
             transIonosphereEffects = end2EndDemo.execute_X(quantizationParameter)
             result = {}
             result["nQuant"] = nQuant
-            result["layers"] = len(transIonosphereEffects.rayStates)
+            result["layers"] = len(transIonosphereEffects.rayVectors)
             result["totalIonoDelay_sec"] = transIonosphereEffects.totalIonoDelay_sec
             result["totalIonoLoss_db"] = transIonosphereEffects.totalIonoLoss_db
             result["totalGeoDistance_m"] = transIonosphereEffects.totalGeoDistance_m
