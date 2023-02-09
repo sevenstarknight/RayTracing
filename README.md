@@ -1,7 +1,7 @@
 
 # Install/Read Me File
 
-This code is designed to demonstrate functionalities relating to trans-ionospheric propagation, specifically *ray-tracing* at low RF frequencies. The rays here operate in three-dimensions, and in a ellipsiodal ionosphere (ellipsodial shells). High-level details
+This code is designed to demonstrate functionalities relating to trans-ionospheric propagation, specifically *ray-tracing* at low RF frequencies. The rays here operate in three-dimensions, and in a ellipsiodal ionosphere (ellipsodial shells). 
 
 ## Prerequisites
 

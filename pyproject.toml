@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "raytracing"
+version = "0.0.1"
+description = "RF Low Frequency Trans-Ionospheric Propagator/Raytracer"
+license = {text = "MIT License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = ["AHRS", "click","dash","igrf","iri2016","nrlmsise00",
+"numpy","pandas","plotly","pymap3d","pyproj","rdp","scipy","setuptools",
+"skyfield","tqdm","xarray"
+]
