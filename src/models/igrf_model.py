@@ -1,7 +1,6 @@
 # ====================================================
-# https://github.com/space-physics/wmm2020
-import igrf
-
+# https://github.com/klaundal/ppigrf
+import ppigrf
 # ====================================================
 # local imports
 from src.models.abstractspacephysics_model import AbstractSpacePhysicsModel
@@ -13,8 +12,8 @@ class IGRF_Model(AbstractSpacePhysicsModel):
 
     def generatePointEstimate(self,  layer: Layer) -> IGRFOutput:
         lla : LLA_Coord = layer.lla
-        mag = igrf.igrf(self.currentDateTime, glat=lla.lat_deg,
-                        glon=lla.lon_deg, alt_km=lla.altitude_m/1000.0)
+        mag = ppigrf.igrf(date=self.currentDateTime, lat=lla.lat_deg,
+                        lon=lla.lon_deg, h=lla.altitude_m/1000.0)
         return(IGRFOutput(mag))
 
     def generateSetEstimate(self,  layers: list[Layer]) -> list[IGRFOutput]:
