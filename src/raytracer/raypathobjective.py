@@ -38,7 +38,7 @@ class RayPathObjective():
         stateList: list[RayVector] = self.rayTracer.execute(params=params)
 
         # find last point in the ray
-        hypoSat_ECEF: ECEF_Coord = stateList[-1]._ecef_p2
+        hypoSat_ECEF: ECEF_Coord = stateList[-1].ecef_p2
 
         delta: float = ECEF_Coord.subtract(
             ecef1=self.sat_ECEF, ecef2=hypoSat_ECEF).magnitude()

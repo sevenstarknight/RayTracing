@@ -1,17 +1,13 @@
 # ====================================================
 # https://github.com/space-physics/iri2016
 from iri2016 import IRI
-
+from loguru import logger
 # ====================================================
 # local imports
 from src.models.abstractspacephysics_model import AbstractSpacePhysicsModel
 from src.models.irioutput_class import IRIOutput
 from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.positional.layer_class import Layer
-
-from src.logger.simlogger import get_logger
-LOGGER = get_logger(__name__)
-
 
 class IRI_Model(AbstractSpacePhysicsModel):
 
@@ -33,8 +29,8 @@ class IRI_Model(AbstractSpacePhysicsModel):
             output = IRIOutput().from_xarray(iono=iri, altkmrange=altkmrange)
 
         except Exception as e:
-            LOGGER.warning(str(e))
-            LOGGER.warning(str(self.currentDateTime) +
+            logger.warning(str(e))
+            logger.warning(str(self.currentDateTime) +
                            str(altkmrange) + str(lla.lat_deg) + str(lla.lon_deg))
             output = IRIOutput.from_empty()
 

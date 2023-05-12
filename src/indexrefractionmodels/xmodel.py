@@ -1,14 +1,12 @@
 import math
 from cmath import sqrt
 from scipy import constants
+from loguru import logger
 
 # ====================================================
 # local imports
 from src.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
 from src.bindings.positional.layer_class import Layer
-
-from src.logger.simlogger import get_logger
-LOGGER = get_logger(__name__)
 
 class XModel(AbstractIndexRefraction):
 
@@ -16,7 +14,7 @@ class XModel(AbstractIndexRefraction):
         try:
             iriOutput = self.spacePhysicsModels.iri.generatePointEstimate(layer=layer)
         except Exception as me:
-            LOGGER.error(str(me))
+            logger.error(str(me))
 
         n_e = iriOutput.n_e
         if(n_e == -1):

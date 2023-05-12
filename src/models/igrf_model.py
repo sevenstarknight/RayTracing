@@ -12,9 +12,9 @@ class IGRF_Model(AbstractSpacePhysicsModel):
 
     def generatePointEstimate(self,  layer: Layer) -> IGRFOutput:
         lla : LLA_Coord = layer.lla
-        mag = ppigrf.igrf(date=self.currentDateTime, lat=lla.lat_deg,
+        Be, Bn, Bu = ppigrf.igrf(date=self.currentDateTime, lat=lla.lat_deg,
                         lon=lla.lon_deg, h=lla.altitude_m/1000.0)
-        return(IGRFOutput(mag))
+        return(IGRFOutput(Be=Be, Bn=Bn, Bu=Bu))
 
     def generateSetEstimate(self,  layers: list[Layer]) -> list[IGRFOutput]:
         igrfOutputs : list[IGRFOutput] = []

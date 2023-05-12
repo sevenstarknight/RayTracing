@@ -33,13 +33,13 @@ class IndexOfRefractionGenerator():
         spm = SpacePhysicsModels(igrf=igrf, msise=msise, iri=iri)
 
         # model the index of refraction
-        if(dispersionModel is DispersionModel.X_MODEL):
+        if (dispersionModel is DispersionModel.X_MODEL):
             self.refractionModel = XModel(
                 spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
-        elif(dispersionModel is DispersionModel.XY_MODEL):
+        elif (dispersionModel is DispersionModel.XY_MODEL):
             self.refractionModel = XYModel(
                 spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
-        elif(dispersionModel is DispersionModel.XYZ_MODEL):
+        elif (dispersionModel is DispersionModel.XYZ_MODEL):
             self.refractionModel = XYZModel(
                 spacePhysicsModels=spm, frequency_hz=frequency_hz, transportMode=transportMode)
         else:
@@ -59,4 +59,4 @@ class IndexOfRefractionGenerator():
                 layer=layer)
             indexNs.append(indexN)
 
-        return(indexNs)
+        return (indexNs)

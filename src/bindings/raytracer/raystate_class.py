@@ -1,15 +1,14 @@
+from dataclasses import dataclass
 # ====================================================
 # local imports
 from src.bindings.positional.coordinates_class import LLA_Coord
 
-
+@dataclass
 class RayState:
     # Class that stores the current state (point) of the ray
-
-    def __init__(self, exitElevation_deg: float, exitAzimuth_deg: float, lla: LLA_Coord):
-        self.exitElevation_deg = exitElevation_deg
-        self.exitAzimuth_deg = exitAzimuth_deg
-        self.lla = lla
+    exitElevation_deg : float
+    exitAzimuth_deg : float
+    lla : LLA_Coord
 
     def generateList(self):
         return([self.exitElevation_deg, self.exitAzimuth_deg, self.lla.lat_deg, self.lla.lon_deg,

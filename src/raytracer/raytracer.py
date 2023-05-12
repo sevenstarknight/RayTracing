@@ -1,9 +1,9 @@
 import math
 import cmath
-
+from loguru import logger
 # ====================================================
 # local imports
-from src.raytracer.raytracer_computations import computeGeocentricRadius, computeNewIntersection, computeEntryAngle, generatePositionAndVector
+from src.raytracer.raytracer_computations import RayTracerComputations
 
 from src.bindings.raytracer.interface_class import Interface
 from src.bindings.raytracer.rayvector_class import RayVector
@@ -14,8 +14,6 @@ from src.bindings.positional.timeandlocation_class import TimeAndLocation
 
 from src.positional.locationconverter_computations import convertFromECEFtoLLA
 
-from src.logger.simlogger import get_logger
-LOGGER = get_logger(__name__)
 
 class RayTracer():
     def __init__(self, timeAndLocation: TimeAndLocation, heights_m: list[float], indexNs: list[complex]):
@@ -31,7 +29,7 @@ class RayTracer():
         '''
         az, el = params
         if(az < 0 or az > 360):
-            LOGGER.warn("Exceeding 0/360 bounds for azimuth")
+            logger.warn("Exceeding 0/360 bounds for azimuth")
 
         # =======================================================
         # Initialize the ray state for the start point
@@ -47,7 +45,7 @@ class RayTracer():
                 currentState, rayVectors)
 
             if(layerOutput.n_1 == None):
-                LOGGER.debug("Done with iterations, jump out of loop")
+                logger.debug("Done with iterations, jump out of loop")
                 break
 
             currentState: RayState = self.onTheEdgeOperations(
@@ -68,7 +66,7 @@ class RayTracer():
                        currentState.lla.altitude_m]) - 1
 
         if(len(self.heights_m) <= indx):
-            LOGGER.debug("Outside ionosphere")
+            logger.debug("Outside ionosphere")
             return None, None
         else:
             # layer intersection
@@ -77,7 +75,7 @@ class RayTracer():
         # ==========================================================================
         # use quadratic equation to determine intersection in ECEF of the next layer based prior intersection and vector
         try:
-            ecef_p2 = computeNewIntersection(ecef_p1, sVector_m, newAltitude_m)
+            ecef_p2 = RayTracerComputations.computeNewIntersection(ecef_p1, sVector_m, newAltitude_m)
         except IntersectException as inst1:
             # no intersection, which means (a) angle is down and (b) it is skipping over the lower layer; intersect with self
             if(lla_p1.altitude_m in self.heights_m):
@@ -88,10 +86,10 @@ class RayTracer():
                 newAltitude_m = self.heights_m[indx]
 
             try:
-                ecef_p2 = computeNewIntersection(
+                ecef_p2 = RayTracerComputations.computeNewIntersection(
                     ecef_p1, sVector_m, newAltitude_m)
             except IntersectException as inst2:
-                LOGGER.error(inst2.args)
+                logger.error(inst2.args)
                 raise IntersectException("how did we get here?")
 
         return ecef_p2, newAltitude_m, indx
@@ -106,36 +104,36 @@ class RayTracer():
                 # horizontal transitions
                 n_2 = self.indexNs[indx]
                 n_1 = self.indexNs[indx - 1]
-                LOGGER.debug("horizontal transitions")
+                logger.debug("horizontal transitions")
             elif(newAltitude_m < lla_p1.altitude_m):
                 if(newAltitude_m == min(self.heights_m)):
                     # to ground
                     n_2 = 3.0  # rough estimate
                     n_1 = self.indexNs[indx]
-                    LOGGER.debug("bounce off ground")
+                    logger.debug("bounce off ground")
                 else:
                     n_2 = self.indexNs[indx - 1]
                     n_1 = self.indexNs[indx]
-                    LOGGER.debug("down transitions")
+                    logger.debug("down transitions")
             elif(newAltitude_m > lla_p1.altitude_m):
                 n_2 = self.indexNs[indx]
                 n_1 = self.indexNs[indx - 1]
-                LOGGER.debug("up transitions")
+                logger.debug("up transitions")
         else:
             if(newAltitude_m < lla_p1.altitude_m):
                 if(indx == 0):
                     # to ground
                     n_2 = 3.0  # rough estimate
                     n_1 = self.indexNs[indx]
-                    LOGGER.debug("bounce off ground")
+                    logger.debug("bounce off ground")
                 else:
                     n_2 = self.indexNs[indx - 1]
                     n_1 = self.indexNs[indx]
-                    LOGGER.debug("down transitions")
+                    logger.debug("down transitions")
             elif(newAltitude_m > lla_p1.altitude_m):
                 n_2 = self.indexNs[indx]
                 n_1 = self.indexNs[indx - 1]
-                LOGGER.debug("up transitions")
+                logger.debug("up transitions")
 
         return (n_1, n_2)
 
@@ -148,10 +146,10 @@ class RayTracer():
         if(max(self.heights_m) <= lla_p1.altitude_m):
             # exiting the loop
             layerOutput = Interface.from_Empty()
-            LOGGER.debug("Exiting the atmosphere")
+            logger.debug("Exiting the atmosphere")
             return(layerOutput)
 
-        ecef_p1, sVector_m = generatePositionAndVector(currentState)
+        ecef_p1, sVector_m = RayTracerComputations.generatePositionAndVector(currentState)
 
         # ==========================================================================
         # use quadratic equation to determine intersection in ECEF of the next layer based prior intersection and vector
@@ -161,7 +159,7 @@ class RayTracer():
         if ecef_p2 == None:
             # exiting the loop
             layerOutput = Interface.from_Empty()
-            LOGGER.debug("Exiting the atmosphere")
+            logger.debug("Exiting the atmosphere")
             return(layerOutput)
 
         rayVector = RayVector(rayState=currentState, sVector_m=sVector_m, ecef_p1=ecef_p1,
@@ -177,7 +175,7 @@ class RayTracer():
         lla_p2.setAltitude(newAlitude_m=newAltitude_m)
 
         # estimate entry angle onto the curved layers
-        entryAngle_deg = computeEntryAngle(exitElevation=currentState.exitElevation_deg,
+        entryAngle_deg = RayTracerComputations.computeEntryAngle(exitElevation=currentState.exitElevation_deg,
                                            ecef_p1=ecef_p1, ecef_p2=ecef_p2, lla_p1=lla_p1, lla_p2=lla_p2)
 
         layerOutput = Interface(
@@ -201,10 +199,10 @@ class RayTracer():
             # convert to elevation pointing up
             currentState = RayState(
                 90.0 - exitAngle_deg, currentState.exitAzimuth_deg, lla_p2, n_1)
-            LOGGER.debug("bounce off ground: flip direction of ray")
+            logger.debug("bounce off ground: flip direction of ray")
         else:
-            f_2 = computeGeocentricRadius(lla_p2) + lla_p2.altitude_m
-            f_1 = computeGeocentricRadius(
+            f_2 = RayTracerComputations.computeGeocentricRadius(lla_p2) + lla_p2.altitude_m
+            f_1 = RayTracerComputations.computeGeocentricRadius(
                 currentState.lla) + currentState.lla.altitude_m
 
             # Snell's with ellipsoidal layers
@@ -213,7 +211,7 @@ class RayTracer():
             if(argument.real > 1.0):
                 # past critical angle -> reflection
                 exitAngle_deg = -entryAngle_deg
-                LOGGER.debug("past critical angle -> reflection")
+                logger.debug("past critical angle -> reflection")
                 # convert to elevation pointing down
                 currentState = RayState(-90.0 - exitAngle_deg,
                                         currentState.exitAzimuth_deg, lla_p2, n_1)
@@ -223,7 +221,7 @@ class RayTracer():
                 exitAngle_deg = math.degrees(refracAngle_rad.real)
 
                 if(refracAngle_rad.imag > 0):
-                    LOGGER.info("complex angle present")
+                    logger.info("complex angle present")
 
                 # store into a ray state
                 if(exitAngle_deg >= 0):

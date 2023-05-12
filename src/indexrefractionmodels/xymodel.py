@@ -31,8 +31,8 @@ class XYModel(AbstractIndexRefraction):
             igrfOutput = self.spacePhysicsModels.igrf.generatePointEstimate(
                 layer=layer)
 
-            aer = AER_Coord(ele_deg= layer._aer.ele_deg, 
-            az_deg=layer._aer.az_deg, range_m=1.0)
+            aer = AER_Coord(ele_deg= layer.aer.ele_deg, 
+            az_deg=layer.aer.az_deg, range_m=1.0)
             enu: ENU_Coord = convertFromAER2ENU(aer=aer)
 
             b_SEZ = VectorArray(-igrfOutput.igrf['north'].iloc[0],

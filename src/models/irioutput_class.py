@@ -1,4 +1,4 @@
-import xarray
+from xarray import Dataset
 
 
 class IRIOutput():
@@ -16,7 +16,7 @@ class IRIOutput():
         self.nN_Ion: float = 0
 
     @classmethod
-    def from_xarray(cls, iono: xarray.Dataset):
+    def from_xarray(cls, iono: Dataset):
         df = iono.to_dataframe()
         classIri = cls()
 
