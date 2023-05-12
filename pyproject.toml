@@ -4,7 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "raytracing"
+authors = [
+    {name = "Kyle Johnston", email = "kyle.burton.johnston@gmail.com"},
+]
 version = "0.0.1"
+requires-python = ">=3.9"
 description = "RF Low Frequency Trans-Ionospheric Propagator/Raytracer"
 license = {text = "MIT License"}
 classifiers = [
