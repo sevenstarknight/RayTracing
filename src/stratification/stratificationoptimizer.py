@@ -22,16 +22,16 @@ from src.stratification.decimationquantizer import DecimationQuantizer
 
 class StratificationOptimizer():
 
-    _exoAtmoHeights_m = np.array([0.467e4, 0.783e4, 1.100e4 , 1.416e4, 1.733e4, 
-        2.020e4 , 2.050e4 , 2.366e4 ,2.680e4 , 3.000e4])
+    _exoAtmoHeights_m = np.array([0.467e4, 0.783e4, 1.100e4, 1.416e4, 1.733e4,
+                                  2.020e4, 2.050e4, 2.366e4, 2.680e4, 3.000e4])
 
     def __init__(self, timeAndLocation: TimeAndLocation, dispersionModel: DispersionModel, transportMode: TransportMode):
         self.timeAndLocation = timeAndLocation
         self.dispersionModel = dispersionModel
         self.transportMode = transportMode
 
-    def generateHeightModel(self, freq_Hz: float, quantizationParameter : QuantizationParameter,
-    satelliteInformation: SatelliteInformation, ionosphereState : IonosphereState) -> list[float]:
+    def generateHeightModel(self, freq_Hz: float, quantizationParameter: QuantizationParameter,
+                            satelliteInformation: SatelliteInformation, ionosphereState: IonosphereState) -> list[float]:
         satPosGenerator = SatellitePositionGenerator(satelliteInformation)
 
         # Initial Starting Point
@@ -42,35 +42,37 @@ class StratificationOptimizer():
 
         initialHeights_m = np.linspace(60e3, 1100e3, 50)
 
-        initialHeights_m = np.append(initialHeights_m, self.timeAndLocation.eventLocation_LLA.altitude_m)
+        initialHeights_m = np.append(
+            initialHeights_m, self.timeAndLocation.eventLocation_LLA.altitude_m)
         initialHeights_m = np.append(initialHeights_m, self._exoAtmoHeights_m)
         initialHeights_m = np.append(initialHeights_m, sat_LLA.altitude_m)
         initialHeights_m.sort()
 
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
-            frequency_hz=freq_Hz, dispersionModel=self.dispersionModel, transportMode=self.transportMode, 
+            frequency_hz=freq_Hz, dispersionModel=self.dispersionModel, transportMode=self.transportMode,
             ionosphereState=ionosphereState, startTimeAndLocation=self.timeAndLocation)
 
-        indexN = indexOfRefractionGenerator.estimateIndexN(
-        heightStratification_m=initialHeights_m, sat_ECEF=sat_ECEF)
+        indexNs = indexOfRefractionGenerator.estimateIndexN(
+            heightStratification_m=initialHeights_m, sat_ECEF=sat_ECEF)
 
-        indexNReal = np.zeros(len(indexN))
-        for idx in range(len(indexN)):
-            indexNReal[idx] = indexN[idx].real
+        indexNReal_list = [x.real for x in indexNs]
+        indexNReal = np.array(indexNReal_list)
 
-        testSeries = TwoDSeries(initialHeights_m, indexNReal)
+        testSeries = TwoDSeries(
+            x_inputSeries=initialHeights_m, y_inputSeries=indexNReal)
 
-        if(quantizationParameter.stratificationMethod is StratificationMethod.EQUALAREA_MODEL):
-            quantizer = EqualAreaQuantizer(testSeries)
-        elif(quantizationParameter.stratificationMethod is StratificationMethod.LLOYDMAX_MODEL):
-            quantizer = LloydMaxQuantizer(testSeries)
-        elif(quantizationParameter.stratificationMethod is StratificationMethod.RDP_MODEL):
-            quantizer = RDPQuantizer(testSeries)
-        elif(quantizationParameter.stratificationMethod is StratificationMethod.DECIMATION_MODEL):
-            quantizer = DecimationQuantizer(testSeries)
+        if (quantizationParameter.stratificationMethod is StratificationMethod.EQUALAREA_MODEL):
+            quantizer = EqualAreaQuantizer(inputSeries=testSeries)
+        elif (quantizationParameter.stratificationMethod is StratificationMethod.LLOYDMAX_MODEL):
+            quantizer = LloydMaxQuantizer(inputSeries=testSeries)
+        elif (quantizationParameter.stratificationMethod is StratificationMethod.RDP_MODEL):
+            quantizer = RDPQuantizer(inputSeries=testSeries)
+        elif (quantizationParameter.stratificationMethod is StratificationMethod.DECIMATION_MODEL):
+            quantizer = DecimationQuantizer(inputSeries=testSeries)
         else:
             raise Exception("Stratification method provided unknown")
 
-        quantization = quantizer.generateQuantization(quantizationParameter)
+        quantization = quantizer.generateQuantization(
+            quantizationParameter=quantizationParameter)
         heights_m = quantization.representationPoints.tolist()
-        return(heights_m)
+        return (heights_m)

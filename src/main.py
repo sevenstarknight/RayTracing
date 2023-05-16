@@ -21,7 +21,7 @@ def main(demo):
 
         quantizationParameter = QuantizationParameter(StratificationMethod.DECIMATION_MODEL,nQuant=10)
 
-        transIonosphereEffects = end2EndDemo.execute_XYZ(quantizationParameter)
+        transIonosphereEffects = end2EndDemo.execute_XYZ(quantizationParameter=quantizationParameter)
         LOGGER.info("Total Delay: " + str(transIonosphereEffects.totalIonoDelay_sec))
         LOGGER.info("Total dB Loss: " + str(transIonosphereEffects.totalIonoLoss_db))
     else:

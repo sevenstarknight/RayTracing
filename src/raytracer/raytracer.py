@@ -29,7 +29,7 @@ class RayTracer():
         '''
         az, el = params
         if(az < 0 or az > 360):
-            logger.warn("Exceeding 0/360 bounds for azimuth")
+            logger.warning("Exceeding 0/360 bounds for azimuth")
 
         # =======================================================
         # Initialize the ray state for the start point
@@ -42,14 +42,14 @@ class RayTracer():
         for idx in range(100):
 
             layerOutput: Interface = self.insideLayerOperations(
-                currentState, rayVectors)
+                currentState=currentState, rayVectors=rayVectors)
 
             if(layerOutput.n_1 == None):
                 logger.debug("Done with iterations, jump out of loop")
                 break
 
             currentState: RayState = self.onTheEdgeOperations(
-                currentState, layerOutput)
+                currentState=currentState, layerOutput=layerOutput)
 
         return(rayVectors)
 
@@ -75,7 +75,7 @@ class RayTracer():
         # ==========================================================================
         # use quadratic equation to determine intersection in ECEF of the next layer based prior intersection and vector
         try:
-            ecef_p2 = RayTracerComputations.computeNewIntersection(ecef_p1, sVector_m, newAltitude_m)
+            ecef_p2 = RayTracerComputations.computeNewIntersection(ecef_m=ecef_p1, sVector_m=sVector_m, newAltitude_m=newAltitude_m)
         except IntersectException as inst1:
             # no intersection, which means (a) angle is down and (b) it is skipping over the lower layer; intersect with self
             if(lla_p1.altitude_m in self.heights_m):
@@ -87,7 +87,7 @@ class RayTracer():
 
             try:
                 ecef_p2 = RayTracerComputations.computeNewIntersection(
-                    ecef_p1, sVector_m, newAltitude_m)
+                    ecef_m=ecef_p1, sVector_m=sVector_m, newAltitude_m=newAltitude_m)
             except IntersectException as inst2:
                 logger.error(inst2.args)
                 raise IntersectException("how did we get here?")
@@ -149,7 +149,7 @@ class RayTracer():
             logger.debug("Exiting the atmosphere")
             return(layerOutput)
 
-        ecef_p1, sVector_m = RayTracerComputations.generatePositionAndVector(currentState)
+        ecef_p1, sVector_m = RayTracerComputations.generatePositionAndVector(currentState=currentState)
 
         # ==========================================================================
         # use quadratic equation to determine intersection in ECEF of the next layer based prior intersection and vector
@@ -162,13 +162,14 @@ class RayTracer():
             logger.debug("Exiting the atmosphere")
             return(layerOutput)
 
+        # ===================================================================
+        # determine index transition
+        n_1, n_2 = self._estimateIndexesAtTransition(indx=indx, currentState=currentState, newAltitude_m=newAltitude_m)
+
         rayVector = RayVector(rayState=currentState, sVector_m=sVector_m, ecef_p1=ecef_p1,
                               ecef_p2=ecef_p2, newAltitude_m=newAltitude_m, n_1=n_1)
 
         rayVectors.append(rayVector)
-        # ===================================================================
-        # determine index transition
-        n_1, n_2 = self._estimateIndexesAtTransition(indx=indx, currentState=currentState)
 
         # ===================================================================
         lla_p2 = convertFromECEFtoLLA(ecef=ecef_p2)
@@ -198,12 +199,13 @@ class RayTracer():
             exitAngle_deg = -entryAngle_deg
             # convert to elevation pointing up
             currentState = RayState(
-                90.0 - exitAngle_deg, currentState.exitAzimuth_deg, lla_p2, n_1)
+                exitElevation_deg= 90.0 - exitAngle_deg,
+                exitAzimuth_deg= currentState.exitAzimuth_deg, 
+                lla=lla_p2)
             logger.debug("bounce off ground: flip direction of ray")
         else:
             f_2 = RayTracerComputations.computeGeocentricRadius(lla_p2) + lla_p2.altitude_m
-            f_1 = RayTracerComputations.computeGeocentricRadius(
-                currentState.lla) + currentState.lla.altitude_m
+            f_1 = RayTracerComputations.computeGeocentricRadius(currentState.lla) + currentState.lla.altitude_m
 
             # Snell's with ellipsoidal layers
             argument = n_1*f_1*math.sin(math.radians(entryAngle_deg))/(n_2*f_2)
@@ -213,8 +215,10 @@ class RayTracer():
                 exitAngle_deg = -entryAngle_deg
                 logger.debug("past critical angle -> reflection")
                 # convert to elevation pointing down
-                currentState = RayState(-90.0 - exitAngle_deg,
-                                        currentState.exitAzimuth_deg, lla_p2, n_1)
+                currentState = RayState(
+                    exitElevation_deg=-90.0 - exitAngle_deg,
+                    exitAzimuth_deg=currentState.exitAzimuth_deg, 
+                    lla=lla_p2)
             else:
                 # refraction
                 refracAngle_rad = cmath.asin(argument)
@@ -227,10 +231,14 @@ class RayTracer():
                 if(exitAngle_deg >= 0):
                     # convert to elevation pointing up
                     currentState = RayState(
-                        90.0 - exitAngle_deg, currentState.exitAzimuth_deg, lla_p2, n_2)
+                        exitElevation_deg= 90.0 - exitAngle_deg, 
+                        exitAzimuth_deg=currentState.exitAzimuth_deg, 
+                        lla=lla_p2)
                 else:
                     # convert to elevation pointing down
-                    currentState = RayState(-90.0 - exitAngle_deg,
-                                            currentState.exitAzimuth_deg, lla_p2, n_2)
+                    currentState = RayState(
+                        exitElevation_deg = -90.0 - exitAngle_deg,
+                        exitAzimuth_deg=currentState.exitAzimuth_deg, 
+                        lla=lla_p2)
 
         return(currentState)

@@ -27,9 +27,9 @@ class EndToEndDemo():
         self.satelliteInformation = SatelliteInformation(name=name, s=s, t=t)
 
         # Initial Starting Point
-        satPosGenerator = SatellitePositionGenerator(self.satelliteInformation)
+        satPosGenerator = SatellitePositionGenerator(satelliteInformation=self.satelliteInformation)
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
-        sat_ECEF = satPosGenerator.estimatePosition_ECEF(currentDateTime)
+        sat_ECEF = satPosGenerator.estimatePosition_ECEF(currentDateTime=currentDateTime)
 
         # ======================================================
         # expected height, assume minimal change in position with range projection

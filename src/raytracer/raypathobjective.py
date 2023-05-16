@@ -9,10 +9,6 @@ from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefracti
 from src.bindings.raytracer.rayvector_class import RayVector
 
 
-from src.logger.simlogger import get_logger
-LOGGER = get_logger(__name__)
-
-
 class RayPathObjective():
     def __init__(self, heights_m: list[float], timeAndLocation: TimeAndLocation,
                  satPosGen: SatellitePositionGenerator,
@@ -26,12 +22,12 @@ class RayPathObjective():
         self.sat_ECEF: ECEF_Coord = satPosGen.estimatePosition_ECEF(
             currentDateTime=timeAndLocation.eventTime_UTC)
 
-        indexN: list[complex] = indexOfRefractionGenerator.estimateIndexN(
+        indexNs: list[complex] = indexOfRefractionGenerator.estimateIndexN(
             heightStratification_m=heights_m, sat_ECEF=self.sat_ECEF)
 
         # ============================================================================
         self.rayTracer: RayTracer = RayTracer(
-            timeAndLocation=timeAndLocation, heights_m=heights_m, indexN=indexN)
+            timeAndLocation=timeAndLocation, heights_m=heights_m, indexNs=indexNs)
 
     def objectiveFunction(self, params: list[float]) -> float:
         # initial parameters
