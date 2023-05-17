@@ -9,6 +9,7 @@ from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.raytracer.raytracer import RayTracer
 from src.bindings.raytracer.raystate_class import RayState
 
+
 class TestRayTracer(unittest.TestCase):
 
     def setUp(self):
@@ -26,8 +27,10 @@ class TestRayTracer(unittest.TestCase):
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
-        rayTracer = RayTracer(timeAndLocation=timeAndLocation, heights_m=self.heights_m, indexNs=self.indexNs)
-        stateList = rayTracer.execute(params=[self.initialAzimuth_deg, initialElevationAngle_deg])
+        rayTracer = RayTracer(timeAndLocation=timeAndLocation,
+                              heights_m=self.heights_m, indexNs=self.indexNs)
+        stateList = rayTracer.execute(
+            params=[self.initialAzimuth_deg, initialElevationAngle_deg])
         self.assertEqual(len(stateList), len(self.heights_m) - 1)
 
     # ============================================================================
@@ -46,8 +49,9 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput : Interface = rayTracer.insideLayerOperations(
+        rayTracer = RayTracer(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        layerOutput: Interface = rayTracer.insideLayerOperations(
             currentState=initialState, rayVectors=[])
 
         self.assertEqual(layerOutput.newAltitude_m, None)
@@ -68,8 +72,9 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput : Interface = rayTracer.insideLayerOperations(
+        rayTracer = RayTracer(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        layerOutput: Interface = rayTracer.insideLayerOperations(
             currentState=initialState, rayVectors=[])
 
         self.assertEqual(layerOutput.newAltitude_m, 100)
@@ -90,8 +95,9 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput : Interface = rayTracer.insideLayerOperations(
+        rayTracer = RayTracer(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        layerOutput: Interface = rayTracer.insideLayerOperations(
             currentState=initialState, rayVectors=[])
 
         self.assertEqual(layerOutput.newAltitude_m, 1000)
@@ -111,8 +117,9 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput : Interface = rayTracer.insideLayerOperations(
+        rayTracer = RayTracer(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        layerOutput: Interface = rayTracer.insideLayerOperations(
             currentState=initialState, rayVectors=[])
 
         self.assertEqual(layerOutput.newAltitude_m, 0.0)
@@ -132,8 +139,9 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput : Interface = rayTracer.insideLayerOperations(
+        rayTracer = RayTracer(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        layerOutput: Interface = rayTracer.insideLayerOperations(
             currentState=initialState, rayVectors=[])
 
         self.assertEqual(layerOutput.newAltitude_m, 10000)
@@ -154,8 +162,9 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput : Interface = rayTracer.insideLayerOperations(
+        rayTracer = RayTracer(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        layerOutput: Interface = rayTracer.insideLayerOperations(
             currentState=initialState, rayVectors=[])
 
         self.assertEqual(layerOutput.newAltitude_m, 10000)
@@ -170,16 +179,18 @@ class TestRayTracer(unittest.TestCase):
         initialState = RayState(exitElevation_deg=initialElevationAngle_deg, exitAzimuth_deg=self.initialAzimuth_deg,
                                 lla=initialLLA)
 
-        layerOutput = Interface(
-            1.0, 1.0, 0.0,  100, LLA_Coord(0.0, 0.0, 100.0), [])
+        layerOutput = Interface(n_1=1.0, n_2=1.0, entryAngle_deg=0.0,
+                                newAltitude_m=100, intersection_LLA=LLA_Coord(0.0, 0.0, 100.0))
 
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
-        rayTracer = RayTracer(heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        rayTracer = RayTracer(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
 
-        currentState = rayTracer.onTheEdgeOperations(currentState=initialState, layerOutput=layerOutput)
+        currentState = rayTracer.onTheEdgeOperations(
+            currentState=initialState, layerOutput=layerOutput)
 
         self.assertEqual(currentState.lla.altitude_m, 100.0)
         self.assertEqual(currentState.exitElevation_deg, 90.0)
@@ -187,22 +198,24 @@ class TestRayTracer(unittest.TestCase):
     def test_onTheEdgeOperations_down(self):
         # initial structure
         initialElevationAngle_deg = -89.0
-        initialLLA = LLA_Coord(0.0, 0.0, 1000.0)
+        initialLLA = LLA_Coord(lat_deg= 0.0, lon_deg = 0.0, altitude_m = 1000.0)
         initialNIndex = 1.0
 
         initialState = RayState(exitElevation_deg=initialElevationAngle_deg, exitAzimuth_deg=self.initialAzimuth_deg,
                                 lla=initialLLA)
 
         layerOutput = Interface(
-            1.0, 1.0, -1.0,  100.0, LLA_Coord(0.0, 0.0, 100.0), [])
+            1.0, 1.0, -1.0,  100.0, LLA_Coord(0.0, 0.0, 100.0))
 
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
-        rayTracer = RayTracer(heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        rayTracer = RayTracer(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
 
-        currentState = rayTracer.onTheEdgeOperations(currentState=initialState, layerOutput=layerOutput)
+        currentState = rayTracer.onTheEdgeOperations(
+            currentState=initialState, layerOutput=layerOutput)
 
         self.assertEqual(currentState.lla.altitude_m, 100.0)
         self.assertTrue(currentState.exitElevation_deg < -87.0)
@@ -217,25 +230,25 @@ class TestRayTracer(unittest.TestCase):
                                 lla=initialLLA)
 
         layerOutput = Interface(
-            1.0, 3.0, -1.0,  0.0, LLA_Coord(0.0, 0.0, 0.0), [])
+            1.0, 3.0, -1.0,  0.0, LLA_Coord(0.0, 0.0, 0.0))
 
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
-        rayTracer = RayTracer(heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        rayTracer = RayTracer(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
 
-        currentState = rayTracer.onTheEdgeOperations(currentState=initialState, layerOutput=layerOutput)
+        currentState = rayTracer.onTheEdgeOperations(
+            currentState=initialState, layerOutput=layerOutput)
 
         self.assertEqual(currentState.lla.altitude_m, 0.0)
         self.assertTrue(currentState.exitElevation_deg > 87.0)
 
-
     # ============================================================
 
-
     def test_raytracer_reflect(self):
-        indexN = [1.0, 0.95, 0.85, 0.65, 0.97, 1.0]
+        indexNs = [1.0, 0.95, 0.85, 0.55, 0.97, 1.0]
 
         # initial structure
         initialElevationAngle_deg = 45.0
@@ -245,9 +258,11 @@ class TestRayTracer(unittest.TestCase):
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
-        rayTracer = RayTracer(heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        rayTracer = RayTracer(
+            heights_m=self.heights_m, indexNs=indexNs, timeAndLocation=timeAndLocation)
 
-        stateList = rayTracer.execute(params=[self.initialAzimuth_deg, initialElevationAngle_deg])
+        stateList = rayTracer.execute(
+            params=[self.initialAzimuth_deg, initialElevationAngle_deg])
 
         self.assertTrue(len(stateList) == 12)
 
