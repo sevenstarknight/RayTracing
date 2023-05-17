@@ -1,5 +1,5 @@
 import numpy as np
-from scipy import interpolate
+from scipy.interpolate import InterpolatedUnivariateSpline
 
 class TwoDSeries():
     def __init__(self, x_inputSeries: np.array, y_inputSeries: np.array):
@@ -7,7 +7,7 @@ class TwoDSeries():
         self.y_inputSeries = y_inputSeries
 
     def getSpline(self):
-        fStar = interpolate.InterpolatedUnivariateSpline(self.x_inputSeries, self.y_inputSeries)
+        fStar = InterpolatedUnivariateSpline(self.x_inputSeries, self.y_inputSeries)
         return(fStar)
 
     def getMatrix(self)-> np.array:

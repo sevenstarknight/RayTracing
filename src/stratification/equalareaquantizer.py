@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.integrate as integrate
-from scipy import interpolate
+from scipy.interpolate import InterpolatedUnivariateSpline
 
 from src.stratification.abstractquantizer import AbstractQuantizer
 from src.stratification.quantization_class import Quantization
@@ -21,7 +21,7 @@ class EqualAreaQuantizer(AbstractQuantizer):
         ecdf = np.cumsum(self.inputSeries.y_inputSeries)
         ecdf = ecdf/ecdf[-1]
 
-        icdf = interpolate.InterpolatedUnivariateSpline(ecdf, self.inputSeries.x_inputSeries)
+        icdf = InterpolatedUnivariateSpline(ecdf, self.inputSeries.x_inputSeries)
 
         xQuantEdge = icdf(linearSpace)
         xQuantEdge[0] = self.inputSeries.x_inputSeries[0]
