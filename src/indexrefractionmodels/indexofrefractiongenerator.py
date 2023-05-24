@@ -53,10 +53,7 @@ class IndexOfRefractionGenerator():
             self.startTimeAndLocation, sat_ECEF, heightStratification_m)
 
         # Loop over layers
-        indexNs = []
-        for layer in layers:
-            indexN = self.refractionModel.estimateIndexOfRefraction(
-                layer=layer)
-            indexNs.append(indexN)
+        indexNs = [self.refractionModel.estimateIndexOfRefraction(layer=layer) for layer in layers]
+
 
         return (indexNs)
