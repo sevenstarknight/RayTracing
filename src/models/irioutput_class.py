@@ -17,34 +17,20 @@ class IRIOutput():
 
     @classmethod
     def from_xarray(cls, iono: Dataset):
-        df : pd.DataFrame = iono.to_pandas()
+        df : pd.DataFrame = iono.to_dataframe()
         classIri = cls()
 
-        ne_1 = df["ne"].iloc[0]
-        ne_2 = df["ne"].iloc[1]
+        classIri.n_e  = df["ne"].iloc[0]
 
-        # forward/backward mean estimate
-        if ne_1 < 0 and ne_2 > 0:
-            classIri.n_e = ne_2
-        elif ne_1 > 0 and ne_2 < 0:
-            classIri.n_e = ne_1
-        else:
-            classIri.n_e = (ne_2 + ne_1)/2.0
+        classIri.T_n = df["Tn"].iloc[0]
+        classIri.T_i = df["Ti"].iloc[0]
+        classIri.T_e = df["Te"].iloc[0]
 
-        classIri.T_n = (df["Tn"].iloc[0]+df["Tn"].iloc[1])/2
-        classIri.T_i = (df["Ti"].iloc[0]+df["Ti"].iloc[1])/2
-        classIri.T_e = (df["Te"].iloc[0]+df["Te"].iloc[0])/2
-
-        classIri.nO_Ion = (df["nO+"].iloc[0] +
-                           df["nO+"].iloc[0])/2
-        classIri.nH_Ion = (df["nH+"].iloc[0] +
-                           df["nH+"].iloc[0])/2
-        classIri.nHe_Ion = (df["nHe+"].iloc[0] +
-                            df["nHe+"].iloc[0])/2
-        classIri.nCI_Ion = (df["nCI"].iloc[0]+
-                            df["nCI"].iloc[0])/2
-        classIri.nN_Ion = (df["nN+"].iloc[0] +
-                           df["nN+"].iloc[0])/2
+        classIri.nO_Ion = df["nO+"].iloc[0]
+        classIri.nH_Ion = df["nH+"].iloc[0] 
+        classIri.nHe_Ion = df["nHe+"].iloc[0] 
+        classIri.nCI_Ion = df["nCI"].iloc[0]
+        classIri.nN_Ion = df["nN+"].iloc[0]
 
         return(classIri)
 
@@ -66,3 +52,10 @@ class IRIOutput():
         classIri.nN_Ion = -1.0
 
         return classIri
+
+
+    def doesExist(self) -> bool:
+        if(self.n_e == -1.0):
+            return False
+        else:
+            return True

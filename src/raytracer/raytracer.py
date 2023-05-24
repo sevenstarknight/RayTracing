@@ -52,7 +52,16 @@ class RayTracer:
             heights_m=self.heights_m,
             indexNs=self.indexNs,
         )
-        rayVectors = [transitionGenerator.transition() for idx in range(100)]
+        
+        rayVectors = []
+                      
+        for idx in range(100):
+            rayVector : RayVector = transitionGenerator.transition()
+            if(rayVector is not None):
+                rayVectors.append(rayVector)
+            else:
+                break
+
 
         return rayVectors
 
@@ -70,15 +79,15 @@ class TransitionGenerator:
         self.heights_m: list[float] = heights_m
         self.indexNs: list[complex] = indexNs
 
-    def transition(self):
-        layerOutput, rayVector = self.insideLayerOperations(currentState=currentState)
+    def transition(self) -> RayVector:
+        layerOutput, rayVector = self.insideLayerOperations(currentState=self.currentState)
 
         if layerOutput.n_1 == None or rayVector == None:
             logger.debug("Done with iterations, jump out of loop")
-            raise StopIteration
+            return None
 
-        currentState: RayState = self.onTheEdgeOperations(
-            currentState=currentState, layerOutput=layerOutput
+        self.currentState: RayState = self.onTheEdgeOperations(
+            currentState=self.currentState, layerOutput=layerOutput
         )
 
         return rayVector

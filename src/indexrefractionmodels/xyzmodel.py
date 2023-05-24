@@ -75,8 +75,11 @@ class XYZModel(AbstractIndexRefraction):
             gyroFreq = constants.elementary_charge * totalIGRF / constants.electron_mass
             bigY = gyroFreq / angularFreq
 
-            bigZ = v_e / angularFreq
-
+            if v_e > 0:
+                bigZ = v_e / angularFreq
+            else:
+                bigZ = 0
+                
             bigX_Tilda = bigX / (1 - complex(0, -bigZ))
             bigY_Tilda = bigY / (1 - complex(0, -bigZ))
 

@@ -30,7 +30,7 @@ class IRI_Model(AbstractSpacePhysicsModel):
                 glat=lla.lat_deg,
                 glon=lla.lon_deg,
             )
-            output = IRIOutput().from_xarray(iono=iri, altkmrange=altkmrange)
+            output = IRIOutput().from_xarray(iono=iri)
 
         except Exception as e:
             logger.warning(str(e))

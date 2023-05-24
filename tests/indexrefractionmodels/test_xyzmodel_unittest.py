@@ -32,13 +32,11 @@ class TestXYZModel(unittest.TestCase):
 
     def test_xyzModel(self):
 
-        ap = [1, 2, 3, 4, 2, 2, 1]
-        ionosphereState = IonosphereState(20.5, 20.6, ap)
+        ap = [1.0, 2.0, 3.0, 4.0, 2.0, 2.0, 1.0]
+        ionosphereState = IonosphereState(f107 = 20.5, f107a =  20.6, ap = ap)
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
 
         event_LLA = LLA_Coord(0.0, 0.0, 0.0)
-        rayState = RayState(exitAzimuth_deg=0.0,
-                            exitElevation_deg=45.0, lla=event_LLA)
 
         s = '1 25544U 98067A   19343.69339541  .00001764  00000-0  38792-4 0  9991'
         t = '2 25544  51.6439 211.2001 0007417  17.6667  85.6398 15.50103472202482'
@@ -70,7 +68,6 @@ class TestXYZModel(unittest.TestCase):
             timeAndLocation, sat_ECEF, heights_m)
 
         # make the model
-        ionosphereState = IonosphereState(10.0, 10.0, [3.0, 3.0, 3.0])
         igrf = IGRF_Model(
             currentDateTime=timeAndLocation.eventTime_UTC, ionosphereState=ionosphereState)
         iri = IRI_Model(currentDateTime=timeAndLocation.eventTime_UTC,

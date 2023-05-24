@@ -6,7 +6,7 @@ from datetime import datetime
 from src.bindings.raytracer.interface_class import Interface
 from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
-from src.raytracer.raytracer import RayTracer
+from src.raytracer.raytracer import RayTracer, TransitionGenerator
 from src.bindings.raytracer.raystate_class import RayState
 
 
@@ -49,10 +49,11 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(
-            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput: Interface = rayTracer.insideLayerOperations(
-            currentState=initialState, rayVectors=[])
+        transitionGenerator = TransitionGenerator(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation, currentState=initialState)
+        
+        layerOutput, rayVector = transitionGenerator.insideLayerOperations(
+            currentState=initialState)
 
         self.assertEqual(layerOutput.newAltitude_m, None)
         self.assertEqual(layerOutput.n_2, None)
@@ -72,10 +73,11 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(
-            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput: Interface = rayTracer.insideLayerOperations(
-            currentState=initialState, rayVectors=[])
+        transitionGenerator = TransitionGenerator(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation, currentState=initialState)
+        
+        layerOutput, rayVector = transitionGenerator.insideLayerOperations(
+            currentState=initialState)
 
         self.assertEqual(layerOutput.newAltitude_m, 100)
         self.assertEqual(layerOutput.n_2, 1.0)
@@ -95,10 +97,11 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(
-            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput: Interface = rayTracer.insideLayerOperations(
-            currentState=initialState, rayVectors=[])
+        transitionGenerator = TransitionGenerator(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation, currentState=initialState)
+        
+        layerOutput, rayVector = transitionGenerator.insideLayerOperations(
+            currentState=initialState)
 
         self.assertEqual(layerOutput.newAltitude_m, 1000)
         self.assertEqual(layerOutput.n_2, 1.0)
@@ -117,10 +120,11 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(
-            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput: Interface = rayTracer.insideLayerOperations(
-            currentState=initialState, rayVectors=[])
+        transitionGenerator = TransitionGenerator(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation, currentState=initialState)
+        
+        layerOutput, rayVector = transitionGenerator.insideLayerOperations(
+            currentState=initialState)
 
         self.assertEqual(layerOutput.newAltitude_m, 0.0)
         self.assertEqual(layerOutput.n_2, 3.0)
@@ -139,10 +143,11 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(
-            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput: Interface = rayTracer.insideLayerOperations(
-            currentState=initialState, rayVectors=[])
+        transitionGenerator = TransitionGenerator(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation, currentState=initialState)
+        
+        layerOutput, rayVector = transitionGenerator.insideLayerOperations(
+            currentState=initialState)
 
         self.assertEqual(layerOutput.newAltitude_m, 10000)
         self.assertEqual(layerOutput.n_2, 0.95)
@@ -162,10 +167,11 @@ class TestRayTracer(unittest.TestCase):
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
 
-        rayTracer = RayTracer(
-            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
-        layerOutput: Interface = rayTracer.insideLayerOperations(
-            currentState=initialState, rayVectors=[])
+        transitionGenerator = TransitionGenerator(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation, currentState=initialState)
+        
+        layerOutput, rayVector = transitionGenerator.insideLayerOperations(
+            currentState=initialState)
 
         self.assertEqual(layerOutput.newAltitude_m, 10000)
         self.assertEqual(layerOutput.n_2, 0.95)
@@ -186,10 +192,10 @@ class TestRayTracer(unittest.TestCase):
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
-        rayTracer = RayTracer(
-            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        transitionGenerator = TransitionGenerator(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation, currentState=initialState)
 
-        currentState = rayTracer.onTheEdgeOperations(
+        currentState = transitionGenerator.onTheEdgeOperations(
             currentState=initialState, layerOutput=layerOutput)
 
         self.assertEqual(currentState.lla.altitude_m, 100.0)
@@ -211,10 +217,10 @@ class TestRayTracer(unittest.TestCase):
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
-        rayTracer = RayTracer(
-            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        transitionGenerator = TransitionGenerator(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation, currentState=initialState)
 
-        currentState = rayTracer.onTheEdgeOperations(
+        currentState = transitionGenerator.onTheEdgeOperations(
             currentState=initialState, layerOutput=layerOutput)
 
         self.assertEqual(currentState.lla.altitude_m, 100.0)
@@ -236,10 +242,10 @@ class TestRayTracer(unittest.TestCase):
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=initialLLA, eventTime_UTC=currentDateTime
         )
-        rayTracer = RayTracer(
-            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation)
+        transitionGenerator = TransitionGenerator(
+            heights_m=self.heights_m, indexNs=self.indexNs, timeAndLocation=timeAndLocation, currentState=initialState)
 
-        currentState = rayTracer.onTheEdgeOperations(
+        currentState = transitionGenerator.onTheEdgeOperations(
             currentState=initialState, layerOutput=layerOutput)
 
         self.assertEqual(currentState.lla.altitude_m, 0.0)
@@ -263,8 +269,8 @@ class TestRayTracer(unittest.TestCase):
 
         stateList = rayTracer.execute(
             params=[self.initialAzimuth_deg, initialElevationAngle_deg])
-
-        self.assertTrue(len(stateList) == 12)
+  
+        self.assertTrue(len(stateList) == 59)
 
 
 if __name__ == '__main__':
