@@ -17,14 +17,16 @@ euler_mash = 0.5572
 class ElectronIonCollisionFrequency():
 
     def estimateCollisionFreqs(self, iriOutputs: list[IRIOutput]) -> list[float]:
-        collisionFreqs: list[float] = []
-        for iriOutput in iriOutputs:
-            collisionFreqs.append(self.estimateCollisionFreq(iriOutput))
 
-        return(collisionFreqs)
+        collisionFreqs: list[float] = [self.estimateCollisionFreq(
+            iriOutput) for iriOutput in iriOutputs]
+
+        return (collisionFreqs)
 
     def estimateCollisionFreq(self, iriOutput: IRIOutput) -> float:
 
+        # TODO: testing needs to happen here
+        
         n_e = iriOutput.n_e
         n_i = iriOutput.nH_Ion + iriOutput.nHe_Ion + iriOutput.nN_Ion + iriOutput.nO_Ion
 
@@ -33,7 +35,7 @@ class ElectronIonCollisionFrequency():
 
         lnLambda_i = self.lnLambda(n_e=n_e, T_e=T_e, n_i=n_i, T_i=T_i)
 
-        return(3.63e-6*n_i*math.pow(T_e, 3/2)*lnLambda_i)
+        return (3.63e-6*n_i*math.pow(T_e, 3/2)*lnLambda_i)
 
     def lnLambda(self,  n_e: float, T_e: float, n_i: float, T_i: float) -> float:
 
@@ -46,26 +48,21 @@ class ElectronIonCollisionFrequency():
         second = ((kSqr_e + kSqr_i)/kSqr_i) * \
             math.log(math.sqrt(kSqr_e + kSqr_i)/math.sqrt(kSqr_e))
 
-        return(first + second)
+        return (first + second)
 
     def estimate_kSqrSube(self, n_e: float, T_e: float) -> float:
-        kSqr_e = (4.0*pi*eChargeSq/k)*(n_e/T_e)
-        return(kSqr_e)
+        return (4.0*pi*eChargeSq/k)*(n_e/T_e)
 
     def estimate_kSqrSubi(self, n_i: float, T_i: float) -> float:
-        kSqr_e = (4.0*pi*eChargeSq/k)*(n_i/T_i)
-        return(kSqr_e)
+        return (4.0*pi*eChargeSq/k)*(n_i/T_i)
 
 
 class ElectronNeutralCollisionFrequency():
 
     def estimateCollisionFreqs(self, iriOutputs: list[IRIOutput], msiseOutputs: list[MSISEOutput]) -> list[float]:
-        collisionFreqs = []
-        for idx in range(len(iriOutputs)):
-            collisionFreqs.append(self.estimateCollisionFreq(
-                iriOutput=iriOutputs.iloc(idx), msiseOutput=msiseOutputs.iloc(idx)))
-
-        return(collisionFreqs)
+        collisionFreqs = [self.estimateCollisionFreq(
+            iriOutput=iriOutputs[idx], msiseOutput=msiseOutputs[idx]) for idx in range(len(iriOutputs))]
+        return (collisionFreqs)
 
     def estimateCollisionFreq(self, iriOutput: IRIOutput, msiseOutput: MSISEOutput) -> float:
 
@@ -83,4 +80,4 @@ class ElectronNeutralCollisionFrequency():
         veH = 4.5e-9*msiseOutput.hNumDensity * \
             (1 - 1.35e-4*iriOutput.T_e)*math.sqrt(iriOutput.T_e)
 
-        return(veN2 + veO2 + veO + veHe + veH)
+        return (veN2 + veO2 + veO + veHe + veH)

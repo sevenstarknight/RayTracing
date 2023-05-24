@@ -2,18 +2,17 @@ import math
 from cmath import sqrt
 from scipy import constants
 import numpy as np
-
-# ====================================================
-from src.bindings.positional.coordinates_class import AER_Coord, ENU_Coord
-
+from loguru import logger
 # ====================================================
 # local imports
+from src.bindings.positional.coordinates_class import AER_Coord, ENU_Coord
 from src.bindings.vector_class import VectorArray
 from src.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.bindings.positional.layer_class import Layer
 from src.positional.locationconverter_computations import convertFromAER2ENU
 from src.models.collisionfrequency import ElectronIonCollisionFrequency, ElectronNeutralCollisionFrequency
+
 
 class XYZModel(AbstractIndexRefraction):
 
@@ -24,7 +23,7 @@ class XYZModel(AbstractIndexRefraction):
 
         n_e = iriOutput.n_e
 
-        if(n_e == -1.0):
+        if (n_e == -1.0):
             nSq = 1.0
         else:
             # Atmosphere Model
@@ -44,12 +43,12 @@ class XYZModel(AbstractIndexRefraction):
             igrfOutput = self.spacePhysicsModels.igrf.generatePointEstimate(
                 layer=layer)
 
-            aer = AER_Coord(ele_deg= layer._aer.ele_deg, 
-            az_deg=layer._aer.az_deg, range_m=1.0)
+            aer = AER_Coord(ele_deg=layer.aer.ele_deg,
+                            az_deg=layer.aer.az_deg, range_m=1.0)
             enu: ENU_Coord = convertFromAER2ENU(aer=aer)
 
-            b_SEZ = VectorArray(-igrfOutput.igrf['north'].iloc[0],
-                                igrfOutput.igrf['east'].iloc[0], -igrfOutput.igrf['down'].iloc[0])
+            b_SEZ = VectorArray(-igrfOutput.Bn,
+                                igrfOutput.Be, igrfOutput.Bu)
 
             ray_SEZ = VectorArray(-enu.n_m, enu.e_m, enu.u_m)
 
@@ -65,7 +64,7 @@ class XYZModel(AbstractIndexRefraction):
 
             bigX = angularFreq_p_sq/angularFreq_sq
 
-            totalIGRF = igrfOutput.igrf.total.item()*10e-9
+            totalIGRF = igrfOutput.getMagnitude()*10e-9
             gyroFreq = constants.elementary_charge*totalIGRF / constants.electron_mass
             bigY = gyroFreq / angularFreq
 
@@ -83,19 +82,20 @@ class XYZModel(AbstractIndexRefraction):
 
             b = eta_perp*eta_perp - eta_cross*eta_cross - eta_par*eta_perp
 
-            if(self.transportMode is TransportMode.ORDINARY_MODE):
+            if (self.transportMode is TransportMode.ORDINARY_MODE):
                 num = b*sinTheta_sq + 2*eta_perp*eta_par + \
                     sqrt(b*b*sinTheta_sq*sinTheta_sq + 4*eta_cross *
-                            eta_cross*eta_par*eta_par*cosTheta_sq)
-            elif(self.transportMode is TransportMode.EXTRAORDINARY_MODE):
+                         eta_cross*eta_par*eta_par*cosTheta_sq)
+            elif (self.transportMode is TransportMode.EXTRAORDINARY_MODE):
                 num = b*sinTheta_sq + 2*eta_perp*eta_par - \
                     sqrt(b*b*sinTheta_sq*sinTheta_sq + 4*eta_cross *
-                            eta_cross*eta_par*eta_par*cosTheta_sq)
+                         eta_cross*eta_par*eta_par*cosTheta_sq)
             else:
+                logger.warning("TransportMode Model Not Understood")
                 raise Exception("TransportMode Model Not Understood")
-                                
+
             denom = 2*(eta_par*sinTheta_sq + eta_par*cosTheta_sq)
 
             nSq = num/denom
 
-        return(sqrt(nSq))
+        return (sqrt(nSq))

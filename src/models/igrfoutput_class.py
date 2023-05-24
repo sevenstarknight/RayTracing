@@ -1,7 +1,11 @@
+import math
 from dataclasses import dataclass
 
 @dataclass
 class IGRFOutput():
-    Be : float
-    Bn : float
-    Bu : float
+    Be: float
+    Bn: float
+    Bu: float
+
+    def getMagnitude(self):
+        return (math.sqrt(self.Be*self.Be + self.Bn*self.Bn + self.Bu*self.Bu))
