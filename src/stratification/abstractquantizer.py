@@ -13,8 +13,6 @@ class AbstractQuantizer(ABC):
         self.inputSeries = inputSeries
         self.generateSplines()
 
-        super().__init__()
-
     def generateSplines(self) -> None:
         self.funcInput = InterpolatedUnivariateSpline(self.inputSeries.x_inputSeries, self.inputSeries.y_inputSeries)
 

@@ -2,7 +2,8 @@ import numpy as np
 
 from dataclasses import dataclass
 
+
 @dataclass
-class Quantization():
+class Quantization:
     representationPoints: np.array
     intervalEndPoints: np.array

@@ -11,7 +11,7 @@ from src.bindings.models.ionospherestate_class import IonosphereState
 from src.bindings.raytracer.rayvector_class import RayVector
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.raytracer.raypathoptimizer import RayPathOptimizer
-from src.stratification.stratificationoptimizer import StratificationOptimizer
+from src.raytracer.stratificationoptimizer import StratificationOptimizer
 from src.stratification.quantizationparameter_class import QuantizationParameter
 
 

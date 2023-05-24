@@ -11,7 +11,6 @@ class AbstractSpacePhysicsModel(ABC):
     def __init__(self, ionosphereState: IonosphereState, currentDateTime: datetime):
         self.ionosphereState = ionosphereState
         self.currentDateTime = currentDateTime
-        super().__init__()
 
     @abstractmethod
     def generatePointEstimate(self, layer : Layer):
