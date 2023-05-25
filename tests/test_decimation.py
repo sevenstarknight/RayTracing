@@ -16,9 +16,7 @@ class TestDecimation(unittest.TestCase):
 
         end2EndDemo = EndToEndDemo()
 
-        results_eqa = pd.DataFrame()
-        #iterRange = np.arange(0,4,0.1)
-        iterRange = np.arange(3.6,4,0.1)
+        iterRange = np.arange(3.6,4,0.2)
         listOfResults_eqa = []
 
         for idx in tqdm(iterRange):
@@ -33,3 +31,8 @@ class TestDecimation(unittest.TestCase):
             result["totalGeoDistance_m"] = transIonosphereEffects.totalGeoDistance_m
 
             listOfResults_eqa.append(result)
+
+        listOfResults_eqa_df = pd.DataFrame(listOfResults_eqa)
+
+
+        print(listOfResults_eqa_df.to_markdown())
