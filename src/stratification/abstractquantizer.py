@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+import numpy as np
+import functools
 
 from scipy.interpolate import InterpolatedUnivariateSpline
 import scipy.integrate as integrate
@@ -12,6 +14,29 @@ class AbstractQuantizer(ABC):
     def __init__(self, inputSeries: TwoDSeries) -> None:
         self.inputSeries = inputSeries
         self.generateSplines()
+
+
+    def wrapper_logadjust(self, func, quantizationParameter : QuantizationParameter):
+        # scale for interpolation to be more effective
+        if(self.inputSeries.x_inputSeries[0] <= 0.0):
+            tmpX = self.inputSeries.x_inputSeries
+            tmpX[0] = 1e-3
+        else:
+            tmpX = self.inputSeries.x_inputSeries
+        tmpX = np.log(tmpX)
+
+        tmpY = self.inputSeries.y_inputSeries
+
+        # implement function
+        newX, newY = func(tmpX, tmpY, quantizationParameter)
+       
+        # descale to return to units
+        newX = np.exp(newX)
+        newX[0] = self.inputSeries.x_inputSeries[0]
+
+        # return quantization
+        return(Quantization(newX, newY))
+
 
     def generateSplines(self) -> None:
         self.funcInput = InterpolatedUnivariateSpline(self.inputSeries.x_inputSeries, self.inputSeries.y_inputSeries)
