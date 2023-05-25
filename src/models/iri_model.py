@@ -13,15 +13,15 @@ from src.bindings.positional.layer_class import Layer
 
 class IRI_Model(AbstractSpacePhysicsModel):
     def generatePointEstimate(self, layer: Layer) -> IRIOutput:
-        lla: LLA_Coord = layer.lla
-        altitude_m: float = layer.lla.altitude_m
-        newAltitude_m: float = layer.newAltitude_m
+        lla: LLA_Coord = layer.lla_p1
+        altitude_p1_m: float = layer.lla_p1.altitude_m
+        altitude_p2_m: float = layer.lla_p2
 
-        if altitude_m > 120e3:
+        if altitude_p1_m > 120e3:
             # TODO: is this reasonable?
             altkmrange = [120e3 / 1000, 120e3 / 1000 + 1, 1.0]
         else:
-            altkmrange = [altitude_m / 1000, newAltitude_m / 1000, 1.0]
+            altkmrange = [altitude_p1_m / 1000, altitude_p2_m / 1000, 1.0]
 
         try:
             iri = IRI(

@@ -12,7 +12,7 @@ from src.bindings.positional.layer_class import Layer
 
 class IGRF_Model(AbstractSpacePhysicsModel):
     def generatePointEstimate(self, layer: Layer) -> IGRFOutput:
-        lla: LLA_Coord = layer.lla
+        lla: LLA_Coord = layer.lla_p1
         Be, Bn, Bu = ppigrf.igrf(
             date=self.currentDateTime,
             lat=lla.lat_deg,

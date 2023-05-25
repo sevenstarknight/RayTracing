@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import math
-from tqdm import trange, tqdm
+from tqdm import tqdm
 import unittest
 
 # ======================================================================================
@@ -10,9 +10,9 @@ from src.endtoenddemonstration import EndToEndDemo
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.stratificationmethod_enum import StratificationMethod
 
-class TestDecimation(unittest.TestCase):
+class TestDemoDecimation(unittest.TestCase):
 
-    def test_Decimation(self):
+    def test_DemoDecimation(self):
 
         end2EndDemo = EndToEndDemo()
 

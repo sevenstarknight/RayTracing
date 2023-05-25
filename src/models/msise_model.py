@@ -13,7 +13,7 @@ from src.bindings.positional.layer_class import Layer
 class MSISE_Model(AbstractSpacePhysicsModel):
     def generatePointEstimate(self, layer: Layer) -> MSISEOutput:
         # Atmosphere Model
-        lla: LLA_Coord = layer.lla
+        lla: LLA_Coord = layer.lla_p1
         ds, ts = msise_model(
             time=self.currentDateTime,
             alt=lla.altitude_m / 1000,

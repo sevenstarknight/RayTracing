@@ -65,15 +65,16 @@ class LayerBuilder:
 
     def build(self, indx: int) -> Layer:
         ecef_p2: ECEF_Coord = self.intersects_ECEF[indx]
-        height = self.heightStratification_m[indx]
+        bottomAltitude = self.heightStratification_m[indx]
 
         lla_p1: LLA_Coord = convertFromECEFtoLLA(ecef=self.ecef_p1)
+        lla_p2: LLA_Coord = convertFromECEFtoLLA(ecef=ecef_p2)
 
         layer = Layer(
             ecef_p1=self.ecef_p1,
             ecef_p2=ecef_p2,
-            newAltitude_m=height,
-            lla=lla_p1,
+            lla_p1=lla_p1,
+            lla_p2=lla_p2,
             aer=self.aer,
         )
 
