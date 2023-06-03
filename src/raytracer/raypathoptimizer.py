@@ -1,4 +1,5 @@
 import scipy.optimize as optimize
+from scipy.optimize import minimize, LinearConstraint
 
 # ====================================================
 # local imports
@@ -65,7 +66,12 @@ class RayPathOptimizer:
             timeAndLocation=self.timeAndLocation,
         )
 
-        result = optimize.minimize(objectiveF.objectiveFunction, initialGuess)
+        # result = optimize.minimize(objectiveF.objectiveFunction, initialGuess)
+
+        result = minimize(
+            objectiveF.objectiveFunction,
+            x0=initialGuess
+        )
 
         # =============================================================================
         # construct the atmospheric model

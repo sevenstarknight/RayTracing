@@ -47,7 +47,7 @@ class RayPathObjective:
 
         delta: float = ECEF_Coord.subtract(
             ecef1=self.sat_ECEF, ecef2=hypoSat_ECEF
-        ).magnitude()
+        ).magnitude()/10000.0
         # =================================
         # Log Barrier (I think there is a better way to do this)
         _, el = params

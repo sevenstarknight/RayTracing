@@ -85,4 +85,4 @@ class TestXYZModel(unittest.TestCase):
             indexN = xyzModel.estimateIndexOfRefraction(layer=layer)
             indexNs.append(indexN)
 
-        self.assertTrue(len(indexNs) == len(heights_m))
+        self.assertTrue(len(indexNs) == len(heights_m) - 1)

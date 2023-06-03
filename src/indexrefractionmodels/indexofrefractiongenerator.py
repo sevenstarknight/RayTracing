@@ -54,6 +54,8 @@ class IndexOfRefractionGenerator():
 
         # Loop over layers
         indexNs = [self.refractionModel.estimateIndexOfRefraction(layer=layer) for layer in layers]
-
+        
+        # tack on an open layer at the nd 
+        indexNs.append(indexNs[-1])
 
         return (indexNs)
