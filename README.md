@@ -35,7 +35,7 @@ https://github.com/modflowpy/install-gfortran-action
 - Build a virtual environment ([How-To](https://python.plainenglish.io/python-virtual-environments-explained-78d5a040f963)
   -  in a terminal window: python -m venv venv
   -  activate the virtual env: 
-    - Linux: `source /venv/bin/activate`  
+    - Linux: `source ./venv/bin/activate`  
     - Windows: `.\venv\Scripts\activate`
     - (if issue occurs see: [fix](https://www.sharepointdiary.com/2014/03/fix-for-powershell-script-cannot-be-loaded-because-running-scripts-is-disabled-on-this-system.html))
   -  In Linux, you'll see your terminal window you'll get a new start to the line (venv). In Windows, you can run a Python command (e.g. `python -c "print (\"Hello World\")"` and you should see (venv) display when the execution finishes.
