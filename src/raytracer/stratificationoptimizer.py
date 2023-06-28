@@ -10,6 +10,7 @@ from src.bindings.models.ionospherestate_class import IonosphereState
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.positional.locationconverter_computations import convertFromECEFtoLLA
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
+from src.stratification.quantization_class import Quantization
 from src.stratification.twodseries_class import TwoDSeries
 from src.stratification.stratificationmethod_enum import StratificationMethod
 from src.stratification.equalareaquantizer import EqualAreaQuantizer
@@ -48,6 +49,11 @@ class StratificationOptimizer():
         initialHeights_m = np.append(initialHeights_m, sat_LLA.altitude_m)
         initialHeights_m.sort()
 
+        # this height should be the last stop
+        filtered = filter(lambda x: x <= sat_LLA.altitude_m, initialHeights_m)
+        initialHeights_m = np.array(list(filtered))
+
+
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
             frequency_hz=freq_Hz, dispersionModel=self.dispersionModel, transportMode=self.transportMode,
             ionosphereState=ionosphereState, startTimeAndLocation=self.timeAndLocation)
@@ -72,7 +78,14 @@ class StratificationOptimizer():
         else:
             raise Exception("Stratification method provided unknown")
 
-        quantization = quantizer.generateQuantization(
+        quantization : Quantization = quantizer.generateQuantization(
             quantizationParameter=quantizationParameter)
         heights_m = quantization.representationPoints.tolist()
-        return (heights_m)
+
+        heights_np_m = np.array(heights_m)
+        heights_np_m = np.append(heights_np_m, sat_LLA.altitude_m)
+        heights_np_m.sort()
+        
+        filtered = filter(lambda x: x <= sat_LLA.altitude_m, heights_np_m)
+        return list(filtered)
+

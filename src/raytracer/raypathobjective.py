@@ -1,4 +1,5 @@
 import math
+from src.positional.locationconverter_computations import convertFromECEFtoLLA
 
 # ====================================================
 # local imports
@@ -45,15 +46,18 @@ class RayPathObjective:
         # find last point in the ray
         hypoSat_ECEF: ECEF_Coord = stateList[-1].ecef_p2
 
-        delta: float = ECEF_Coord.subtract(
+        lla_hypo = convertFromECEFtoLLA(ecef=hypoSat_ECEF)
+        lla_sat = convertFromECEFtoLLA(ecef=self.sat_ECEF)
+
+        delta_km: float = ECEF_Coord.subtract(
             ecef1=self.sat_ECEF, ecef2=hypoSat_ECEF
-        ).magnitude()/10000.0
+        ).magnitude()/1000.0
         # =================================
         # Log Barrier (I think there is a better way to do this)
         _, el = params
         topEleBound = 0.01 * math.log(90.1 - el)
         bottomEleBound = 0.01 * math.log(abs(-90.1 - el))
 
-        loss = delta - topEleBound - bottomEleBound
+        loss = delta_km - topEleBound - bottomEleBound
 
         return loss

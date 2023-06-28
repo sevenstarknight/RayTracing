@@ -16,10 +16,11 @@ class IRIOutput():
         self.nN_Ion: float = 0
 
     @classmethod
-    def from_xarray(cls, iono: Dataset):
-        df : pd.DataFrame = iono.to_dataframe()
+    def from_geoprofile(cls, iono1: Dataset, iono2: Dataset):
+        df : pd.DataFrame = iono1.to_dataframe()
         classIri = cls()
 
+        #! is there a better way to handle this?
         classIri.n_e  = df[df["ne"] != -1 ]["ne"].mean()
 
         classIri.T_n = df[df["Tn"] != -1 ]["Tn"].mean()
@@ -27,7 +28,27 @@ class IRIOutput():
         classIri.T_e = df[df["Te"] != -1 ]["Te"].mean()
 
         classIri.nO_Ion = df[df["nO+"] != -1 ]["nO+"].mean()
-        classIri.nH_Ion = df[df["nH+"] != -1 ].mean()
+        classIri.nH_Ion = df[df["nH+"] != -1 ]["nH+"].mean()
+        classIri.nHe_Ion = df[df["nHe+"] != -1 ]["nHe+"].mean()
+        classIri.nCI_Ion = df[df["nCI"] != -1 ]["nCI"].mean()
+        classIri.nN_Ion = df[df["nN+"] != -1 ]["nN+"].mean()
+
+        return(classIri)
+    
+    @classmethod
+    def from_xarray(cls, iono: Dataset):
+        df : pd.DataFrame = iono.to_dataframe()
+        classIri = cls()
+
+        #! is there a better way to handle this?
+        classIri.n_e  = df[df["ne"] != -1 ]["ne"].mean()
+
+        classIri.T_n = df[df["Tn"] != -1 ]["Tn"].mean()
+        classIri.T_i = df[df["Ti"] != -1 ]["Ti"].mean()
+        classIri.T_e = df[df["Te"] != -1 ]["Te"].mean()
+
+        classIri.nO_Ion = df[df["nO+"] != -1 ]["nO+"].mean()
+        classIri.nH_Ion = df[df["nH+"] != -1 ]["nH+"].mean()
         classIri.nHe_Ion = df[df["nHe+"] != -1 ]["nHe+"].mean()
         classIri.nCI_Ion = df[df["nCI"] != -1 ]["nCI"].mean()
         classIri.nN_Ion = df[df["nN+"] != -1 ]["nN+"].mean()

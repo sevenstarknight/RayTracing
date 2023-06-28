@@ -1,6 +1,8 @@
 import math
 import cmath
+from dataclasses import dataclass
 from loguru import logger
+from typing import Optional
 
 # ====================================================
 # local imports
@@ -65,6 +67,11 @@ class RayTracer:
 
         return rayVectors
 
+@dataclass
+class TransitionOutput:
+    interface : Interface
+    rayVector: RayVector
+
 
 class TransitionGenerator:
     def __init__(
@@ -80,56 +87,56 @@ class TransitionGenerator:
         self.indexNs: list[complex] = indexNs
 
     def transition(self) -> RayVector:
-        layerOutput, rayVector = self.insideLayerOperations(currentState=self.currentState)
+        transitionOutput : TransitionOutput = self.insideLayerOperations(currentRayState=self.currentState)
 
-        if layerOutput.n_1 == None or rayVector == None:
+        if transitionOutput.interface.n_1 == None or transitionOutput.rayVector == None:
             logger.debug("Done with iterations, jump out of loop")
             return None
 
         self.currentState: RayState = self.onTheEdgeOperations(
-            currentState=self.currentState, layerOutput=layerOutput
+            currentState=self.currentState, interface=transitionOutput.interface
         )
 
-        return rayVector
+        return transitionOutput.rayVector
 
     def insideLayerOperations(
-        self, currentState: RayState
-    ) -> tuple[Interface, RayVector]:
+        self, currentRayState: RayState
+    ) -> TransitionOutput:
         # ==========================================================================
         # Inside the Layer
         # ==========================================================================
-        lla_p1: LLA_Coord = currentState.lla
+        lla_p1: LLA_Coord = currentRayState.lla
 
         if max(self.heights_m) <= lla_p1.altitude_m:
             # exiting the loop
-            layerOutput = Interface.from_Empty()
+            interface = Interface.from_Empty()
             logger.debug("Exiting the atmosphere")
-            return (layerOutput, None)
+            return TransitionOutput(interface=interface, rayVector=None)
 
         ecef_p1, sVector_m = RayTracerComputations.generatePositionAndVector(
-            currentState=currentState
+            currentState=currentRayState
         )
 
         # ==========================================================================
         # use quadratic equation to determine intersection in ECEF of the next layer based prior intersection and vector
         ecef_p2, newAltitude_m, indx = self._findNextIntersectPoint(
-            currentState=currentState, ecef_p1=ecef_p1, sVector_m=sVector_m
+            currentState=currentRayState, ecef_p1=ecef_p1, sVector_m=sVector_m
         )
 
         if ecef_p2 == None:
             # exiting the loop
-            layerOutput = Interface.from_Empty()
+            interface = Interface.from_Empty()
             logger.debug("Exiting the atmosphere")
-            return (layerOutput, None)
+            return TransitionOutput(interface=interface, rayVector=None)
 
         # ===================================================================
         # determine index transition
         n_1, n_2 = self._estimateIndexesAtTransition(
-            indx=indx, currentState=currentState, newAltitude_m=newAltitude_m
+            indx=indx, currentState=currentRayState, newAltitude_m=newAltitude_m
         )
 
         rayVector = RayVector(
-            rayState=currentState,
+            rayState=currentRayState,
             sVector_m=sVector_m,
             ecef_p1=ecef_p1,
             ecef_p2=ecef_p2,
@@ -143,14 +150,14 @@ class TransitionGenerator:
 
         # estimate entry angle onto the curved layers
         entryAngle_deg = RayTracerComputations.computeEntryAngle(
-            exitElevation=currentState.exitElevation_deg,
+            exitElevation=currentRayState.exitElevation_deg,
             ecef_p1=ecef_p1,
             ecef_p2=ecef_p2,
             lla_p1=lla_p1,
             lla_p2=lla_p2,
         )
 
-        layerOutput = Interface(
+        interface = Interface(
             n_1=n_1,
             n_2=n_2,
             entryAngle_deg=entryAngle_deg,
@@ -158,17 +165,17 @@ class TransitionGenerator:
             intersection_LLA=lla_p2,
         )
 
-        return (layerOutput, rayVector)
+        return TransitionOutput(interface=interface,rayVector=rayVector)
 
     def onTheEdgeOperations(
-        self, currentState: RayState, layerOutput: Interface
+        self, currentState: RayState, interface: Interface
     ) -> RayState:
-        n_1 = layerOutput.n_1
-        n_2 = layerOutput.n_2
+        n_1 = interface.n_1
+        n_2 = interface.n_2
 
-        entryAngle_deg = layerOutput.entryAngle_deg
-        newAltitude_m = layerOutput.newAltitude_m
-        lla_p2 = layerOutput.intersection_LLA
+        entryAngle_deg = interface.entryAngle_deg
+        newAltitude_m = interface.newAltitude_m
+        lla_p2 = interface.intersection_LLA
 
         # TODO, determine if refraction is occuring
         if newAltitude_m == 0.0:
@@ -250,7 +257,7 @@ class TransitionGenerator:
 
         if len(self.heights_m) <= indx:
             logger.debug("Outside ionosphere")
-            return None, None
+            return None, None, None
         else:
             # layer intersection
             newAltitude_m = self.heights_m[indx]

@@ -16,7 +16,7 @@ class TestDemoDecimation(unittest.TestCase):
 
         end2EndDemo = EndToEndDemo()
 
-        iterRange = np.arange(3.6,4,0.2)
+        iterRange = np.arange(1.0,2.0,0.2)
         listOfResults_eqa = []
 
         for idx in tqdm(iterRange):
