@@ -3,6 +3,7 @@ import cmath
 from dataclasses import dataclass
 from loguru import logger
 from typing import Optional
+from src.bindings.raytracer.intersection_class import IntersectionPoint
 
 # ====================================================
 # local imports
@@ -70,7 +71,7 @@ class RayTracer:
 @dataclass
 class TransitionOutput:
     interface : Interface
-    rayVector: RayVector
+    rayVector: RayVector | None
 
 
 class TransitionGenerator:
@@ -86,11 +87,11 @@ class TransitionGenerator:
         self.heights_m: list[float] = heights_m
         self.indexNs: list[complex] = indexNs
 
-    def transition(self) -> RayVector:
+    def transition(self) -> Optional[RayVector]:
         transitionOutput : TransitionOutput = self.insideLayerOperations(currentRayState=self.currentState)
 
-        if transitionOutput.interface.n_1 == None or transitionOutput.rayVector == None:
-            logger.debug("Done with iterations, jump out of loop")
+        if transitionOutput == None:
+            #logger.debug("Done with iterations, jump out of loop")
             return None
 
         self.currentState: RayState = self.onTheEdgeOperations(
@@ -101,7 +102,7 @@ class TransitionGenerator:
 
     def insideLayerOperations(
         self, currentRayState: RayState
-    ) -> TransitionOutput:
+    ) -> Optional[TransitionOutput]:
         # ==========================================================================
         # Inside the Layer
         # ==========================================================================
@@ -109,9 +110,8 @@ class TransitionGenerator:
 
         if max(self.heights_m) <= lla_p1.altitude_m:
             # exiting the loop
-            interface = Interface.from_Empty()
-            logger.debug("Exiting the atmosphere")
-            return TransitionOutput(interface=interface, rayVector=None)
+            # logger.debug("Exiting the atmosphere")
+            return None
 
         ecef_p1, sVector_m = RayTracerComputations.generatePositionAndVector(
             currentState=currentRayState
@@ -119,40 +119,39 @@ class TransitionGenerator:
 
         # ==========================================================================
         # use quadratic equation to determine intersection in ECEF of the next layer based prior intersection and vector
-        ecef_p2, newAltitude_m, indx = self._findNextIntersectPoint(
+        intersection = self._findNextIntersectPoint(
             currentState=currentRayState, ecef_p1=ecef_p1, sVector_m=sVector_m
         )
 
-        if ecef_p2 == None:
+        if intersection == None:
             # exiting the loop
-            interface = Interface.from_Empty()
             logger.debug("Exiting the atmosphere")
-            return TransitionOutput(interface=interface, rayVector=None)
+            return None
 
         # ===================================================================
         # determine index transition
         n_1, n_2 = self._estimateIndexesAtTransition(
-            indx=indx, currentState=currentRayState, newAltitude_m=newAltitude_m
+            indx=intersection.indx, currentState=currentRayState, newAltitude_m=intersection.newAltitude_m
         )
 
         rayVector = RayVector(
             rayState=currentRayState,
             sVector_m=sVector_m,
             ecef_p1=ecef_p1,
-            ecef_p2=ecef_p2,
-            newAltitude_m=newAltitude_m,
+            ecef_p2=intersection.ecef_p2,
+            newAltitude_m=intersection.newAltitude_m,
             n_1=n_1,
         )
 
         # ===================================================================
-        lla_p2 = convertFromECEFtoLLA(ecef=ecef_p2)
-        lla_p2.setAltitude(newAlitude_m=newAltitude_m)
+        lla_p2 = convertFromECEFtoLLA(ecef=intersection.ecef_p2)
+        lla_p2.setAltitude(newAlitude_m=intersection.newAltitude_m)
 
         # estimate entry angle onto the curved layers
         entryAngle_deg = RayTracerComputations.computeEntryAngle(
             exitElevation=currentRayState.exitElevation_deg,
             ecef_p1=ecef_p1,
-            ecef_p2=ecef_p2,
+            ecef_p2=intersection.ecef_p2,
             lla_p1=lla_p1,
             lla_p2=lla_p2,
         )
@@ -161,7 +160,7 @@ class TransitionGenerator:
             n_1=n_1,
             n_2=n_2,
             entryAngle_deg=entryAngle_deg,
-            newAltitude_m=newAltitude_m,
+            newAltitude_m=intersection.newAltitude_m,
             intersection_LLA=lla_p2,
         )
 
@@ -239,7 +238,7 @@ class TransitionGenerator:
 
     def _findNextIntersectPoint(
         self, currentState: RayState, ecef_p1: ECEF_Coord, sVector_m: ECEF_Coord
-    ) -> tuple[ECEF_Coord, float, int]:
+    ) -> Optional[IntersectionPoint]:
         lla_p1 = currentState.lla
 
         if currentState.exitElevation_deg > 0:
@@ -257,7 +256,7 @@ class TransitionGenerator:
 
         if len(self.heights_m) <= indx:
             logger.debug("Outside ionosphere")
-            return None, None, None
+            return None
         else:
             # layer intersection
             newAltitude_m = self.heights_m[indx]
@@ -285,8 +284,8 @@ class TransitionGenerator:
             except IntersectException as inst2:
                 logger.error(inst2.args)
                 raise IntersectException("how did we get here?")
-
-        return ecef_p2, newAltitude_m, indx
+   
+        return IntersectionPoint(ecef_p2=ecef_p2, newAltitude_m=newAltitude_m, indx=indx)
 
     def _estimateIndexesAtTransition(
         self, indx: int, newAltitude_m: float, currentState: RayState
@@ -313,7 +312,7 @@ class TransitionGenerator:
             elif newAltitude_m > lla_p1.altitude_m:
                 n_2 = self.indexNs[indx]
                 n_1 = self.indexNs[indx - 1]
-                logger.debug("up transitions")
+                #logger.debug("up transitions")
         else:
             if newAltitude_m < lla_p1.altitude_m:
                 if indx == 0:
@@ -328,6 +327,7 @@ class TransitionGenerator:
             elif newAltitude_m > lla_p1.altitude_m:
                 n_2 = self.indexNs[indx]
                 n_1 = self.indexNs[indx - 1]
-                logger.debug("up transitions")
+                # logger.debug("up transitions")
 
         return (n_1, n_2)
+    

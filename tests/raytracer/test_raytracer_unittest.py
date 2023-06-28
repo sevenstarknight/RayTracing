@@ -55,8 +55,7 @@ class TestRayTracer(unittest.TestCase):
         transitionOutput : TransitionOutput = transitionGenerator.insideLayerOperations(
             currentRayState=initialState)
 
-        self.assertEqual(transitionOutput.interface.newAltitude_m, None)
-        self.assertEqual(transitionOutput.interface.n_2, None)
+        self.assertEqual(transitionOutput, None)
 
     def test_insideLayerOperations_up(self):
 

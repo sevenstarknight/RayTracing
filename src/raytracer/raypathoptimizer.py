@@ -57,8 +57,6 @@ class RayPathOptimizer:
         )
 
         # optimization
-        initialGuess = [aer.az_deg, aer.ele_deg]
-
         objectiveF = RayPathObjective(
             heights_m=self.heights_m,
             satPosGen=satPosGenerator,
@@ -66,11 +64,16 @@ class RayPathOptimizer:
             timeAndLocation=self.timeAndLocation,
         )
 
-        # result = optimize.minimize(objectiveF.objectiveFunction, initialGuess)
-
+        initialGuess = [aer.az_deg, aer.ele_deg]
+        # no azimuthal bounds, but bound elevation -90 to 90
+        bnds = ((None, None), (-90, 90))
+        # tol to a meter
         result = minimize(
             objectiveF.objectiveFunction,
-            x0=initialGuess
+            x0=initialGuess,
+            method='Nelder-Mead',
+            bounds = bnds,
+            tol = 1e-3
         )
 
         # =============================================================================

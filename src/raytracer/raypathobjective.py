@@ -49,15 +49,8 @@ class RayPathObjective:
         lla_hypo = convertFromECEFtoLLA(ecef=hypoSat_ECEF)
         lla_sat = convertFromECEFtoLLA(ecef=self.sat_ECEF)
 
-        delta_km: float = ECEF_Coord.subtract(
+        loss: float = ECEF_Coord.subtract(
             ecef1=self.sat_ECEF, ecef2=hypoSat_ECEF
         ).magnitude()/1000.0
-        # =================================
-        # Log Barrier (I think there is a better way to do this)
-        _, el = params
-        topEleBound = 0.01 * math.log(90.1 - el)
-        bottomEleBound = 0.01 * math.log(abs(-90.1 - el))
-
-        loss = delta_km - topEleBound - bottomEleBound
 
         return loss
