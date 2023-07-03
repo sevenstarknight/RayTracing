@@ -41,7 +41,7 @@ class StratificationOptimizer():
 
         sat_LLA = convertFromECEFtoLLA(ecef=sat_ECEF)
 
-        initialHeights_m = np.linspace(60e3, 1100e3, 50)
+        initialHeights_m = np.linspace(60e3, 1100e3, 1000)
 
         initialHeights_m = np.append(
             initialHeights_m, self.timeAndLocation.eventLocation_LLA.altitude_m)
@@ -52,7 +52,6 @@ class StratificationOptimizer():
         # this height should be the last stop
         filtered = filter(lambda x: x <= sat_LLA.altitude_m, initialHeights_m)
         initialHeights_m = np.array(list(filtered))
-
 
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
             frequency_hz=freq_Hz, dispersionModel=self.dispersionModel, transportMode=self.transportMode,

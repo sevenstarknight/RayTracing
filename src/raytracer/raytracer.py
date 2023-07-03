@@ -18,6 +18,7 @@ from src.bindings.positional.timeandlocation_class import TimeAndLocation
 
 from src.positional.locationconverter_computations import convertFromECEFtoLLA
 
+MAX_ITER = 1000000
 
 class RayTracer:
     def __init__(
@@ -58,7 +59,7 @@ class RayTracer:
         
         rayVectors = []
                       
-        for idx in range(100):
+        for _ in range(MAX_ITER):
             rayVector : RayVector = transitionGenerator.transition()
             if(rayVector is not None):
                 rayVectors.append(rayVector)
