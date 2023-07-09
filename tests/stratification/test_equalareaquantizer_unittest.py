@@ -42,7 +42,7 @@ class TestEqualAreaQuantizer(unittest.TestCase):
 
         quantizer = EqualAreaQuantizer(testSeries)
 
-        quantizationParameter = QuantizationParameter(StratificationMethod.EQUALAREA_MODEL,nQuant=100)
+        quantizationParameter = QuantizationParameter(StratificationMethod.EQUALAREA_MODEL,nQuant=180)
 
         quantization = quantizer.generateQuantization(quantizationParameter)
 

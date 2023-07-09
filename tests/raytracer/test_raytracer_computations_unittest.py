@@ -8,7 +8,7 @@ import pyproj
 import ahrs
 # ====================================================
 # local imports
-from src.raytracer.raytracer import computeGeocentricRadius, computeNewIntersection, computeEntryAngle
+from src.raytracer.raytracer import RayTracerComputations
 from src.bindings.positional.coordinates_class import ECEF_Coord, LLA_Coord
 
 # ====================================================
@@ -21,7 +21,7 @@ class TestRayTracer_Computations(unittest.TestCase):
 
     def test_computeGeocentricRadius(self):
         initialLLA = LLA_Coord(0.0, 345.5975, 0.0)
-        radius = computeGeocentricRadius(initialLLA)
+        radius = RayTracerComputations.computeGeocentricRadius(initialLLA)
         wgs = ahrs.utils.WGS()
         self.assertTrue(math.fabs(wgs.a - radius) < 0.1)
 
@@ -31,7 +31,7 @@ class TestRayTracer_Computations(unittest.TestCase):
         initialECEF_vector = ECEF_Coord(1.0, 0.0, 0.0)
         newAltitude_m = 100.0
 
-        intersectionECEF = computeNewIntersection(
+        intersectionECEF = RayTracerComputations.computeNewIntersection(
             initialECEF, initialECEF_vector, newAltitude_m)
 
         delta = ECEF_Coord.subtract(initialECEF, intersectionECEF)
@@ -50,7 +50,7 @@ class TestRayTracer_Computations(unittest.TestCase):
             ECEF, LLA, initialECEF_2.x_m, initialECEF_2.y_m, initialECEF_2.z_m, radians=False)
         lla_p2 = LLA_Coord(lat_deg, lon_deg, alt_m)
 
-        entryAngle = computeEntryAngle(
+        entryAngle = RayTracerComputations.computeEntryAngle(
             90.0, initialECEF_1, initialECEF_2, lla_p1, lla_p2)
 
         self.assertTrue(math.fabs(5.7015 - entryAngle) < 0.1)

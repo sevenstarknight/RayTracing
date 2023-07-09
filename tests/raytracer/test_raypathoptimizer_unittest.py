@@ -6,13 +6,9 @@ from datetime import datetime
 import pyproj
 # ====================================================
 # local imports
-from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.models.ionospherestate_class import IonosphereState
-from src.bindings.positional.timeandlocation_class import TimeAndLocation
-from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
-from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.raytracer.raypathoptimizer import RayPathOptimizer
 from tests.unittest_computations import standardSatelliteInformation, standardStartingPoint
 

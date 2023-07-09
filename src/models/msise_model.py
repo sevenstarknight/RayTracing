@@ -9,20 +9,26 @@ from src.models.msiseoutput_class import MSISEOutput
 from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.positional.layer_class import Layer
 
+
 class MSISE_Model(AbstractSpacePhysicsModel):
-
-    def generatePointEstimate(self,  layer: Layer) -> MSISEOutput:
+    def generatePointEstimate(self, layer: Layer) -> MSISEOutput:
         # Atmosphere Model
-        lla: LLA_Coord = layer.lla
-        ds, ts = msise_model(time=self.currentDateTime, alt=lla.altitude_m/1000, lat=lla.lat_deg, lon=lla.lon_deg,
-                             f107a=self.ionosphereState.f107a, f107=self.ionosphereState.f107,
-                             ap=self.ionosphereState.ap[0], ap_a=self.ionosphereState.ap)
-        return(MSISEOutput(ds, ts))
+        lla: LLA_Coord = layer.lla_p1
+        ds, ts = msise_model(
+            time=self.currentDateTime,
+            alt=lla.altitude_m / 1000,
+            lat=lla.lat_deg,
+            lon=lla.lon_deg,
+            f107a=self.ionosphereState.f107a,
+            f107=self.ionosphereState.f107,
+            ap=self.ionosphereState.ap[0],
+            ap_a=self.ionosphereState.ap,
+        )
+        return MSISEOutput(ds, ts)
 
-    def generateSetEstimate(self,  layers: list[Layer]) -> list[MSISEOutput]:
+    def generateSetEstimate(self, layers: list[Layer]) -> list[MSISEOutput]:
+        msiseOutputs: list[MSISEOutput] = [
+            self.generatePointEstimate(layer=layer) for layer in layers
+        ]
 
-        msiseOutputs: list[MSISEOutput] = []
-        for layer in layers:
-            msiseOutputs.append(self.generatePointEstimate(layer=layer))
-
-        return(msiseOutputs)
+        return msiseOutputs

@@ -1,6 +1,9 @@
 import numpy as np
 
-class Quantization():
-    def __init__(self, representationPoints: np.array, intervalEndPoints : np.array):
-        self.representationPoints = representationPoints
-        self.intervalEndPoints = intervalEndPoints
+from dataclasses import dataclass
+
+
+@dataclass
+class Quantization:
+    representationPoints: np.array
+    intervalEndPoints: np.array

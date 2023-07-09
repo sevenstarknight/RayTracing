@@ -16,7 +16,7 @@ from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.stratificationmethod_enum import StratificationMethod
-from src.stratification.stratificationoptimizer import StratificationOptimizer
+from src.raytracer.stratificationoptimizer import StratificationOptimizer
 from tests.unittest_computations import standardSatelliteInformation, standardStartingPoint
 
 # ====================================================

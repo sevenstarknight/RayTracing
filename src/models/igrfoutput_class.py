@@ -1,5 +1,12 @@
-import xarray
+import math
+from dataclasses import dataclass
 
-class IGRFOutput():
-    def __init__(self, igrf: xarray.Dataset):
-        self.igrf = igrf.to_dataframe()
+
+@dataclass
+class IGRFOutput:
+    Be: float
+    Bn: float
+    Bu: float
+
+    def getMagnitude(self) -> float:
+        return math.sqrt(self.Be * self.Be + self.Bn * self.Bn + self.Bu * self.Bu)

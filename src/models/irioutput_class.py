@@ -1,5 +1,5 @@
-import xarray
-
+from xarray import Dataset
+import pandas as pd
 
 class IRIOutput():
 
@@ -16,36 +16,42 @@ class IRIOutput():
         self.nN_Ion: float = 0
 
     @classmethod
-    def from_xarray(cls, iono: xarray.Dataset):
-        df = iono.to_dataframe()
+    def from_geoprofile(cls, iono1: Dataset, iono2: Dataset):
+        df : pd.DataFrame = iono1.to_dataframe()
         classIri = cls()
 
+        #! is there a better way to handle this?
+        classIri.n_e  = df[df["ne"] != -1 ]["ne"].mean()
 
-        ne_1 = df["ne"].iloc[0].item()
-        ne_2 = df["ne"].iloc[1].item()
+        classIri.T_n = df[df["Tn"] != -1 ]["Tn"].mean()
+        classIri.T_i = df[df["Ti"] != -1 ]["Ti"].mean()
+        classIri.T_e = df[df["Te"] != -1 ]["Te"].mean()
 
-        # forward/backward mean estimate
-        if ne_1 < 0 and ne_2 > 0:
-            classIri.n_e = ne_2
-        elif ne_1 > 0 and ne_2 < 0:
-            classIri.n_e = ne_1
-        else:
-            classIri.n_e = (ne_2 + ne_1)/2.0
+        classIri.nO_Ion = df[df["nO+"] != -1 ]["nO+"].mean()
+        classIri.nH_Ion = df[df["nH+"] != -1 ]["nH+"].mean()
+        classIri.nHe_Ion = df[df["nHe+"] != -1 ]["nHe+"].mean()
+        classIri.nCI_Ion = df[df["nCI"] != -1 ]["nCI"].mean()
+        classIri.nN_Ion = df[df["nN+"] != -1 ]["nN+"].mean()
 
-        classIri.T_n = (df["Tn"].iloc[0].item()+df["Tn"].iloc[1].item())/2
-        classIri.T_i = (df["Ti"].iloc[0].item()+df["Ti"].iloc[1].item())/2
-        classIri.T_e = (df["Te"].iloc[0].item()+df["Te"].iloc[0].item())/2
+        return(classIri)
+    
+    @classmethod
+    def from_xarray(cls, iono: Dataset):
+        df : pd.DataFrame = iono.to_dataframe()
+        classIri = cls()
 
-        classIri.nO_Ion = (df["nO+"].iloc[0].item() +
-                           df["nO+"].iloc[0].item())/2
-        classIri.nH_Ion = (df["nH+"].iloc[0].item() +
-                           df["nH+"].iloc[0].item())/2
-        classIri.nHe_Ion = (df["nHe+"].iloc[0].item() +
-                            df["nHe+"].iloc[0].item())/2
-        classIri.nCI_Ion = (df["nCI"].iloc[0].item() +
-                            df["nCI"].iloc[0].item())/2
-        classIri.nN_Ion = (df["nN+"].iloc[0].item() +
-                           df["nN+"].iloc[0].item())/2
+        #! is there a better way to handle this?
+        classIri.n_e  = df[df["ne"] != -1 ]["ne"].mean()
+
+        classIri.T_n = df[df["Tn"] != -1 ]["Tn"].mean()
+        classIri.T_i = df[df["Ti"] != -1 ]["Ti"].mean()
+        classIri.T_e = df[df["Te"] != -1 ]["Te"].mean()
+
+        classIri.nO_Ion = df[df["nO+"] != -1 ]["nO+"].mean()
+        classIri.nH_Ion = df[df["nH+"] != -1 ]["nH+"].mean()
+        classIri.nHe_Ion = df[df["nHe+"] != -1 ]["nHe+"].mean()
+        classIri.nCI_Ion = df[df["nCI"] != -1 ]["nCI"].mean()
+        classIri.nN_Ion = df[df["nN+"] != -1 ]["nN+"].mean()
 
         return(classIri)
 
@@ -67,3 +73,10 @@ class IRIOutput():
         classIri.nN_Ion = -1.0
 
         return classIri
+
+
+    def doesExist(self) -> bool:
+        if(self.n_e == -1.0):
+            return False
+        else:
+            return True

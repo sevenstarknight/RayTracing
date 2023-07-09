@@ -10,7 +10,6 @@ from src.bindings.positional.coordinates_class import LLA_Coord, ECEF_Coord
 from src.bindings.positional.layer_class import Layer
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
-from src.bindings.raytracer.raystate_class import RayState
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.positional.slantpathgenerator import SlantPathGenerator
 

@@ -28,7 +28,7 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
         sat_ECEF = satPosition()
 
         # expected height, assume minimal change in position with range projection
-        lon_deg, lat_deg, alt_m = pyproj.transform(
+        lon_deg, lat_deg, _ = pyproj.transform(
             ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
 
         event_LLA = LLA_Coord(lat_deg, lon_deg, 0.0)
@@ -44,7 +44,7 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
         rayPathPoints = slantPathGenerator.estimateSlantPath(startTimeAndLocation=timeAndLocation,
                                                              heightStratification_m=heights_m, sat_ECEF=sat_ECEF)
 
-        self.assertEqual(len(rayPathPoints), len(heights_m))
+        self.assertEqual(len(rayPathPoints), len(heights_m) - 1)
 
 
 if __name__ == '__main__':

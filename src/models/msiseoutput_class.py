@@ -1,6 +1,6 @@
-class MSISEOutput():
+class MSISEOutput:
 
-    '''
+    """
     The output has the same order as the C reference code, in particular:
 
     d[0] - He number density [cm⁻³]
@@ -14,7 +14,7 @@ class MSISEOutput():
     d[8] - Anomalous oxygen number density [cm⁻³]
     t[0] - exospheric temperature [K]
     t[1] - temperature at alt [K]
-    '''
+    """
 
     def __init__(self, d: list, t: list):
         self.heNumDensity = d[0]

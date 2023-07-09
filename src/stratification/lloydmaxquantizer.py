@@ -1,14 +1,12 @@
 import numpy as np
 import scipy.integrate as integrate
-
+from loguru import logger
 # ====================================================
 # local
 from src.stratification.abstractquantizer import AbstractQuantizer
 from src.stratification.quantization_class import Quantization
 from src.stratification.quantizationparameter_class import QuantizationParameter
 
-from src.logger.simlogger import get_logger
-LOGGER = get_logger(__name__)
 # ====================================================
 # constants
 MAXITER = 100000
@@ -58,18 +56,18 @@ class LloydMaxQuantizer(AbstractQuantizer):
             delta = np.abs(distoritionNow - distoritionPrior)/distoritionPrior
 
             if(delta < 1e-3):
-                LOGGER.info("Final Iteration #: %s" , str(idx))
-                LOGGER.info("Lloyd Max Converged: %s" , str(delta))
+                logger.info("Final Iteration #: %s" , str(idx))
+                logger.info("Lloyd Max Converged: %s" , str(delta))
                 break
 
             distoritionPrior = distoritionNow
 
             if(idx % 20 == 0):
-                LOGGER.info("Current Iteration #: %s" , str(idx))
-                LOGGER.info("Current Delta Distort #: %s" , str(delta))
+                logger.info("Current Iteration #: %s" , str(idx))
+                logger.info("Current Delta Distort #: %s" , str(delta))
 
             if(idx == MAXITER - 2):
-                LOGGER.debug("Lloyd Max didn't converge" )
+                logger.debug("Lloyd Max didn't converge" )
 
         return(Quantization(boundaryOld, qprior))
 

@@ -1,9 +1,7 @@
-from cmath import inf
 from rdp import rdp
 import numpy as np
 from scipy import interpolate
 from scipy import optimize
-
 # ====================================================
 # local
 from src.stratification.abstractquantizer import AbstractQuantizer
@@ -11,8 +9,6 @@ from src.stratification.quantization_class import Quantization
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.twodseries_class import TwoDSeries
 
-from src.logger.simlogger import get_logger
-LOGGER = get_logger(__name__)
 # ====================================================
 # constants
 MAXITER = 100000

@@ -1,11 +1,11 @@
 import unittest
 from datetime import datetime
+from supportTestStructures import generateSlantPath
+
 from src.bindings.positional.layer_class import Layer
 
 # ====================================================
 # local imports
-from supportTestStructures import generateSlantPath
-
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.models.collisionfrequency import ElectronIonCollisionFrequency, ElectronNeutralCollisionFrequency
 from src.models.iri_model import IRI_Model

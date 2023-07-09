@@ -52,11 +52,11 @@ class TestRayPathObjective(unittest.TestCase):
 
         indexOfRefractionGenerator = IndexOfRefractionGenerator(
             frequency_hz=1000e6, dispersionModel=DispersionModel.X_MODEL, transportMode=TransportMode.PLASMA_MODE,
-             startTimeAndLocation=timeAndLocation,ionosphereState = ionosphereState)
+            startTimeAndLocation=timeAndLocation, ionosphereState=ionosphereState)
 
-        rayPathOpt = RayPathObjective(heights_m=heights_m, 
-        timeAndLocation=timeAndLocation, satPosGen=satPosGenerator, 
-        indexOfRefractionGenerator=indexOfRefractionGenerator,ionosphereState=ionosphereState)
+        rayPathOpt = RayPathObjective(heights_m=heights_m,
+                                      timeAndLocation=timeAndLocation, satPosGen=satPosGenerator,
+                                      indexOfRefractionGenerator=indexOfRefractionGenerator)
 
         param = [80, 10]
         loss = rayPathOpt.objectiveFunction(param)

@@ -15,7 +15,8 @@ class TestRayPathEffects(unittest.TestCase):
 
     def test_RayPathEffects(self):
 
-        ionosphereState = IonosphereState(10.0, 10.0, 3.0)
+        ap = [1, 2, 3, 4, 2, 2, 1]
+        ionosphereState = IonosphereState(20.5, 20.6, ap)
 
         satelliteInformation = standardSatelliteInformation()
 

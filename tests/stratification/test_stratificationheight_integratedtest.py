@@ -52,12 +52,12 @@ class TestStratificationIntegration(unittest.TestCase):
         print(transIonosphereEffects.totalIonoDelay_sec)
         print(transIonosphereEffects.totalIonoLoss_db)
 
-        rayStates = transIonosphereEffects.rayStates
+        rayVectors = transIonosphereEffects.rayVectors
         listTmp = []
         columnNames = []
-        for rayState in rayStates:
-            tmpList = rayState.generateList()
+        for rayVector in rayVectors:
+            tmpList = rayVector.rayState.generateList()
             listTmp.append(tmpList)
-            columnNames = rayState.generateColumnNames()
+            columnNames = rayVector.rayState.generateColumnNames()
 
         df = pd.DataFrame(listTmp, columns=columnNames, dtype=float)

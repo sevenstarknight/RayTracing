@@ -2,7 +2,6 @@ from datetime import datetime
 
 # ====================================================
 # local imports
-from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.positional.locationconverter_computations import convertFromECEFtoLLA
