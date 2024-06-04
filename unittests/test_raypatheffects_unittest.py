@@ -8,7 +8,7 @@ from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.raypatheffects import EstimateRayPathEffects
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.stratificationmethod_enum import StratificationMethod
-from tests.unittest_computations import standardSatelliteInformation, standardStartingPoint
+from unittests.unittest_computations import standardSatelliteInformation, standardStartingPoint
 
 
 class TestRayPathEffects(unittest.TestCase):

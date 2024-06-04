@@ -28,6 +28,7 @@ Mac: brew install gcc
 Windows: consider MSYS2
 
 If using codespaces:
+sudo apt-get update
 sudo apt-get install gfortran
 
 https://github.com/modflowpy/install-gfortran-action

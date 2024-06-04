@@ -18,7 +18,7 @@ from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.stratificationmethod_enum import StratificationMethod
 from src.raypatheffects import EstimateRayPathEffects
-from tests.unittest_computations import standardSatelliteInformation, standardStartingPoint
+from unittests.unittest_computations import standardSatelliteInformation, standardStartingPoint
 # ====================================================
 # constants
 ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
