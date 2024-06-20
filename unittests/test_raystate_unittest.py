@@ -1,7 +1,6 @@
 import unittest
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.raytracer.raystate_class import RayState
 from src.bindings.positional.coordinates_class import LLA_Coord
 

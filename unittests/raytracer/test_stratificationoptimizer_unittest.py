@@ -1,7 +1,6 @@
 import unittest
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation

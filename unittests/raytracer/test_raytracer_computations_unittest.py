@@ -4,8 +4,8 @@ import math
 # ====================================================
 # https://ahrs.readthedocs.io/en/latest/
 import ahrs
-# ====================================================
-# local imports
+
+# FIRSTPARTY modules
 from src.positional.locationconverter_computations import LocationConverterComputation
 from src.raytracer.raytracer import RayTracerComputations
 from src.bindings.positional.coordinates_class import ECEF_Coord, LLA_Coord

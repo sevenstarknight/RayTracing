@@ -1,8 +1,7 @@
 import unittest
 import ahrs
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import LLA_Coord, ECEF_Coord
 
 

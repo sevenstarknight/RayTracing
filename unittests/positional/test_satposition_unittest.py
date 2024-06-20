@@ -1,8 +1,7 @@
 import unittest
 from datetime import datetime
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 

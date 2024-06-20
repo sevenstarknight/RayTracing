@@ -1,7 +1,6 @@
 import unittest
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode

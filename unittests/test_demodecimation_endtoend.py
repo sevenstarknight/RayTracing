@@ -1,11 +1,11 @@
+import unittest
+import math
+
 import numpy as np
 import pandas as pd
-import math
 from tqdm import tqdm
-import unittest
 
-# ======================================================================================
-# Local imports
+# FIRSTPARTY modules
 from src.endtoenddemonstration import EndToEndDemo
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.stratificationmethod_enum import StratificationMethod

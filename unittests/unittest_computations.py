@@ -1,7 +1,6 @@
 from datetime import datetime
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.positional.locationconverter_computations import LocationConverterComputation

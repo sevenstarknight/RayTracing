@@ -1,7 +1,6 @@
 from datetime import datetime
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import LLA_Coord, ECEF_Coord
 from src.bindings.positional.layer_class import Layer
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
