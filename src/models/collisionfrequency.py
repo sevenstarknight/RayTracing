@@ -1,8 +1,10 @@
-from scipy import constants
+# STDLIB modules
 import math
 
-# ====================================================
-# local imports
+# THIRDPARTY modules
+from scipy import constants
+
+# FIRSTPARTY modules
 from src.models.msiseoutput_class import MSISEOutput
 from src.models.irioutput_class import IRIOutput
 

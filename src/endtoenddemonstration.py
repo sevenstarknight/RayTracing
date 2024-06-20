@@ -1,14 +1,12 @@
-
 from datetime import datetime
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
-from src.positional.locationconverter_computations import convertFromECEFtoLLA
+from src.positional.locationconverter_computations import LocationConverterComputation
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.raypatheffects import EstimateRayPathEffects
 from src.stratification.quantizationparameter_class import QuantizationParameter
@@ -33,7 +31,7 @@ class EndToEndDemo():
 
         # ======================================================
         # expected height, assume minimal change in position with range projection
-        event_LLA = convertFromECEFtoLLA(ecef=sat_ECEF)
+        event_LLA = LocationConverterComputation.convertFromECEFtoLLA(ecef=sat_ECEF)
         event_LLA.setAltitude(0.0)
 
         self.timeAndLocation = TimeAndLocation(

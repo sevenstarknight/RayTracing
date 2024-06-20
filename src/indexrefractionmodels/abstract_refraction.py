@@ -1,7 +1,7 @@
+# STDLIB modules
 from abc import ABC, abstractmethod
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.models.spacephysicsmodels import SpacePhysicsModels
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.bindings.positional.layer_class import Layer

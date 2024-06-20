@@ -1,10 +1,12 @@
+# STDLIB modules
 import math
 from cmath import sqrt
+
+# THIRDPARTY module
 from scipy import constants
 from loguru import logger
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
 from src.bindings.positional.layer_class import Layer
 

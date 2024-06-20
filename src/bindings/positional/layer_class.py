@@ -1,4 +1,7 @@
+# STDLIB modules
 from dataclasses import dataclass
+
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import AER_Coord, ECEF_Coord, LLA_Coord
 
 

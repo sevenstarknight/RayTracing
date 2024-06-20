@@ -1,8 +1,9 @@
+# THIRDPARTY modules
 import numpy as np
 import scipy.integrate as integrate
 from loguru import logger
-# ====================================================
-# local
+
+# FIRSTPARTY modules
 from src.stratification.abstractquantizer import AbstractQuantizer
 from src.stratification.quantization_class import Quantization
 from src.stratification.quantizationparameter_class import QuantizationParameter

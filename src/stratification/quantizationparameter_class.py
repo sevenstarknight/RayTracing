@@ -1,3 +1,4 @@
+# FIRSTPARTY modules
 from src.stratification.stratificationmethod_enum import StratificationMethod
 
 

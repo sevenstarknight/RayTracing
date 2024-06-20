@@ -1,16 +1,19 @@
+# STDLIB modules
 import math
 from cmath import sqrt
+
+# THIRDPARTY modules
 from scipy import constants
 import numpy as np
 from loguru import logger
-# ====================================================
-# local imports
+
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import AER_Coord, ENU_Coord
 from src.bindings.vector_class import VectorArray
 from src.indexrefractionmodels.abstract_refraction import AbstractIndexRefraction
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.bindings.positional.layer_class import Layer
-from src.positional.locationconverter_computations import convertFromAER2ENU
+from src.positional.locationconverter_computations import LocationConverterComputation 
 
 
 class XYModel(AbstractIndexRefraction):
@@ -31,7 +34,7 @@ class XYModel(AbstractIndexRefraction):
 
             aer = AER_Coord(ele_deg=layer.aer.ele_deg,
                             az_deg=layer.aer.az_deg, range_m=1.0)
-            enu: ENU_Coord = convertFromAER2ENU(aer=aer)
+            enu: ENU_Coord = LocationConverterComputation.convertFromAER2ENU(aer=aer)
 
             b_SEZ = VectorArray(-igrfOutput.Bn, igrfOutput.Be, igrfOutput.Bu)
 

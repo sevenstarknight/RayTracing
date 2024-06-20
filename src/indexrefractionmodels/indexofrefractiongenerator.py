@@ -1,5 +1,5 @@
-# ====================================================
-# local imports
+
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import ECEF_Coord
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.bindings.models.ionospherestate_class import IonosphereState
@@ -8,7 +8,6 @@ from src.indexrefractionmodels.xymodel import XYModel
 from src.indexrefractionmodels.xyzmodel import XYZModel
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
-
 from src.models.igrf_model import IGRF_Model
 from src.models.iri_model import IRI_Model
 from src.models.msise_model import MSISE_Model

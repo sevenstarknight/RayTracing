@@ -3,7 +3,9 @@ import numpy as np
 from NequickG import Position, GalileoBroadcast, NEQTime, NequickG, NequickG_parameters
 import spheretrig
 
+# FIRSTPARTY modules
 from src.logger.simlogger import get_logger
+
 LOGGER = get_logger(__name__)
 
 class NequickG_global:

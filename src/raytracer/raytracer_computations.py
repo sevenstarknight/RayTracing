@@ -1,18 +1,14 @@
 import math
 
-# ====================================================
+# THIRDPARTY modules
 # https://ahrs.readthedocs.io/en/latest/wgs84.html
 import ahrs
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.exceptions_class import IntersectException
 from src.bindings.positional.coordinates_class import AER_Coord, LLA_Coord, ECEF_Coord
 from src.bindings.raytracer.raystate_class import RayState
-from src.positional.locationconverter_computations import (
-    convertFromAER,
-    convertFromLLAtoECEF,
-)
+from src.positional.locationconverter_computations import LocationConverterComputation
 
 
 class RayTracerComputations:
@@ -38,13 +34,13 @@ class RayTracerComputations:
         lla_p1 = currentState.lla
 
         # ECEF location
-        ecef_p1 = convertFromLLAtoECEF(lla_p1)
+        ecef_p1 = LocationConverterComputation.convertFromLLAtoECEF(lla_p1)
 
         # Generate ECEF Vector Based on Ray Direction using AER
         aer = AER_Coord(
             currentState.exitAzimuth_deg, currentState.exitElevation_deg, 1.0
         )
-        ecef_unitVector = convertFromAER(aer=aer, lla=lla_p1)
+        ecef_unitVector = LocationConverterComputation.convertFromAER(aer=aer, lla=lla_p1)
 
         ecef_unit = ECEF_Coord(
             ecef_unitVector[0], ecef_unitVector[1], ecef_unitVector[2]

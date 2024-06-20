@@ -1,6 +1,6 @@
+# STDLIB modules
 import math
 from dataclasses import dataclass
-
 
 @dataclass
 class IGRFOutput:

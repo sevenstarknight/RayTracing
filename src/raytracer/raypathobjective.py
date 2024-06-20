@@ -1,8 +1,4 @@
-import math
-from src.positional.locationconverter_computations import convertFromECEFtoLLA
-
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.raytracer.raytracer import RayTracer
 from src.bindings.positional.coordinates_class import ECEF_Coord
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
@@ -11,7 +7,7 @@ from src.indexrefractionmodels.indexofrefractiongenerator import (
     IndexOfRefractionGenerator,
 )
 from src.bindings.raytracer.rayvector_class import RayVector
-
+from src.positional.locationconverter_computations import LocationConverterComputation
 
 class RayPathObjective:
     def __init__(
@@ -46,8 +42,8 @@ class RayPathObjective:
         # find last point in the ray
         hypoSat_ECEF: ECEF_Coord = stateList[-1].ecef_p2
 
-        lla_hypo = convertFromECEFtoLLA(ecef=hypoSat_ECEF)
-        lla_sat = convertFromECEFtoLLA(ecef=self.sat_ECEF)
+        lla_hypo = LocationConverterComputation.convertFromECEFtoLLA(ecef=hypoSat_ECEF)
+        lla_sat = LocationConverterComputation.convertFromECEFtoLLA(ecef=self.sat_ECEF)
 
         loss: float = ECEF_Coord.subtract(
             ecef1=self.sat_ECEF, ecef2=hypoSat_ECEF

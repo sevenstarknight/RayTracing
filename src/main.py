@@ -1,7 +1,7 @@
+# THIRDPARTY modules
 import click 
 
-# ======================================================================================
-# Local imports
+# FIRSTPARTY modules
 from src.endtoenddemonstration import EndToEndDemo
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.stratificationmethod_enum import StratificationMethod

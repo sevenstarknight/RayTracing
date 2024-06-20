@@ -28,11 +28,12 @@ Mac: brew install gcc
 Windows: consider MSYS2
 
 If using codespaces:
+sudo apt-get update
 sudo apt-get install gfortran
 
 https://github.com/modflowpy/install-gfortran-action
 
-- Build a virtual environment ([How-To](https://python.plainenglish.io/python-virtual-environments-explained-78d5a040f963)
+- Build a virtual environment ([How-To](https://python.plainenglish.io/python-virtual-environments-explained-78d5a040f963))
   -  in a terminal window: python -m venv venv
   -  activate the virtual env: 
     - Linux: `source ./venv/bin/activate`  

@@ -1,9 +1,8 @@
+# STDLIB modules
 from dataclasses import dataclass
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import LLA_Coord
-
 
 @dataclass
 class RayState:

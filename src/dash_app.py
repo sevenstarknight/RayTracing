@@ -1,3 +1,6 @@
+from datetime import datetime
+
+# THIRDPARTY modules
 import dash 
 from dash import html
 from dash import dcc
@@ -5,13 +8,9 @@ from dash import dash_table
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import plotly.express as px
-
-from datetime import datetime
-## ====================================================
 import pandas as pd
 
-## ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.raytracer.raystate_class import RayState
 from src.raytracer.raytracer import RayTracer
 from src.bindings.positional.coordinates_class import LLA

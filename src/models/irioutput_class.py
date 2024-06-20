@@ -1,4 +1,7 @@
+# STDLIB modules
 from xarray import Dataset
+
+# THIRDPARTY modules
 import pandas as pd
 
 class IRIOutput():

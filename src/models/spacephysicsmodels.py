@@ -1,5 +1,4 @@
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.models.igrf_model import IGRF_Model
 from src.models.iri_model import IRI_Model
 from src.models.msise_model import MSISE_Model

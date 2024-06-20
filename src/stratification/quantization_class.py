@@ -1,7 +1,8 @@
-import numpy as np
 
 from dataclasses import dataclass
 
+# THIRDPARTY modules
+import numpy as np
 
 @dataclass
 class Quantization:

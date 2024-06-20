@@ -1,7 +1,7 @@
+# STDLIB modules
 from dataclasses import dataclass
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import ECEF_Coord
 from src.bindings.raytracer.raystate_class import RayState
 
