@@ -1,13 +1,9 @@
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import AER_Coord, LLA_Coord, ECEF_Coord
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.bindings.positional.layer_class import Layer
 from src.bindings.raytracer.raystate_class import RayState
-from src.positional.locationconverter_computations import (
-    convertFromECEFtoLLA,
-    convertToAER,
-)
+from src.positional.locationconverter_computations import LocationConverterComputation
 from src.raytracer.raytracer_computations import RayTracerComputations
 
 
@@ -18,7 +14,7 @@ class SlantPathGenerator:
         sat_ECEF: ECEF_Coord,
         heightStratification_m: list[float],
     ) -> list[Layer]:
-        aer: AER_Coord = convertToAER(
+        aer: AER_Coord = LocationConverterComputation.convertToAER(
             ecef=sat_ECEF, lla=startTimeAndLocation.eventLocation_LLA
         )
 
@@ -68,8 +64,8 @@ class LayerBuilder:
     def build(self, indx: int) -> Layer:
         ecef_p2: ECEF_Coord = self.intersects_ECEF[indx]
 
-        lla_p1: LLA_Coord = convertFromECEFtoLLA(ecef=self.ecef_p1)
-        lla_p2: LLA_Coord = convertFromECEFtoLLA(ecef=ecef_p2)
+        lla_p1: LLA_Coord = LocationConverterComputation.convertFromECEFtoLLA(ecef=self.ecef_p1)
+        lla_p2: LLA_Coord = LocationConverterComputation.convertFromECEFtoLLA(ecef=ecef_p2)
 
         layer = Layer(
             ecef_p1=self.ecef_p1,

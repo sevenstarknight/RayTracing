@@ -1,9 +1,8 @@
-# ====================================================
+# THIRDPARTY modules
 # https://github.com/klaundal/ppigrf
 import ppigrf
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.models.abstractspacephysics_model import AbstractSpacePhysicsModel
 from src.models.igrfoutput_class import IGRFOutput
 from src.bindings.positional.coordinates_class import LLA_Coord

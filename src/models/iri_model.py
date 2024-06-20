@@ -1,10 +1,9 @@
-# ====================================================
+# THIRDPARTY modules
 # https://github.com/space-physics/iri2016
 from iri2016 import IRI, geoprofile
 from loguru import logger
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.models.abstractspacephysics_model import AbstractSpacePhysicsModel
 from src.models.irioutput_class import IRIOutput
 from src.bindings.positional.coordinates_class import LLA_Coord

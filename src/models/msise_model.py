@@ -1,9 +1,8 @@
-# ====================================================
+# THIRDPARTY modules
 # https://pypi.org/project/nrlmsise00/
 from nrlmsise00 import msise_model
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.models.abstractspacephysics_model import AbstractSpacePhysicsModel
 from src.models.msiseoutput_class import MSISEOutput
 from src.bindings.positional.coordinates_class import LLA_Coord

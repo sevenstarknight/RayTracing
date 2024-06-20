@@ -1,8 +1,8 @@
+# STDLIB modules
 from dataclasses import dataclass
 from datetime import datetime
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import LLA_Coord
 
 

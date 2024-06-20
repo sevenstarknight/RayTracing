@@ -1,22 +1,15 @@
 from datetime import datetime
 
 # ====================================================
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
-
-# ====================================================
 # local imports
 from src.bindings.positional.coordinates_class import LLA_Coord, ECEF_Coord
 from src.bindings.positional.layer_class import Layer
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
+from src.positional.locationconverter_computations import LocationConverterComputation
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.positional.slantpathgenerator import SlantPathGenerator
 
-# ====================================================
-# constants
-ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
 def satPosition() -> ECEF_Coord:
@@ -42,10 +35,9 @@ def generateSlantPath() -> list[Layer]:
     sat_ECEF = satPosition()
 
     # expected height, assume minimal change in position with range projection
-    lon_deg, lat_deg, alt_m = pyproj.transform(
-        ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
+    event_LLA: LLA_Coord = LocationConverterComputation.convertFromECEFtoLLA(ecef=sat_ECEF)
+    event_LLA.setAltitude(0.0)
 
-    event_LLA = LLA_Coord(lat_deg, lon_deg, 0.0)
     # construct the atmospheric model
     # make LLAs
     slantPathGenerator = SlantPathGenerator()

@@ -1,11 +1,9 @@
+# STDLIB modules
 import unittest
 from datetime import datetime
 
-# ====================================================
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
-# ====================================================
-# local imports
+
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.bindings.positional.layer_class import Layer
@@ -17,13 +15,10 @@ from src.models.igrf_model import IGRF_Model
 from src.models.iri_model import IRI_Model
 from src.models.msise_model import MSISE_Model
 from src.models.spacephysicsmodels import SpacePhysicsModels
+from src.positional.locationconverter_computations import LocationConverterComputation
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.positional.slantpathgenerator import SlantPathGenerator
 
-# ====================================================
-# constants
-ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
 class TestXModel(unittest.TestCase):
@@ -48,10 +43,8 @@ class TestXModel(unittest.TestCase):
         sat_ECEF = satPosGenerator.estimatePosition_ECEF(currentDateTime)
 
         # expected height, assume minimal change in position with range projection
-        lon_deg, lat_deg, alt_m = pyproj.transform(
-            ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
-
-        event_LLA = LLA_Coord(lat_deg, lon_deg, 0.0)
+        event_LLA: LLA_Coord = LocationConverterComputation.convertFromECEFtoLLA(ecef=sat_ECEF)
+        event_LLA.setAltitude(0.0)
 
         timeAndLocation = TimeAndLocation(
             eventLocation_LLA=event_LLA, eventTime_UTC=currentDateTime)

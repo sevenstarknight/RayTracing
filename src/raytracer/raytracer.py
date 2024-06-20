@@ -16,7 +16,7 @@ from src.bindings.exceptions_class import IntersectException
 from src.bindings.positional.coordinates_class import ECEF_Coord, LLA_Coord
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
 
-from src.positional.locationconverter_computations import convertFromECEFtoLLA
+from src.positional.locationconverter_computations import LocationConverterComputation
 
 MAX_ITER = 1000000
 
@@ -145,7 +145,7 @@ class TransitionGenerator:
         )
 
         # ===================================================================
-        lla_p2 = convertFromECEFtoLLA(ecef=intersection.ecef_p2)
+        lla_p2 = LocationConverterComputation.convertFromECEFtoLLA(ecef=intersection.ecef_p2)
         lla_p2.setAltitude(newAlitude_m=intersection.newAltitude_m)
 
         # estimate entry angle onto the curved layers

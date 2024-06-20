@@ -1,5 +1,4 @@
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.raytracer.rayvector_class import RayVector
 
 

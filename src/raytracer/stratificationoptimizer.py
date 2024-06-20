@@ -8,7 +8,7 @@ from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefracti
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
-from src.positional.locationconverter_computations import convertFromECEFtoLLA
+from src.positional.locationconverter_computations import LocationConverterComputation
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.stratification.quantization_class import Quantization
 from src.stratification.twodseries_class import TwoDSeries
@@ -39,7 +39,7 @@ class StratificationOptimizer():
         sat_ECEF = satPosGenerator.estimatePosition_ECEF(
             self.timeAndLocation.eventTime_UTC)
 
-        sat_LLA = convertFromECEFtoLLA(ecef=sat_ECEF)
+        sat_LLA = LocationConverterComputation.convertFromECEFtoLLA(ecef=sat_ECEF)
 
         initialHeights_m = np.linspace(60e3, 1100e3, 1000)
 

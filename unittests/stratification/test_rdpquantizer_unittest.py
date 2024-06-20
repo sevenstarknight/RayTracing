@@ -1,4 +1,6 @@
 import unittest
+from os.path import abspath, join, exists
+from pathlib import Path
 
 import numpy as np
 import scipy.io
@@ -11,7 +13,9 @@ from src.stratification.rdpquantizer import RDPQuantizer
 
 class TestRDPQuantizer(unittest.TestCase):
     def setUp(self) -> None:
-        self.mat = scipy.io.loadmat('tests/data/QuantizerDataTest.mat')
+        script_dir = Path(__file__).resolve().parent
+        testPath = abspath(join(script_dir, "..", "data", "QuantizerDataTest.mat"))
+        self.mat = scipy.io.loadmat(testPath)
 
     def test_GenerateQuantization_EDP_Opt(self):
         xAxis = np.log(np.transpose(np.array(self.mat['alt']))[0])

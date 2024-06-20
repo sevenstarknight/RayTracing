@@ -7,7 +7,7 @@ from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 from src.bindings.raytracer.rayvector_class import RayVector
-from src.positional.locationconverter_computations import convertToAER
+from src.positional.locationconverter_computations import LocationConverterComputation
 from src.bindings.positional.coordinates_class import AER_Coord, ECEF_Coord
 
 from src.raytracer.raytracer import RayTracer
@@ -52,7 +52,7 @@ class RayPathOptimizer:
             self.timeAndLocation.eventTime_UTC
         )
 
-        aer: AER_Coord = convertToAER(
+        aer: AER_Coord = LocationConverterComputation.convertToAER(
             ecef=sat_ECEF, lla=self.timeAndLocation.eventLocation_LLA
         )
 

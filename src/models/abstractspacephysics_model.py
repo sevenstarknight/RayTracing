@@ -1,8 +1,8 @@
+# STDLIB modules
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-## ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.bindings.positional.layer_class import Layer
 

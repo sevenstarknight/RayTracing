@@ -1,13 +1,13 @@
+# STDLIB modules
 from datetime import datetime
 
-# ====================================================
+# THIRDPARTY modules
 # https://rhodesmill.org/skyfield/
 from skyfield.api import EarthSatellite
 from skyfield.api import load
 from skyfield.framelib import itrs
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import ECEF_Coord
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation
 
