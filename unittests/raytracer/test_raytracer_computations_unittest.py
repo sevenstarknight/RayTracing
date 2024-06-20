@@ -1,7 +1,8 @@
+# STDLIB modules
 import unittest
 import math
 
-# ====================================================
+# THIRDPARTY modules
 # https://ahrs.readthedocs.io/en/latest/
 import ahrs
 

@@ -1,13 +1,14 @@
+# STDLIB modules
 import unittest
 from datetime import datetime
 
 # FIRSTPARTY modules
-from supportTestStructures import generateSlantPath
 from src.bindings.positional.layer_class import Layer
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.models.collisionfrequency import ElectronIonCollisionFrequency, ElectronNeutralCollisionFrequency
 from src.models.iri_model import IRI_Model
 from src.models.msise_model import MSISE_Model
+from unittests.testutilities import TestUtilities
 
 
 class TestCollisionFrequency(unittest.TestCase):
@@ -22,7 +23,7 @@ class TestCollisionFrequency(unittest.TestCase):
 
         collisionFrequency = ElectronIonCollisionFrequency()
 
-        slantLayers : list[Layer] = generateSlantPath()
+        slantLayers : list[Layer] = TestUtilities.generateSlantPath()
 
         iriOutputs = iriModel.generateSetEstimate(layers=slantLayers)
 

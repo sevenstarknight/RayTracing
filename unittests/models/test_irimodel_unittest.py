@@ -1,11 +1,12 @@
+# STDLIB modules
 import unittest
 from datetime import datetime
 
 # FIRSTPARTY modules
 from src.bindings.positional.layer_class import Layer
-from supportTestStructures import generateSlantPath
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.models.iri_model import IRI_Model
+from unittests.testutilities import TestUtilities
 
 
 class TestIRIModel(unittest.TestCase):
@@ -19,7 +20,7 @@ class TestIRIModel(unittest.TestCase):
         iriModel = IRI_Model(ionosphereState=ionosphereState,
                              currentDateTime=currentDateTime)
 
-        slantLayers : list[Layer] =  generateSlantPath()
+        slantLayers : list[Layer] =  TestUtilities.generateSlantPath()
 
         iriOutputs = iriModel.generateSetEstimate(layers=slantLayers)
 

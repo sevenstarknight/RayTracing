@@ -1,11 +1,12 @@
+# STDLIB modules
 import unittest
 from datetime import datetime
 
 # FIRSTPARTY modules
 from src.bindings.positional.layer_class import Layer
-from supportTestStructures import generateSlantPath
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.models.igrf_model import IGRF_Model
+from unittests.testutilities import TestUtilities
 
 
 class TestIGRFModel(unittest.TestCase):
@@ -19,7 +20,7 @@ class TestIGRFModel(unittest.TestCase):
         igrfModel = IGRF_Model(
             ionosphereState=ionosphereState, currentDateTime=currentDateTime)
 
-        slantLayers : list[Layer] =  generateSlantPath()
+        slantLayers : list[Layer] =  TestUtilities.generateSlantPath()
 
         igrfOutputs = igrfModel.generateSetEstimate(layers=slantLayers)
 

@@ -4,13 +4,13 @@ from datetime import datetime
 
 # FIRSTPARTY modules
 from src.positional.locationconverter_computations import LocationConverterComputation
-from supportTestStructures import satPosition
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
+from unittests.testutilities import TestUtilities
 
 
 class TestIndexOfRefractionGenerator(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
 
         # Initial Starting Point
         currentDateTime = datetime(2012, 9, 15, 13, 14, 30)
-        sat_ECEF = satPosition()
+        sat_ECEF = TestUtilities.satPosition()
 
         # expected height, assume minimal change in position with range projection
         event_LLA: LLA_Coord = LocationConverterComputation.convertFromECEFtoLLA(ecef=sat_ECEF)

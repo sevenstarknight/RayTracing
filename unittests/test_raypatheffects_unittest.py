@@ -1,3 +1,4 @@
+# STDLIB modules
 import unittest
 
 # FIRSTPARTY modules
@@ -7,7 +8,7 @@ from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.raypatheffects import EstimateRayPathEffects
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.stratificationmethod_enum import StratificationMethod
-from unittests.unittest_computations import standardSatelliteInformation, standardStartingPoint
+from unittests.testutilities import TestUtilities
 
 
 class TestRayPathEffects(unittest.TestCase):
@@ -17,9 +18,9 @@ class TestRayPathEffects(unittest.TestCase):
         ap = [1, 2, 3, 4, 2, 2, 1]
         ionosphereState = IonosphereState(20.5, 20.6, ap)
 
-        satelliteInformation = standardSatelliteInformation()
+        satelliteInformation = TestUtilities.standardSatelliteInformation()
 
-        timeAndLocation = standardStartingPoint(satelliteInformation)
+        timeAndLocation = TestUtilities.standardStartingPoint(satelliteInformation)
         
         # ======================================================
         optimizer = EstimateRayPathEffects(

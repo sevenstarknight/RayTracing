@@ -1,33 +1,26 @@
+# STDLIB modules
 import unittest
-from datetime import datetime
+
+# THIRDPARTY modules
 import pandas as pd
 
-# ====================================================
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
-
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.stratificationmethod_enum import StratificationMethod
 from src.raypatheffects import EstimateRayPathEffects
-from unittests.unittest_computations import standardSatelliteInformation, standardStartingPoint
-# ====================================================
-# constants
-ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+from unittests.testutilities import TestUtilities
 
 
 class TestStratificationIntegration(unittest.TestCase):
 
     def test_StratificationOptimizer(self):
 
-        satelliteInformation = standardSatelliteInformation()
+        satelliteInformation = TestUtilities.standardSatelliteInformation()
 
-        timeAndLocation = standardStartingPoint(satelliteInformation)
+        timeAndLocation = TestUtilities.standardStartingPoint(satelliteInformation)
 
         ionosphereState = IonosphereState(150.0, 150.0, 3.0)
 

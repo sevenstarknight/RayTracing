@@ -1,11 +1,12 @@
+# STDLIB modules
 import unittest
 from datetime import datetime
 
 # FIRSTPARTY modules
 from src.bindings.positional.layer_class import Layer
-from supportTestStructures import generateSlantPath
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.models.msise_model import MSISE_Model
+from unittests.testutilities import TestUtilities
 
 class TestMSISE_Model(unittest.TestCase):
 
@@ -18,7 +19,7 @@ class TestMSISE_Model(unittest.TestCase):
         msiseModel = MSISE_Model(
             ionosphereState=ionosphereState, currentDateTime=currentDateTime)
 
-        slantLayers : list[Layer] =  generateSlantPath()
+        slantLayers : list[Layer] =  TestUtilities.generateSlantPath()
 
         msiseOutputs = msiseModel.generateSetEstimate(layers=slantLayers)
 

@@ -1,11 +1,13 @@
+# STDLIB modules
 import unittest
 from os.path import abspath, join, exists
 from pathlib import Path
 
+# THIRDPARTY modules
 import numpy as np
 import scipy.io
-# ====================================================
-# local imports
+
+# FIRSTPARTY modules
 from src.stratification.lloydmaxquantizer import LloydMaxQuantizer
 from src.stratification.twodseries_class import TwoDSeries
 from src.stratification.quantizationparameter_class import QuantizationParameter

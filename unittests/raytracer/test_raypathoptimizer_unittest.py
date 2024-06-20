@@ -1,3 +1,4 @@
+# STDLIB modules
 import unittest
 
 # FIRSTPARTY modules
@@ -5,16 +6,16 @@ from src.bindings.models.ionospherestate_class import IonosphereState
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.raytracer.raypathoptimizer import RayPathOptimizer
-from unittests.unittest_computations import standardSatelliteInformation, standardStartingPoint
+from unittests.testutilities import TestUtilities
 
 
 
 class TestRayPathOptimization(unittest.TestCase):
 
     def setUp(self):
-        self.satelliteInformation = standardSatelliteInformation()
+        self.satelliteInformation = TestUtilities.standardSatelliteInformation()
 
-        self.timeAndLocation = standardStartingPoint(self.satelliteInformation )
+        self.timeAndLocation = TestUtilities.standardStartingPoint(self.satelliteInformation )
 
         self.ionosphereState = IonosphereState(10.0, 10.0, 3.0)
 

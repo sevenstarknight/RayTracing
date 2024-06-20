@@ -1,3 +1,4 @@
+# STDLIB modules
 import unittest
 from datetime import datetime
 
@@ -7,7 +8,6 @@ from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.raytracer.raytracer import RayTracer, TransitionGenerator, TransitionOutput
 from src.bindings.raytracer.raystate_class import RayState
-
 
 class TestRayTracer(unittest.TestCase):
 

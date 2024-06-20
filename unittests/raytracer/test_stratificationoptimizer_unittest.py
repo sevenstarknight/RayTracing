@@ -1,18 +1,14 @@
+# STDLIB modules
 import unittest
 
 # FIRSTPARTY modules
-from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.models.ionospherestate_class import IonosphereState
-from src.bindings.positional.satelliteinformation_class import SatelliteInformation
-from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
-from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.stratification.quantizationparameter_class import QuantizationParameter
 from src.stratification.stratificationmethod_enum import StratificationMethod
 from src.raytracer.stratificationoptimizer import StratificationOptimizer
-from unittests.unittest_computations import standardSatelliteInformation, standardStartingPoint
-
+from unittests.testutilities import TestUtilities
 
 
 class TestStratificationOptimizer(unittest.TestCase):
@@ -21,9 +17,9 @@ class TestStratificationOptimizer(unittest.TestCase):
 
         ionosphereState = IonosphereState(10.0, 10.0, 3.0)
 
-        satelliteInformation = standardSatelliteInformation()
+        satelliteInformation = TestUtilities.standardSatelliteInformation()
 
-        timeAndLocation = standardStartingPoint(satelliteInformation)
+        timeAndLocation = TestUtilities.standardStartingPoint(satelliteInformation)
         # ======================================================
 
         stratificationOptimizer = StratificationOptimizer(dispersionModel=DispersionModel.X_MODEL, 

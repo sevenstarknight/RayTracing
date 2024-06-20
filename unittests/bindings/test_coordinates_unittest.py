@@ -1,4 +1,6 @@
 import unittest
+
+# THIRDPARTY modules
 import ahrs
 
 # FIRSTPARTY modules
