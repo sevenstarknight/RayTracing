@@ -43,7 +43,7 @@ class TestCollisionFrequency(unittest.TestCase):
 
         collisionFrequency = ElectronNeutralCollisionFrequency()
 
-        slantLayers : list[Layer] =  generateSlantPath()
+        slantLayers : list[Layer] =  TestUtilities.generateSlantPath()
 
         iriOutputs = iriModel.generateSetEstimate(layers=slantLayers)
         msiseOutputs = msiseModel.generateSetEstimate(layers=slantLayers)
