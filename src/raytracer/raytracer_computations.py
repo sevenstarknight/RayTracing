@@ -1,11 +1,10 @@
 import math
 
-# ====================================================
+# THIRDPARTY modules
 # https://ahrs.readthedocs.io/en/latest/wgs84.html
 import ahrs
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.exceptions_class import IntersectException
 from src.bindings.positional.coordinates_class import AER_Coord, LLA_Coord, ECEF_Coord
 from src.bindings.raytracer.raystate_class import RayState

@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
-import numpy as np
-import functools
 
+# THIRDPARTY modules
+import numpy as np
 from scipy.interpolate import InterpolatedUnivariateSpline
 import scipy.integrate as integrate
-from src.stratification.quantization_class import Quantization
 
+# FIRSTPARTY modules
+from src.stratification.quantization_class import Quantization
 from src.stratification.twodseries_class import TwoDSeries
 from src.stratification.quantizationparameter_class import QuantizationParameter
 

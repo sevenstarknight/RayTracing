@@ -1,8 +1,7 @@
+# THIRDPARTY modules
 from scipy import constants
 
-
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.bindings.transionosphereeffects_class import TransIonosphereEffects

@@ -2,19 +2,14 @@ import unittest
 import math
 
 # ====================================================
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
 # https://ahrs.readthedocs.io/en/latest/
 import ahrs
 # ====================================================
 # local imports
+from src.positional.locationconverter_computations import LocationConverterComputation
 from src.raytracer.raytracer import RayTracerComputations
 from src.bindings.positional.coordinates_class import ECEF_Coord, LLA_Coord
 
-# ====================================================
-# constants
-ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
 class TestRayTracer_Computations(unittest.TestCase):
@@ -42,13 +37,10 @@ class TestRayTracer_Computations(unittest.TestCase):
         initialECEF_1 = ECEF_Coord(wgs.a, 0.0, 0.0)
         initialECEF_2 = ECEF_Coord(wgs.a + 100.0, 10.0, 0.0)
 
-        lat_deg, lon_deg, alt_m = pyproj.transform(
-            ECEF, LLA, initialECEF_1.x_m, initialECEF_1.y_m, initialECEF_1.z_m, radians=False)
-        lla_p1 = LLA_Coord(lat_deg, lon_deg, alt_m)
 
-        lat_deg, lon_deg, alt_m = pyproj.transform(
-            ECEF, LLA, initialECEF_2.x_m, initialECEF_2.y_m, initialECEF_2.z_m, radians=False)
-        lla_p2 = LLA_Coord(lat_deg, lon_deg, alt_m)
+        lla_p1: LLA_Coord = LocationConverterComputation.convertFromECEFtoLLA(ecef=initialECEF_1)
+
+        lla_p2: LLA_Coord = LocationConverterComputation.convertFromECEFtoLLA(ecef=initialECEF_2)
 
         entryAngle = RayTracerComputations.computeEntryAngle(
             90.0, initialECEF_1, initialECEF_2, lla_p1, lla_p2)

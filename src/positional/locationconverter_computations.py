@@ -13,7 +13,6 @@ from src.bindings.positional.coordinates_class import (
     LLA_Coord,
 )
 
-
 class LocationConverterComputation():
 
     def __init__(self) -> None:

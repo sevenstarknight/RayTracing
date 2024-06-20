@@ -1,9 +1,5 @@
 import unittest
-from datetime import datetime
 
-# ====================================================
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
 # ====================================================
 # local imports
 from src.bindings.models.ionospherestate_class import IonosphereState
@@ -12,10 +8,6 @@ from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.raytracer.raypathoptimizer import RayPathOptimizer
 from unittests.unittest_computations import standardSatelliteInformation, standardStartingPoint
 
-# ====================================================
-# constants
-ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
 class TestRayPathOptimization(unittest.TestCase):

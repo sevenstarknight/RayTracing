@@ -1,9 +1,6 @@
 import unittest
 from datetime import datetime
 
-# ====================================================
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
 
 # ====================================================
 # local imports
@@ -14,13 +11,9 @@ from src.bindings.positional.satelliteinformation_class import SatelliteInformat
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
+from src.positional.locationconverter_computations import LocationConverterComputation
 from src.positional.satellitepositiongenerator import SatellitePositionGenerator
 from src.raytracer.raypathobjective import RayPathObjective
-
-# ====================================================
-# constants
-ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
 class TestRayPathObjective(unittest.TestCase):
@@ -40,10 +33,8 @@ class TestRayPathObjective(unittest.TestCase):
         ionosphereState = IonosphereState(10.0, 10.0, 3.0)
 
         # expected height, assume minimal change in position with range projection
-        lon_deg, lat_deg, alt_m = pyproj.transform(
-            ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
-
-        event_LLA = LLA_Coord(lat_deg, lon_deg, 0.0)
+        event_LLA: LLA_Coord = LocationConverterComputation.convertFromECEFtoLLA(ecef=sat_ECEF)
+        event_LLA.setAltitude(0.0)
 
         # ======================================================
         heights_m = [0, 100, 1000, 10000, 100000, 1000000]

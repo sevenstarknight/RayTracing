@@ -1,9 +1,9 @@
+# THIRDPARTY modules
 from rdp import rdp
 import numpy as np
 from scipy import interpolate
 from scipy import optimize
-# ====================================================
-# local
+# FIRSTPARTY modules
 from src.stratification.abstractquantizer import AbstractQuantizer
 from src.stratification.quantization_class import Quantization
 from src.stratification.quantizationparameter_class import QuantizationParameter

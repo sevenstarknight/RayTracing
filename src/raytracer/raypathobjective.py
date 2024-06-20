@@ -1,7 +1,4 @@
-import math
-
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.raytracer.raytracer import RayTracer
 from src.bindings.positional.coordinates_class import ECEF_Coord
 from src.bindings.positional.timeandlocation_class import TimeAndLocation

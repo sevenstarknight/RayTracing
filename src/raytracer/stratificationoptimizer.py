@@ -1,7 +1,7 @@
+# THIRDPARTY modules
 import numpy as np
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator

@@ -1,8 +1,7 @@
-import scipy.optimize as optimize
-from scipy.optimize import minimize, LinearConstraint
+# THIRDPARTY modules
+from scipy.optimize import minimize
 
-# ====================================================
-# local imports
+# FIRSTPARTY modules
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.bindings.positional.satelliteinformation_class import SatelliteInformation

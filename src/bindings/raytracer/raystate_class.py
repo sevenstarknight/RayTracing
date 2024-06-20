@@ -4,7 +4,6 @@ from dataclasses import dataclass
 # FIRSTPARTY modules
 from src.bindings.positional.coordinates_class import LLA_Coord
 
-
 @dataclass
 class RayState:
     # Class that stores the current state (point) of the ray

@@ -1,9 +1,4 @@
 import unittest
-from datetime import datetime
-
-# ====================================================
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
 
 # ====================================================
 # local imports
@@ -19,10 +14,6 @@ from src.stratification.stratificationmethod_enum import StratificationMethod
 from src.raytracer.stratificationoptimizer import StratificationOptimizer
 from unittests.unittest_computations import standardSatelliteInformation, standardStartingPoint
 
-# ====================================================
-# constants
-ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
 class TestStratificationOptimizer(unittest.TestCase):

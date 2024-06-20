@@ -1,21 +1,20 @@
 import math
 import cmath
 from dataclasses import dataclass
-from loguru import logger
 from typing import Optional
+
+# THIRDPARTY modules
+from loguru import logger
+
+# FIRSTPARTY modules
 from src.bindings.raytracer.intersection_class import IntersectionPoint
-
-# ====================================================
-# local imports
 from src.raytracer.raytracer_computations import RayTracerComputations
-
 from src.bindings.raytracer.interface_class import Interface
 from src.bindings.raytracer.rayvector_class import RayVector
 from src.bindings.raytracer.raystate_class import RayState
 from src.bindings.exceptions_class import IntersectException
 from src.bindings.positional.coordinates_class import ECEF_Coord, LLA_Coord
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
-
 from src.positional.locationconverter_computations import LocationConverterComputation
 
 MAX_ITER = 1000000

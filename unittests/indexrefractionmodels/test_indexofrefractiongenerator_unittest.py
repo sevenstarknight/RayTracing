@@ -1,12 +1,10 @@
 import unittest
 from datetime import datetime
 
-# ====================================================
-# https://pyproj4.github.io/pyproj/stable/
-import pyproj
 
 # ====================================================
 # local imports
+from src.positional.locationconverter_computations import LocationConverterComputation
 from supportTestStructures import satPosition
 
 from src.indexrefractionmodels.indexofrefractiongenerator import IndexOfRefractionGenerator
@@ -16,11 +14,6 @@ from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.bindings.models.ionospherestate_class import IonosphereState
 from src.bindings.positional.coordinates_class import LLA_Coord
 from src.bindings.positional.timeandlocation_class import TimeAndLocation
-
-# ====================================================
-# constants
-ECEF = pyproj.Proj(proj='geocent', ellps='WGS84', datum='WGS84')
-LLA = pyproj.Proj(proj='latlong', ellps='WGS84', datum='WGS84')
 
 
 class TestIndexOfRefractionGenerator(unittest.TestCase):
@@ -32,10 +25,8 @@ class TestIndexOfRefractionGenerator(unittest.TestCase):
         sat_ECEF = satPosition()
 
         # expected height, assume minimal change in position with range projection
-        lon_deg, lat_deg, alt_m = pyproj.transform(
-            ECEF, LLA, sat_ECEF.x_m, sat_ECEF.y_m, sat_ECEF.z_m, radians=False)
-
-        event_LLA = LLA_Coord(lat_deg, lon_deg, 0.0)
+        event_LLA: LLA_Coord = LocationConverterComputation.convertFromECEFtoLLA(ecef=sat_ECEF)
+        event_LLA.setAltitude(0.0)
 
         ionosphereState = IonosphereState(10.0, 10.0, 3.0)
         timeAndLocation = TimeAndLocation(
