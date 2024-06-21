@@ -23,8 +23,8 @@ from src.stratification.decimationquantizer import DecimationQuantizer
 
 class StratificationOptimizer():
 
-    _exoAtmoHeights_m = np.array([0.467e4, 0.783e4, 1.100e4, 1.416e4, 1.733e4,
-                                  2.020e4, 2.050e4, 2.366e4, 2.680e4, 3.000e4])
+    _exoAtmoHeights_m = np.array([0.467e7, 0.783e7, 1.100e7, 1.416e7, 1.733e7,
+                                  2.020e7, 2.050e7, 2.366e7, 2.680e7, 3.000e7])
 
     def __init__(self, timeAndLocation: TimeAndLocation, dispersionModel: DispersionModel, transportMode: TransportMode):
         self.timeAndLocation = timeAndLocation

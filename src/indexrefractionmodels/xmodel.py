@@ -4,6 +4,7 @@ from cmath import sqrt
 
 # THIRDPARTY module
 from scipy import constants
+import numpy as np
 from loguru import logger
 
 # FIRSTPARTY modules
@@ -19,7 +20,7 @@ class XModel(AbstractIndexRefraction):
             logger.error(str(me))
 
         n_e = iriOutput.n_e
-        if n_e == -1:
+        if np.isnan(n_e):
             nSq = 1.0
         else:
             angularFreq_sq = (2 * math.pi * self.frequency_hz) ** 2

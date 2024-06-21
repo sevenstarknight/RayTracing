@@ -77,4 +77,6 @@ class TestXModel(unittest.TestCase):
             indexN = xModel.estimateIndexOfRefraction(layer=layer)
             indexNs.append(indexN)
 
+
+        print(*indexNs, sep='\n')
         self.assertTrue(len(indexNs) == len(heights_m) - 1)

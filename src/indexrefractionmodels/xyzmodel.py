@@ -26,7 +26,7 @@ class XYZModel(AbstractIndexRefraction):
 
         n_e = iriOutput.n_e
 
-        if n_e == -1.0:
+        if np.isnan(n_e):
             nSq = 1.0
         else:
             # Atmosphere Model
