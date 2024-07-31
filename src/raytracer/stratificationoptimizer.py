@@ -85,6 +85,6 @@ class StratificationOptimizer():
         heights_np_m = np.append(heights_np_m, sat_LLA.altitude_m)
         heights_np_m.sort()
         
-        filtered = filter(lambda x: x <= sat_LLA.altitude_m, heights_np_m)
-        return list(filtered)
+        filtered = list(filter(lambda x: x <= sat_LLA.altitude_m, heights_np_m))
+        return filtered
 

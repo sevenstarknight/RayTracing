@@ -2,6 +2,7 @@
 from scipy import constants
 
 # FIRSTPARTY modules
+from src.bindings.positional.coordinates_class import ECEF_Coord
 from src.indexrefractionmodels.dispersionmodels_enum import DispersionModel
 from src.indexrefractionmodels.transportmodes_enum import TransportMode
 from src.bindings.transionosphereeffects_class import TransIonosphereEffects
@@ -45,8 +46,8 @@ class EstimateRayPathEffects():
 
         for rayVector in rayVectors:
 
-            s12: float = rayVector.sVector_m.magnitude()
-
+            s12: float = ECEF_Coord.subtract(rayVector.ecef_p2, rayVector.ecef_p1).magnitude()
+            
             totalGeoDistance_m = totalGeoDistance_m + s12
 
             totalIonoDelay_sec = totalIonoDelay_sec + \

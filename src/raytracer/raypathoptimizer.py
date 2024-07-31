@@ -88,6 +88,6 @@ class RayPathOptimizer:
             indexNs=indexNs,
         )
 
-        rayVectors = rayTracer.execute(params=[result.x[1], result.x[0]])
+        rayVectors = rayTracer.execute(params=[result.x[0], result.x[1]])
 
         return rayVectors
