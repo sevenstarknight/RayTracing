@@ -1,6 +1,7 @@
 # THIRDPARTY modules
 # https://github.com/space-physics/iri2016
 from iri2016 import IRI, geoprofile
+from sigfig import round
 from loguru import logger
 
 # FIRSTPARTY modules
@@ -20,7 +21,8 @@ class IRI_Model(AbstractSpacePhysicsModel):
 
     def generatePointEstimate(self, layer:Layer) -> IRIOutput:
 
-        lla: LLA_Coord = layer.lla_p1
+        lla1: LLA_Coord = layer.lla_p1
+        lla2: LLA_Coord = layer.lla_p2
 
         altitude_p1_m: float = layer.lla_p1.altitude_m
         altitude_p2_m: float = layer.lla_p2.altitude_m
@@ -39,17 +41,20 @@ class IRI_Model(AbstractSpacePhysicsModel):
         else:
             altitude_p2_km = altitude_p2_m /1000
 
-        if altitude_p2_km > 110:
-            tmpVar = 10
-
-
-        # ion.geoprofile([-40.0,40.0,1.0], -73.5673, 300, ’2015-12-28T12’)
         # def IRI(time: T.Union[str, datetime], altkmrange: T.Sequence[float], glat: float, glon: float) -> xarray.Dataset:
-        iri1 = IRI(glat=lla.lat_deg, glon=lla.lon_deg, altkmrange=[altitude_p1_km, altitude_p1_km + 1.0, 1], time=self.currentDateTime)
-        lla: LLA_Coord = layer.lla_p2
-        iri2 = IRI(glat=lla.lat_deg, glon=lla.lon_deg, altkmrange=[altitude_p2_km, altitude_p2_km + 1.0, 1], time=self.currentDateTime)
+        try:
+            iri1 = IRI(glat=round(lla1.lat_deg, decimals=4), glon=round(lla1.lon_deg, decimals=4), 
+                       altkmrange=[round(altitude_p1_km, decimals=4), round(altitude_p2_km, decimals=4), (altitude_p2_km + 1 - altitude_p1_km)/10], time=self.currentDateTime)
+        except Exception as me:
 
-        output = IRIOutput().from_geoprofile(iono1=iri1, iono2=iri2)
+            try:
+                iri1 = IRI(glat=round(lla2.lat_deg, decimals=4), glon=round(lla2.lon_deg, decimals=4), 
+                        altkmrange=[round(altitude_p1_km, decimals=4), round(altitude_p2_km, decimals=4), (altitude_p2_km + 1 - altitude_p1_km)/10], time=self.currentDateTime)
+            except Exception as me:
+                logger.error(str(me))
+
+
+        output = IRIOutput().from_geoprofile(iono1=iri1)
 
         return output
 

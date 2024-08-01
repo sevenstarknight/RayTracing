@@ -19,7 +19,7 @@ class IRIOutput():
         self.nN_Ion: float = 0
 
     @classmethod
-    def from_geoprofile(cls, iono1: Dataset, iono2: Dataset):
+    def from_geoprofile(cls, iono1: Dataset, iono2: Dataset = None):
         df : pd.DataFrame = iono1.to_dataframe()
         classIri = cls()
 

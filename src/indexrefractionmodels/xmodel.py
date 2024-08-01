@@ -14,11 +14,9 @@ from src.bindings.positional.layer_class import Layer
 
 class XModel(AbstractIndexRefraction):
     def estimateIndexOfRefraction(self, layer: Layer) -> complex:
-        try:
-            iriOutput = self.spacePhysicsModels.iri.generatePointEstimate(layer=layer)
-        except Exception as me:
-            logger.error(str(me))
 
+        iriOutput = self.spacePhysicsModels.iri.generatePointEstimate(layer=layer)
+        
         n_e = iriOutput.n_e
         if np.isnan(n_e):
             nSq = 1.0
